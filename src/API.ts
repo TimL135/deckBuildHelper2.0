@@ -7,12 +7,14 @@ export interface Card {
   cardComboStarter: boolean;
   cardValue: number;
 }
-export type Deck = Card[]
-
-
-export function setData(data: Card[]) {
-  localStorage.setItem("deck", JSON.stringify(data))
+export interface Deck {
+  name: string;
+  cards: Card[];
 }
-export function getData(): Card[] {
-  return JSON.parse(localStorage.getItem("deck") || "[]")
+
+export function setData(data: Deck[]) {
+  localStorage.setItem("decks", JSON.stringify(data))
+}
+export function getData(): Deck[] {
+  return JSON.parse(localStorage.getItem("decks") || "[]")
 }

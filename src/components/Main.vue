@@ -1,12 +1,12 @@
 <template>
-   <link
+  <link
     href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.1/dist/css/bootstrap.min.css"
     rel="stylesheet"
     integrity="sha384-F3w7mX95PdgyTmZZMECAngseQB83DfGTowi0iMjiWaeVhAn4FJkqJByhZMI3AhiU"
     crossorigin="anonymous"
   />
-  
-  <div style="margin-top:30px">
+
+  <div style="margin-top: 30px">
     <form @submit.prevent="addCard">
       <div class="container">
         <div class="input-group flex-nowrap">
@@ -64,32 +64,61 @@
           autocomplete="off"
           v-model="comboStarter"
         />
-        
+
         <label class="btn btn-outline-primary" for="btncheck3"
           >Combo starter</label
         >
       </div>
-      <br>
-      <div class="btn-group" role="group" aria-label="Basic radio toggle button group">
-  <input type="radio" class="btn-check" name="btnradio" id="btnradio0" autocomplete="off" >
-  <label class="btn btn-outline-primary" for="btnradio0" >-1</label>
-  <input type="radio" class="btn-check" name="btnradio" id="btnradio1" autocomplete="off"  checked>
-  <label class="btn btn-outline-primary" for="btnradio1">0</label>
-  <input type="radio" class="btn-check" name="btnradio" id="btnradio2" autocomplete="off">
-  <label class="btn btn-outline-primary" for="btnradio2">Maybe +1</label>
-   <input type="radio" class="btn-check" name="btnradio" id="btnradio3" autocomplete="off" >
-  <label class="btn btn-outline-primary" for="btnradio3">+1</label>
-</div>
-<br>
+      <br />
+      <div
+        class="btn-group"
+        role="group"
+        aria-label="Basic radio toggle button group"
+      >
+        <input
+          type="radio"
+          class="btn-check"
+          name="btnradio"
+          id="btnradio0"
+          autocomplete="off"
+        />
+        <label class="btn btn-outline-primary" for="btnradio0">-1</label>
+        <input
+          type="radio"
+          class="btn-check"
+          name="btnradio"
+          id="btnradio1"
+          autocomplete="off"
+          checked
+        />
+        <label class="btn btn-outline-primary" for="btnradio1">0</label>
+        <input
+          type="radio"
+          class="btn-check"
+          name="btnradio"
+          id="btnradio2"
+          autocomplete="off"
+        />
+        <label class="btn btn-outline-primary" for="btnradio2">Maybe +1</label>
+        <input
+          type="radio"
+          class="btn-check"
+          name="btnradio"
+          id="btnradio3"
+          autocomplete="off"
+        />
+        <label class="btn btn-outline-primary" for="btnradio3">+1</label>
+      </div>
+      <br />
 
       <button type="submit" class="btn btn-primary m-1">Confirm</button>
     </form>
     <div>Kartenanzahl({{ deckNumber }})</div>
 
-    <div>Deckvalue: ({{deckValue}})</div>
+    <div>Deckvalue: ({{ deckValue }})</div>
 
-    <div> Deckrating: ({{deckRating}})</div>
-     
+    <div>Deckrating: ({{ deckRating }})</div>
+
     <div v-if="handTrapCount > 0">Handtraps({{ handTrapCount }})</div>
 
     <div v-if="brickCount > 0">Bricks({{ brickCount }})</div>
@@ -97,12 +126,14 @@
     <div v-if="comboStarterCount > 0">
       Combo Starter({{ comboStarterCount }})
     </div>
-
-    <input id="DeckSelect" list="DeckList"/>
-    <datalist v-for="deck in decks" :key="JSON.stringify(deck)">
-      <option value=""></option>
-    </datalist>
-    <table class="table  table-striped">
+    <div class="container">
+      <select class="form-select" v-model="selectedDeck">
+        <option v-for="deck in decks" :key="deck.name" :value="deck.name">
+          {{ deck.name }}
+        </option>
+      </select>
+    </div>
+    <table class="table table-striped">
       <thead>
         <tr>
           <th scope="col">Cards</th>
@@ -111,43 +142,36 @@
         </tr>
       </thead>
       <tbody>
-        <tr v-for="card in deck" :key="card.cardName">
+        <tr v-for="card in deck.cards" :key="card.cardName">
+          <th>{{ card.cardName }}({{ card.cardCount }})</th>
           <td>
-             <th>
-                {{ card.cardName }}({{ card.cardCount }})
-             </th>
+            <button @click="openCardEditModal(card.cardId)">
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                width="26"
+                height="26"
+                fill="currentColor"
+                class="bi bi-gear-fill"
+                viewBox="0 0 16 16"
+              >
+                <path
+                  d="M9.405 1.05c-.413-1.4-2.397-1.4-2.81 0l-.1.34a1.464 1.464 0 0 1-2.105.872l-.31-.17c-1.283-.698-2.686.705-1.987 1.987l.169.311c.446.82.023 1.841-.872 2.105l-.34.1c-1.4.413-1.4 2.397 0 2.81l.34.1a1.464 1.464 0 0 1 .872 2.105l-.17.31c-.698 1.283.705 2.686 1.987 1.987l.311-.169a1.464 1.464 0 0 1 2.105.872l.1.34c.413 1.4 2.397 1.4 2.81 0l.1-.34a1.464 1.464 0 0 1 2.105-.872l.31.17c1.283.698 2.686-.705 1.987-1.987l-.169-.311a1.464 1.464 0 0 1 .872-2.105l.34-.1c1.4-.413 1.4-2.397 0-2.81l-.34-.1a1.464 1.464 0 0 1-.872-2.105l.17-.31c.698-1.283-.705-2.686-1.987-1.987l-.311.169a1.464 1.464 0 0 1-2.105-.872l-.1-.34zM8 10.93a2.929 2.929 0 1 1 0-5.86 2.929 2.929 0 0 1 0 5.858z"
+                />
+              </svg>
+            </button>
           </td>
-          <td>         
-                <button @click="openCardEditModal(card.cardId)">
-                  <svg
-                    xmlns="http://www.w3.org/2000/svg"
-                    width="26"
-                    height="26"
-                    fill="currentColor"
-                    class="bi bi-gear-fill"
-                    viewBox="0 0 16 16"
-                  >
-                    <path
-                      d="M9.405 1.05c-.413-1.4-2.397-1.4-2.81 0l-.1.34a1.464 1.464 0 0 1-2.105.872l-.31-.17c-1.283-.698-2.686.705-1.987 1.987l.169.311c.446.82.023 1.841-.872 2.105l-.34.1c-1.4.413-1.4 2.397 0 2.81l.34.1a1.464 1.464 0 0 1 .872 2.105l-.17.31c-.698 1.283.705 2.686 1.987 1.987l.311-.169a1.464 1.464 0 0 1 2.105.872l.1.34c.413 1.4 2.397 1.4 2.81 0l.1-.34a1.464 1.464 0 0 1 2.105-.872l.31.17c1.283.698 2.686-.705 1.987-1.987l-.169-.311a1.464 1.464 0 0 1 .872-2.105l.34-.1c1.4-.413 1.4-2.397 0-2.81l-.34-.1a1.464 1.464 0 0 1-.872-2.105l.17-.31c.698-1.283-.705-2.686-1.987-1.987l-.311.169a1.464 1.464 0 0 1-2.105-.872l-.1-.34zM8 10.93a2.929 2.929 0 1 1 0-5.86 2.929 2.929 0 0 1 0 5.858z"
-                    />
-                  </svg>
-                </button>            
-          </td>
-          <td class="m-2">    
-              <th v-if="deckNumber>39">
-                {{
-                  (
-                    (card.cardCount / deckNumber +
-                      card.cardCount / (deckNumber - 1) +
-                      card.cardCount / (deckNumber - 2) +
-                      card.cardCount / (deckNumber - 3) +
-                      card.cardCount / (deckNumber - 4)) *
-                    100
-                  ).toFixed(2)
-                }}%({{
-                  ((card.cardCount / (deckNumber - 5)) * 100).toFixed(2)
-                }}%)
-              </th>          
+
+          <td class="m-2" v-if="deckNumber > 39">
+            {{
+              (
+                (card.cardCount / deckNumber +
+                  card.cardCount / (deckNumber - 1) +
+                  card.cardCount / (deckNumber - 2) +
+                  card.cardCount / (deckNumber - 3) +
+                  card.cardCount / (deckNumber - 4)) *
+                100
+              ).toFixed(2)
+            }}%({{ ((card.cardCount / (deckNumber - 5)) * 100).toFixed(2) }}%)
           </td>
         </tr>
       </tbody>
@@ -196,7 +220,7 @@
             >
               <input
                 type="checkbox"
-                class="btn-check "
+                class="btn-check"
                 id="btncheck1"
                 autocomplete="off"
                 v-model="handTrap"
@@ -206,7 +230,7 @@
               >
               <input
                 type="checkbox"
-                class="btn-check "
+                class="btn-check"
                 id="btncheck2"
                 autocomplete="off"
                 v-model="brick"
@@ -216,7 +240,7 @@
               >
               <input
                 type="checkbox"
-                class="btn-check "
+                class="btn-check"
                 id="btncheck3"
                 autocomplete="off"
                 v-model="comboStarter"
@@ -224,20 +248,53 @@
               <label class="btn btn-outline-primary" for="btncheck3"
                 >Combo starter</label
               >
-              
             </div>
-            <br>
-      <div class="btn-group" role="group" aria-label="Basic radio toggle button group">
-  <input type="radio" class="btn-check" name="btnradio" id="btnradio4" autocomplete="off" :checked="value== -1">
-  <label class="btn btn-outline-primary" for="btnradio4" >-1</label>
-  <input type="radio" class="btn-check" name="btnradio" id="btnradio5" autocomplete="off" :checked="value== 0">
-  <label class="btn btn-outline-primary" for="btnradio5">0</label>
-  <input type="radio" class="btn-check" name="btnradio" id="btnradio6" autocomplete="off" :checked="value== 0.5">
-  <label class="btn btn-outline-primary" for="btnradio6">Maybe +1</label>
-   <input type="radio" class="btn-check" name="btnradio" id="btnradio7" autocomplete="off" :checked="value== 1">
-  <label class="btn btn-outline-primary" for="btnradio7">+1</label>
-</div>
-<br>
+            <br />
+            <div
+              class="btn-group"
+              role="group"
+              aria-label="Basic radio toggle button group"
+            >
+              <input
+                type="radio"
+                class="btn-check"
+                name="btnradio"
+                id="btnradio4"
+                autocomplete="off"
+                :checked="value == -1"
+              />
+              <label class="btn btn-outline-primary" for="btnradio4">-1</label>
+              <input
+                type="radio"
+                class="btn-check"
+                name="btnradio"
+                id="btnradio5"
+                autocomplete="off"
+                :checked="value == 0"
+              />
+              <label class="btn btn-outline-primary" for="btnradio5">0</label>
+              <input
+                type="radio"
+                class="btn-check"
+                name="btnradio"
+                id="btnradio6"
+                autocomplete="off"
+                :checked="value == 0.5"
+              />
+              <label class="btn btn-outline-primary" for="btnradio6"
+                >Maybe +1</label
+              >
+              <input
+                type="radio"
+                class="btn-check"
+                name="btnradio"
+                id="btnradio7"
+                autocomplete="off"
+                :checked="value == 1"
+              />
+              <label class="btn btn-outline-primary" for="btnradio7">+1</label>
+            </div>
+            <br />
             <button
               type="submit"
               class="btn btn-primary mt-1"
@@ -258,8 +315,11 @@ import { Card, Deck, getData, setData } from "@/API";
 export default defineComponent({
   mounted() {
     if (getData().length > 0) {
-      this.deck = getData();
-      for (let card of this.deck) {
+      this.decks = getData();
+      console.log(this.decks);
+      this.deck = this.decks[0];
+      this.selectedDeck = this.deck.name;
+      for (let card of this.deck.cards) {
         let count = card.cardCount;
         for (count; count > 0; count--) {
           this.allCards.push(card);
@@ -273,6 +333,7 @@ export default defineComponent({
   name: "App",
   data() {
     return {
+      selectedDeck: "",
       deckRating: 0,
       deckValue: 0,
       value: 0,
@@ -286,7 +347,7 @@ export default defineComponent({
       editCardId: 0,
       cardNameInput: "",
       cardCountInput: "",
-      deck: [] as Card[],
+      deck: {} as Deck,
       allCards: [] as Card[],
       decks: [] as Deck[],
     };
@@ -294,8 +355,8 @@ export default defineComponent({
   methods: {
     addCard: function () {
       this.checkRadio(0);
-      this.deck[this.deck.length] = {
-        cardId: this.deck.length,
+      this.deck.cards[this.deck.cards.length] = {
+        cardId: this.deck.cards.length,
         cardName: this.cardNameInput,
         cardCount: parseInt(this.cardCountInput),
         cardHandTrap: this.handTrap,
@@ -310,16 +371,16 @@ export default defineComponent({
       this.cardCountInput = "";
       this.countCard();
       this.deckRatingValue();
-      setData(this.deck);
+      setData(this.decks);
     },
     openCardEditModal(index: number) {
       this.editCardId = index;
-      this.cardNameInput = this.deck[index].cardName;
-      this.cardCountInput = JSON.stringify(this.deck[index].cardCount);
-      this.handTrap = this.deck[index].cardHandTrap;
-      this.brick = this.deck[index].cardBrick;
-      this.comboStarter = this.deck[index].cardComboStarter;
-      this.value = this.deck[index].cardValue;
+      this.cardNameInput = this.deck.cards[index].cardName;
+      this.cardCountInput = JSON.stringify(this.deck.cards[index].cardCount);
+      this.handTrap = this.deck.cards[index].cardHandTrap;
+      this.brick = this.deck.cards[index].cardBrick;
+      this.comboStarter = this.deck.cards[index].cardComboStarter;
+      this.value = this.deck.cards[index].cardValue;
       var modal = document.getElementById("cardEditModal");
       modal!.style.display = "block";
     },
@@ -335,8 +396,8 @@ export default defineComponent({
 
     editCard: function () {
       this.checkRadio(4);
-      this.deck[this.editCardId] = {
-        cardId: this.deck[this.editCardId].cardId,
+      this.deck.cards[this.editCardId] = {
+        cardId: this.deck.cards[this.editCardId].cardId,
         cardName: this.cardNameInput,
         cardCount: parseInt(this.cardCountInput),
         cardHandTrap: this.handTrap,
@@ -344,7 +405,7 @@ export default defineComponent({
         cardComboStarter: this.comboStarter,
         cardValue: this.value,
       };
-      setData(this.deck);
+      setData(this.decks);
       this.countCard();
       this.deckRatingValue();
       this.closeCardEditModal();
@@ -354,7 +415,7 @@ export default defineComponent({
       this.handTrapCount = 0;
       this.brickCount = 0;
       this.comboStarterCount = 0;
-      for (let card of this.deck) {
+      for (let card of this.deck.cards) {
         this.deckNumber += card.cardCount;
         if (card.cardHandTrap) {
           this.handTrapCount += card.cardCount;
@@ -402,8 +463,8 @@ export default defineComponent({
     deckRatingValue() {
       let helpDeck = [] as Card[];
 
-      helpDeck = this.deck.filter((c) => c.cardValue == -1);
-      for (let card of this.deck) {
+      helpDeck = this.deck.cards.filter((c) => c.cardValue == -1);
+      for (let card of this.deck.cards) {
         if (card.cardValue > 0) {
           if (!helpDeck.find((c) => c.cardName == card!.cardName)) {
             helpDeck.push(card);

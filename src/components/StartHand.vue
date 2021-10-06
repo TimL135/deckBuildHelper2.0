@@ -54,18 +54,19 @@
   </div>
 </template>
 <script lang="ts">
-import { Card, getData } from "@/API";
-import Vue from "vue";
+import { Card, Deck, getData } from "@/API";
 import { defineComponent } from "vue";
 export default defineComponent({
   mounted() {
     if (getData().length > 0) {
-      this.deck = getData();
+      this.decks = getData();
+      this.deck = this.decks[0].cards;
     }
   },
   data() {
     return {
       deck: [] as Card[],
+      decks: [] as Deck[],
       allCards: [] as string[],
       handTrapCount: 0,
       brickCount: 0,
@@ -77,7 +78,8 @@ export default defineComponent({
   methods: {
     randomStartHand: function () {
       if (getData().length > 0) {
-        this.deck = getData();
+        this.decks = getData();
+        this.deck = this.decks[0].cards;
       }
       this.allCards = [];
       for (let card of this.deck) {
@@ -89,6 +91,7 @@ export default defineComponent({
         let index = this.getRandomInt(this.allCards.length - 1);
         this.handCards[i] = this.allCards.splice(index, 1).toString();
       }
+      console.log(this.handCards);
       this.countCard();
     },
     countCard: function () {
