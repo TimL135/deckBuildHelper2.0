@@ -54,13 +54,12 @@
   </div>
 </template>
 <script lang="ts">
-import { Card, Deck, getData } from "@/API";
+import { Card, Deck, getData, getDeck } from "@/API";
 import { defineComponent } from "vue";
 export default defineComponent({
   mounted() {
-    if (getData().length > 0) {
-      this.decks = getData();
-      this.deck = this.decks[0].cards;
+    if (getDeck()) {     
+      this.deck = getDeck().cards
     }
   },
   data() {
@@ -77,10 +76,9 @@ export default defineComponent({
   },
   methods: {
     randomStartHand: function () {
-      if (getData().length > 0) {
-        this.decks = getData();
-        this.deck = this.decks[0].cards;
-      }
+      if (getDeck()) {     
+      this.deck = getDeck().cards
+    }
       this.allCards = [];
       for (let card of this.deck) {
         for (card.cardCount; card.cardCount > 0; card.cardCount--) {
@@ -91,7 +89,6 @@ export default defineComponent({
         let index = this.getRandomInt(this.allCards.length - 1);
         this.handCards[i] = this.allCards.splice(index, 1).toString();
       }
-      console.log(this.handCards);
       this.countCard();
     },
     countCard: function () {
@@ -100,8 +97,8 @@ export default defineComponent({
       this.comboStarterCount = 0;
       this.value = 0;
       let handValue = 0;
-
       let cards = [] as Card[];
+
       for (let i = 0; i < 5; i++) {
         let card = this.deck.find((x) => x.cardName == this.handCards[i]);
         if (card) {
@@ -122,9 +119,9 @@ export default defineComponent({
           }
         }
       }
+      if(cards.length>1){
       handValue = cards.map((c) => c.cardValue).reduce((a, b) => a + b);
-
-      console.log("handValue= ", handValue);
+      }
     },
     getRandomInt: function (max: number) {
       return Math.floor(Math.random() * max);

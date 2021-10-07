@@ -18,3 +18,9 @@ export function setData(data: Deck[]) {
 export function getData(): Deck[] {
   return JSON.parse(localStorage.getItem("decks") || "[]")
 }
+export function setDeck(data: Deck) {
+  localStorage.setItem("deck", JSON.stringify(data))
+}
+export function getDeck(): Deck {
+  return JSON.parse(localStorage.getItem("deck") || "{}")
+}

@@ -7,8 +7,39 @@
   />
 
   <div style="margin-top: 30px">
+    <div class="container ">
+      
+      <form @submit.prevent="loadDeck()">
+        <div class="row g-1" style=" justify-content:center ; border-style: solid ; align-items:flex-end" > 
+        <div class="col-5">
+      <input
+            autocomplete="off"
+            type="text"
+            class="form-control m-1 "
+            aria-label="Sizing example input"
+            aria-describedby="inputGroup-sizing-lg"
+            placeholder="Deck"
+            name="plan"
+            list="plans"
+            v-model="selectedDeck"
+            required
+          />
+          <datalist id="plans">
+            <option
+              v-for="deck in decks"
+              :key="deck.name"
+              :value="deck.name"
+            ></option>
+          </datalist>
+          </div>
+       <button type="submit" class="btn btn-primary m-1 col-2">Confirm</button>
+       </div>
+       </form>
+      </div>
+      <br>
+    
     <form @submit.prevent="addCard">
-      <div class="container">
+      <div class="container" >  
         <div class="input-group flex-nowrap">
           <input
             type="text"
@@ -20,7 +51,7 @@
             required
           />
         </div>
-        <div class="input-group flex-nowrap">
+        <div class="input-group flex-nowrap mb-1">
           <input
             type="number"
             class="form-control"
@@ -35,7 +66,7 @@
         </div>
       </div>
       <div
-        class="btn-group"
+        class="btn-group mb-1"
         role="group"
         aria-label="Basic checkbox toggle button group"
       >
@@ -126,13 +157,8 @@
     <div v-if="comboStarterCount > 0">
       Combo Starter({{ comboStarterCount }})
     </div>
-    <div class="container">
-      <select class="form-select" v-model="selectedDeck">
-        <option v-for="deck in decks" :key="deck.name" :value="deck.name">
-          {{ deck.name }}
-        </option>
-      </select>
-    </div>
+   </div>
+   <div class="container">
     <table class="table table-striped">
       <thead>
         <tr>
@@ -310,25 +336,18 @@
 </template>
 <script lang="ts">
 import { defineComponent } from "vue";
-import { Card, Deck, getData, setData } from "@/API";
+import { Card, Deck, getData, getDeck, setData, setDeck } from "@/API";
 
 export default defineComponent({
   mounted() {
     if (getData().length > 0) {
       this.decks = getData();
-      console.log(this.decks);
-      this.deck = this.decks[0];
-      this.selectedDeck = this.deck.name;
-      for (let card of this.deck.cards) {
-        let count = card.cardCount;
-        for (count; count > 0; count--) {
-          this.allCards.push(card);
-        }
-      }
-      this.deckRatingValue();
     }
-
-    this.countCard();
+     if (getDeck()) {     
+      this.selectedDeck = getDeck().name
+      this.loadDeck();
+    }
+  
   },
   name: "App",
   data() {
@@ -371,7 +390,7 @@ export default defineComponent({
       this.cardCountInput = "";
       this.countCard();
       this.deckRatingValue();
-      setData(this.decks);
+      this.safeDeck();
     },
     openCardEditModal(index: number) {
       this.editCardId = index;
@@ -405,7 +424,7 @@ export default defineComponent({
         cardComboStarter: this.comboStarter,
         cardValue: this.value,
       };
-      setData(this.decks);
+      this.safeDeck();
       this.countCard();
       this.deckRatingValue();
       this.closeCardEditModal();
@@ -461,8 +480,8 @@ export default defineComponent({
       document.getElementById(`btnradio${5}`).checked = true;
     },
     deckRatingValue() {
+      
       let helpDeck = [] as Card[];
-
       helpDeck = this.deck.cards.filter((c) => c.cardValue == -1);
       for (let card of this.deck.cards) {
         if (card.cardValue > 0) {
@@ -471,12 +490,37 @@ export default defineComponent({
           }
         }
       }
-
+      if(helpDeck.length>0){
       this.deckValue =
         helpDeck.map((c) => c.cardValue).reduce((a, b) => a + b) /
-        this.allCards.length;
+        this.allCards.length;}
       this.deckRating = Math.round((this.deckValue + 1) * 5 * 10) / 10;
     },
+    safeDeck(){
+setDeck(this.deck);
+setData(this.decks);
+    },
+    loadDeck(){
+      if(this.decks[this.decks.findIndex(d=>d.name==this.selectedDeck)]){
+        this.deck=this.decks[this.decks.findIndex(d=>d.name==this.selectedDeck)]
+      }else{  
+        this.decks.push({
+          name:this.selectedDeck,
+          cards:[]
+          })
+          this.deck=this.decks[this.decks.findIndex(d=>d.name==this.selectedDeck)]
+      }
+       for (let card of this.deck.cards) {
+        let count = card.cardCount;
+        for (count; count > 0; count--) {
+          this.allCards.push(card);
+        }
+      }
+      this.deckRatingValue();
+    this.countCard();
+    setDeck(this.deck)
+    this.selectedDeck="";
+    }
   },
 });
 </script>
