@@ -3,10 +3,16 @@ export interface Card {
   cardName: string;
   cardCount: number;
   cardHandTrap: boolean;
-  cardBrick: boolean;
+  cardSeacher: boolean;
   cardComboStarter: boolean;
+  cardComboPiece:boolean;
+  cardSearchable:boolean;
+  cardOncePerTurn:boolean;
+  cardNegate: boolean;
+  cardInteraption:boolean;
   cardValue: number;
 }
+
 export interface Deck {
   name: string;
   cards: Card[];

@@ -6,8 +6,8 @@
     crossorigin="anonymous"
   />
  <div id="nav">
-    <router-link :to="{ name: 'Main' }">Main</router-link> |
-    <router-link :to="{ name: 'StartHand' }">StartHand</router-link>
+    <router-link to=/Main>Main</router-link> |
+    <router-link to=/StartHand>StartHand</router-link>
   </div>
   
   <router-view />
