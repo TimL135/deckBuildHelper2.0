@@ -4,7 +4,7 @@ import StartHand from "@/components/StartHand.vue";
 
 const routes: Array<RouteRecordRaw> = [
   {
-    path: "/",
+    path: "/Main",
     name: "Main",
     component: Main,
   },
