@@ -153,7 +153,7 @@
           v-model="interaption"
         />
         <label class="btn btn-outline-primary w-25" for="btncheck8"
-          >Interaption</label
+          >Interruption</label
         >
       </div>
       <br />
@@ -201,51 +201,51 @@
       <br />
       <button type="submit" class="w-100 btn btn-primary">Confirm</button>
     </form>
-    <br>
+    <br />
     <div class="d-flex mb-1">
-      <div class="col-4 border rounded border-primary">Card amount:<br>{{ deckNumber }}</div>
       <div class="col-4 border rounded border-primary">
-        <div v-if="deckNumber>39">
-        Deckrating:<br>{{ deckRating }}%
-        </div>
+        Card amount:<br />{{ deckNumber }}
+      </div>
+      <div class="col-4 border rounded border-primary">
+        <div v-if="deckNumber > 39">Deckrating:<br />{{ deckRating }}%</div>
       </div>
       <div class="col-4 border rounded border-primary">
         <div v-if="deckNumber > 39">
-        Deckvalue average:<br>{{ deckValue }}
+          Deckvalue average:<br />{{ deckValue }}
         </div>
       </div>
     </div>
     <div class="d-flex mb-1">
       <div class="w-25 border rounded border-primary">
-        Handtraps:<br>{{ handTrapCount }}({{ uniqueHandTrapCount }})
+        Handtraps:<br />{{ handTrapCount }}({{ uniqueHandTrapCount }})
       </div>
-      <div class="w-25 border rounded border-primary" >
-        Seacher:<br>{{ seacherCount }}({{ uniqueSeacherCount }})
+      <div class="w-25 border rounded border-primary">
+        Seacher:<br />{{ seacherCount }}({{ uniqueSeacherCount }})
       </div>
-      <div
-        class="w-25 border rounded border-primary"
-      >
-        Combo Starter:<br>{{ comboStarterCount }}({{ uniqueComboStarterCount }})
+      <div class="w-25 border rounded border-primary">
+        Combo Starter:<br />{{ comboStarterCount }}({{
+          uniqueComboStarterCount
+        }})
       </div>
-      <div class="w-25 border rounded border-primary" >
-        Negate:<br>{{ negateCount }}({{ uniqueNegateCount }})
+      <div class="w-25 border rounded border-primary">
+        Negate:<br />{{ negateCount }}({{ uniqueNegateCount }})
       </div>
     </div>
     <div class="d-flex mb-1">
-    <div class="w-25 border rounded border-primary">
-      Once per Turn:<br>{{ oncePerTurnCount }}({{ uniqueOncePerTurnCount }})
+      <div class="w-25 border rounded border-primary">
+        Once per Turn:<br />{{ oncePerTurnCount }}({{ uniqueOncePerTurnCount }})
+      </div>
+      <div class="w-25 border rounded border-primary">
+        Searchable:<br />{{ searchableCount }}({{ uniqueSearchableCount }})
+      </div>
+      <div class="w-25 border rounded border-primary">
+        Combo Piece:<br />{{ comboPieceCount }}({{ uniqueComboPieceCount }})
+      </div>
+      <div class="w-25 border rounded border-primary">
+        Interaption:<br />{{ interaptionCount }}({{ uniqueInteraptionCount }})
+      </div>
     </div>
-    <div class="w-25 border rounded border-primary">
-      Searchable:<br>{{ searchableCount }}({{ uniqueSearchableCount }})
-    </div>
-    <div class="w-25 border rounded border-primary">
-      Combo Piece:<br>{{ comboPieceCount }}({{ uniqueComboPieceCount }})
-    </div>
-    <div class="w-25 border rounded border-primary">
-      Interaption:<br>{{ interaptionCount }}({{ uniqueInteraptionCount }})
-    </div>
-    </div>
-    <br>
+    <br />
     <!-- new table -->
     <table class="table table-striped">
       <thead>
@@ -600,8 +600,8 @@ export default defineComponent({
         this.deck.cards[cardId].cardId--;
       }
       this.countCard();
-        this.deckRatingValue();
-        this.safeDeck();
+      this.deckRatingValue();
+      this.safeDeck();
     },
     openCardEditModal(index: number) {
       this.editCardId = index;
@@ -611,10 +611,10 @@ export default defineComponent({
       this.seacher = this.deck.cards[index].cardSeacher;
       this.comboStarter = this.deck.cards[index].cardComboStarter;
       this.comboPiece = this.deck.cards[index].cardComboPiece;
-      this.searchable=this.deck.cards[index].cardSearchable;
-       this.oncePerTurn=this.deck.cards[index].cardOncePerTurn;
-       this.negate=this.deck.cards[index].cardNegate;
-       this.interaption=this.deck.cards[index].cardInteraption;
+      this.searchable = this.deck.cards[index].cardSearchable;
+      this.oncePerTurn = this.deck.cards[index].cardOncePerTurn;
+      this.negate = this.deck.cards[index].cardNegate;
+      this.interaption = this.deck.cards[index].cardInteraption;
       this.value = this.deck.cards[index].cardValue;
       var modal = document.getElementById("cardEditModal");
       modal!.style.display = "block";
@@ -628,7 +628,6 @@ export default defineComponent({
       this.comboPiece = false;
       var modal = document.getElementById("cardEditModal");
       modal!.style.display = "none";
-
     },
     editCard: function () {
       this.checkRadio(4);
@@ -763,14 +762,25 @@ export default defineComponent({
               10
           ) / 10;
       }
-      this.deckRating = ((this.deckValue + 1) * 5) / 4;
-      this.deckRating += (this.uniqueHandTrapCount / 12) * 5;
-      this.deckRating += (this.uniqueSeacherCount / 12) * 5;
-      this.deckRating += (this.uniqueComboStarterCount / 2) * 5;
-      this.deckRating = Math.round(this.deckRating * 10);
-      if (this.deckRating > 100) {
-        this.deckRating = 100;
-      }
+
+      this.deckRating =
+        12.5 * (1 - Math.pow(Math.exp(1), -0.5 * this.deckValue));
+      this.deckRating +=
+        12.5 * (1 - Math.pow(Math.exp(1), -1* this.handTrapCount));
+      this.deckRating +=
+        12.5 * (1 - Math.pow(Math.exp(1), -0.2 * this.seacherCount));
+      this.deckRating +=
+        12.5 * (1 - Math.pow(Math.exp(1), -1 * this.comboStarterCount));
+      this.deckRating +=
+        12.5 * (1 - Math.pow(Math.exp(1), -0.2 * this.comboPieceCount));
+      this.deckRating +=
+        12.5 * (1 - Math.pow(Math.exp(1), -0.2 * this.searchableCount));
+      this.deckRating +=
+        12.5 * (1 - Math.pow(Math.exp(1), -1 * this.negateCount));
+      this.deckRating +=
+        12.5 * (1 - Math.pow(Math.exp(1), -1 * this.interaptionCount));
+
+        this.deckRating = Math.round(this.deckRating * 10)/10;
     },
     safeDeck() {
       setDeck(this.deck);
@@ -855,5 +865,4 @@ ul {
   text-decoration: none;
   cursor: pointer;
 }
-
 </style>
