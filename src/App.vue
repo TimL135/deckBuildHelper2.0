@@ -6,7 +6,7 @@
     crossorigin="anonymous"
   />
  <div id="nav">
-    <router-link to=/Main>Main</router-link> |
+    <router-link to=/>Main</router-link> |
     <router-link to=/StartHand>StartHand</router-link>
   </div>
   

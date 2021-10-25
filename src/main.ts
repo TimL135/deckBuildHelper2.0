@@ -7,8 +7,7 @@ import "./registerServiceWorker";
 // window.onclick = function(event:Event) {
 //     if (event.target == document.getElementById("cardEditModal")) {
 //         document.getElementById("cardEditModal")!.style.display = "none";
-       
-//     }
-//   } 
-createApp(App).use(router).mount("#app");
 
+//     }
+//   }
+createApp(App).use(router).mount("#app");

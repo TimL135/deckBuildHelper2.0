@@ -766,7 +766,7 @@ export default defineComponent({
       this.deckRating =
         12.5 * (1 - Math.pow(Math.exp(1), -0.5 * this.deckValue));
       this.deckRating +=
-        12.5 * (1 - Math.pow(Math.exp(1), -1* this.handTrapCount));
+        12.5 * (1 - Math.pow(Math.exp(1), -1 * this.handTrapCount));
       this.deckRating +=
         12.5 * (1 - Math.pow(Math.exp(1), -0.2 * this.seacherCount));
       this.deckRating +=
@@ -780,7 +780,7 @@ export default defineComponent({
       this.deckRating +=
         12.5 * (1 - Math.pow(Math.exp(1), -1 * this.interaptionCount));
 
-        this.deckRating = Math.round(this.deckRating * 10)/10;
+      this.deckRating = Math.round(this.deckRating * 10) / 10;
     },
     safeDeck() {
       setDeck(this.deck);

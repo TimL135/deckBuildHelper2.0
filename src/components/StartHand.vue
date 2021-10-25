@@ -46,9 +46,7 @@
       Random
     </button>
     <div class="d-flex mb-1">
-      <div class="w-100 border rounded border-primary">
-        Value:{{ value }}
-      </div>
+      <div class="w-100 border rounded border-primary">Value:{{ value }}</div>
     </div>
     <div class="d-flex mb-1">
       <div class="w-25 border rounded border-primary">
@@ -153,17 +151,17 @@ export default defineComponent({
       this.comboPieceCount = 0;
       this.uniqueComboPieceCount = 0;
 
-      this.searchableCount=0;
-      this.uniqueSearchableCount=0;
+      this.searchableCount = 0;
+      this.uniqueSearchableCount = 0;
 
-      this.oncePerTurnCount=0;
-      this.uniqueOncePerTurnCount=0;
+      this.oncePerTurnCount = 0;
+      this.uniqueOncePerTurnCount = 0;
 
-      this.negateCount=0;
-      this.uniqueNegateCount=0;
+      this.negateCount = 0;
+      this.uniqueNegateCount = 0;
 
-      this.interaptionCount=0;
-      this.uniqueInteraptionCount=0;
+      this.interaptionCount = 0;
+      this.uniqueInteraptionCount = 0;
 
       this.value = 0;
       let handValueCards = [] as Card[];

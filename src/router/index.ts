@@ -4,7 +4,7 @@ import StartHand from "@/components/StartHand.vue";
 
 const routes: Array<RouteRecordRaw> = [
   {
-    path: "/Main",
+    path: "/",
     name: "Main",
     component: Main,
   },
@@ -21,7 +21,6 @@ const routes: Array<RouteRecordRaw> = [
     // which is lazy-loaded when the route is visited.
     component: () =>
       import(/* webpackChunkName: "about" */ "../views/About.vue"),
-     
   },
 ];
 

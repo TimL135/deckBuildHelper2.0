@@ -5,11 +5,11 @@ export interface Card {
   cardHandTrap: boolean;
   cardSeacher: boolean;
   cardComboStarter: boolean;
-  cardComboPiece:boolean;
-  cardSearchable:boolean;
-  cardOncePerTurn:boolean;
+  cardComboPiece: boolean;
+  cardSearchable: boolean;
+  cardOncePerTurn: boolean;
   cardNegate: boolean;
-  cardInteraption:boolean;
+  cardInteraption: boolean;
   cardValue: number;
 }
 
@@ -19,14 +19,14 @@ export interface Deck {
 }
 
 export function setData(data: Deck[]) {
-  localStorage.setItem("decks", JSON.stringify(data))
+  localStorage.setItem("decks", JSON.stringify(data));
 }
 export function getData(): Deck[] {
-  return JSON.parse(localStorage.getItem("decks") || "[]")
+  return JSON.parse(localStorage.getItem("decks") || "[]");
 }
 export function setDeck(data: Deck) {
-  localStorage.setItem("deck", JSON.stringify(data))
+  localStorage.setItem("deck", JSON.stringify(data));
 }
 export function getDeck(): Deck {
-  return JSON.parse(localStorage.getItem("deck") || "{}")
+  return JSON.parse(localStorage.getItem("deck") || "{}");
 }
