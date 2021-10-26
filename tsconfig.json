@@ -33,7 +33,7 @@
     "src/**/*.vue",
     "tests/**/*.ts",
     "tests/**/*.tsx"
-, "src/registerServiceWorker.js"  ],
+, "src/registerServiceWorker.ts"  ],
   "exclude": [
     "node_modules"
   ]
