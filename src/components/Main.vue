@@ -5,6 +5,7 @@
     integrity="sha384-F3w7mX95PdgyTmZZMECAngseQB83DfGTowi0iMjiWaeVhAn4FJkqJByhZMI3AhiU"
     crossorigin="anonymous"
   />
+
   <div class="container" style="margin-top: 3vh">
     <div class="input-group">
       <input
@@ -25,7 +26,6 @@
           :value="deck.name"
         ></option>
       </datalist>
-
       <button
         type="button"
         class="btn btn-primary w-25"
@@ -506,7 +506,7 @@ import { Card, Deck, getData, getDeck, setData, setDeck } from "@/API";
 
 export default defineComponent({
   mounted() {
-    if (getData().length > 0) {
+    if (getData()) {
       this.decks = getData();
     }
     if (getDeck()) {
@@ -762,7 +762,6 @@ export default defineComponent({
               10
           ) / 10;
       }
-
       this.deckRating =
         12.5 * (1 - Math.pow(Math.exp(1), -0.5 * this.deckValue));
       this.deckRating +=
