@@ -1,6 +1,6 @@
 self.__precacheManifest = (self.__precacheManifest || []).concat([
   {
-    "revision": "2fb9ed8e164a94615ec7c18280583f71",
+    "revision": "1ae86b5f3e55fa515c4ca1ae020ca923",
     "url": "/deckBuildHelper2.0/index.html"
   },
   {
@@ -8,8 +8,8 @@ self.__precacheManifest = (self.__precacheManifest || []).concat([
     "url": "/deckBuildHelper2.0/js/about.5e73a1f6.js"
   },
   {
-    "revision": "b16f060adb2e891f4950",
-    "url": "/deckBuildHelper2.0/js/app.b7b84bdd.js"
+    "revision": "b9eaf8574f19adbaf6b5",
+    "url": "/deckBuildHelper2.0/js/app.6d0715a1.js"
   },
   {
     "revision": "35ec5a2e9ab370bf7926",
