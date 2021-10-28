@@ -60,6 +60,48 @@
         />
       </div>
       <div
+        class="btn-group w-100 mb-1"
+        role="group"
+        aria-label="Basic radio toggle button group"
+      >
+        <input
+          type="radio"
+          class="btn-check"
+          name="type"
+          id="btnradio9"
+          autocomplete="off"
+          @change="type = 'monster'"
+          :checked="type == 'monster'"
+        />
+        <label class="btn btn-outline-primary col-4" for="btnradio9"
+          >Monster</label
+        >
+        <input
+          type="radio"
+          class="btn-check"
+          name="type"
+          id="btnradio10"
+          autocomplete="off"
+          @change="type = 'spell'"
+          :checked="type == 'spell'"
+        />
+        <label class="btn btn-outline-primary col-4" for="btnradio10"
+          >Spell</label
+        >
+        <input
+          type="radio"
+          class="btn-check"
+          name="type"
+          id="btnradio11"
+          autocomplete="off"
+          @change="type = 'trap'"
+          :checked="type == 'trap'"
+        />
+        <label class="btn btn-outline-primary col-4" for="btnradio11"
+          >Trap</label
+        >
+      </div>
+      <div
         class="btn-group mb-1 w-100"
         role="group"
         aria-label="Basic checkbox toggle button group"
@@ -168,6 +210,8 @@
           name="btnradio"
           id="btnradio0"
           autocomplete="off"
+          @change="value = -1"
+          :checked="value == -1"
         />
         <label class="btn btn-outline-primary w-25" for="btnradio0">-1</label>
         <input
@@ -176,7 +220,8 @@
           name="btnradio"
           id="btnradio1"
           autocomplete="off"
-          checked
+          @change="value = 0"
+          :checked="value == 0"
         />
         <label class="btn btn-outline-primary w-25" for="btnradio1">0</label>
         <input
@@ -185,6 +230,8 @@
           name="btnradio"
           id="btnradio2"
           autocomplete="off"
+          @change="value = 0.5"
+          :checked="value == 0.5"
         />
         <label class="btn btn-outline-primary w-25" for="btnradio2"
           >Maybe +1</label
@@ -195,6 +242,8 @@
           name="btnradio"
           id="btnradio3"
           autocomplete="off"
+          @change="value = 1"
+          :checked="value == 1"
         />
         <label class="btn btn-outline-primary w-25" for="btnradio3">+1</label>
       </div>
@@ -251,47 +300,60 @@
       <thead>
         <tr>
           <th scope="col" class="w-50" style="text-align: left">Cards</th>
-          <th></th>
+          <th class="w-25"></th>
           <th scope="col" class="w-25" style="text-align: left">Probability</th>
         </tr>
       </thead>
       <tbody>
         <tr v-for="card in deck.cards" :key="card.cardName">
-          <th style="text-align: left">
+          <th style="text-align: left" :class="card.cardType">
             {{ card.cardName }}({{ card.cardCount }})
           </th>
-          <td style="text-align: left">
-            <button @click="openCardEditModal(card.cardId)" class="me-1">
+          <td :class="card.cardType">
+            <button
+              @click="openCardEditModal(card.cardId)"
+              class="me-2"
+              style="background-color: #ffffff00; border: none"
+            >
               <svg
                 xmlns="http://www.w3.org/2000/svg"
-                width="26"
-                height="26"
+                width="30"
+                height="30"
                 fill="currentColor"
-                class="bi bi-gear-fill"
+                class="bi bi-gear"
                 viewBox="0 0 16 16"
               >
                 <path
-                  d="M9.405 1.05c-.413-1.4-2.397-1.4-2.81 0l-.1.34a1.464 1.464 0 0 1-2.105.872l-.31-.17c-1.283-.698-2.686.705-1.987 1.987l.169.311c.446.82.023 1.841-.872 2.105l-.34.1c-1.4.413-1.4 2.397 0 2.81l.34.1a1.464 1.464 0 0 1 .872 2.105l-.17.31c-.698 1.283.705 2.686 1.987 1.987l.311-.169a1.464 1.464 0 0 1 2.105.872l.1.34c.413 1.4 2.397 1.4 2.81 0l.1-.34a1.464 1.464 0 0 1 2.105-.872l.31.17c1.283.698 2.686-.705 1.987-1.987l-.169-.311a1.464 1.464 0 0 1 .872-2.105l.34-.1c1.4-.413 1.4-2.397 0-2.81l-.34-.1a1.464 1.464 0 0 1-.872-2.105l.17-.31c.698-1.283-.705-2.686-1.987-1.987l-.311.169a1.464 1.464 0 0 1-2.105-.872l-.1-.34zM8 10.93a2.929 2.929 0 1 1 0-5.86 2.929 2.929 0 0 1 0 5.858z"
+                  d="M8 4.754a3.246 3.246 0 1 0 0 6.492 3.246 3.246 0 0 0 0-6.492zM5.754 8a2.246 2.246 0 1 1 4.492 0 2.246 2.246 0 0 1-4.492 0z"
+                />
+                <path
+                  d="M9.796 1.343c-.527-1.79-3.065-1.79-3.592 0l-.094.319a.873.873 0 0 1-1.255.52l-.292-.16c-1.64-.892-3.433.902-2.54 2.541l.159.292a.873.873 0 0 1-.52 1.255l-.319.094c-1.79.527-1.79 3.065 0 3.592l.319.094a.873.873 0 0 1 .52 1.255l-.16.292c-.892 1.64.901 3.434 2.541 2.54l.292-.159a.873.873 0 0 1 1.255.52l.094.319c.527 1.79 3.065 1.79 3.592 0l.094-.319a.873.873 0 0 1 1.255-.52l.292.16c1.64.893 3.434-.902 2.54-2.541l-.159-.292a.873.873 0 0 1 .52-1.255l.319-.094c1.79-.527 1.79-3.065 0-3.592l-.319-.094a.873.873 0 0 1-.52-1.255l.16-.292c.893-1.64-.902-3.433-2.541-2.54l-.292.159a.873.873 0 0 1-1.255-.52l-.094-.319zm-2.633.283c.246-.835 1.428-.835 1.674 0l.094.319a1.873 1.873 0 0 0 2.693 1.115l.291-.16c.764-.415 1.6.42 1.184 1.185l-.159.292a1.873 1.873 0 0 0 1.116 2.692l.318.094c.835.246.835 1.428 0 1.674l-.319.094a1.873 1.873 0 0 0-1.115 2.693l.16.291c.415.764-.42 1.6-1.185 1.184l-.291-.159a1.873 1.873 0 0 0-2.693 1.116l-.094.318c-.246.835-1.428.835-1.674 0l-.094-.319a1.873 1.873 0 0 0-2.692-1.115l-.292.16c-.764.415-1.6-.42-1.184-1.185l.159-.291A1.873 1.873 0 0 0 1.945 8.93l-.319-.094c-.835-.246-.835-1.428 0-1.674l.319-.094A1.873 1.873 0 0 0 3.06 4.377l-.16-.292c-.415-.764.42-1.6 1.185-1.184l.292.159a1.873 1.873 0 0 0 2.692-1.115l.094-.319z"
                 />
               </svg>
             </button>
-            <button @click="deletCard(card.cardId)">
+            <button
+              @click="deletCard(card.cardId)"
+              style="background-color: #ffffff00; border: none"
+            >
               <svg
                 xmlns="http://www.w3.org/2000/svg"
-                width="26"
-                height="26"
+                width="30"
+                height="30"
                 fill="currentColor"
-                class="bi bi-trash-fill"
+                class="bi bi-trash"
                 viewBox="0 0 16 16"
               >
                 <path
-                  d="M2.5 1a1 1 0 0 0-1 1v1a1 1 0 0 0 1 1H3v9a2 2 0 0 0 2 2h6a2 2 0 0 0 2-2V4h.5a1 1 0 0 0 1-1V2a1 1 0 0 0-1-1H10a1 1 0 0 0-1-1H7a1 1 0 0 0-1 1H2.5zm3 4a.5.5 0 0 1 .5.5v7a.5.5 0 0 1-1 0v-7a.5.5 0 0 1 .5-.5zM8 5a.5.5 0 0 1 .5.5v7a.5.5 0 0 1-1 0v-7A.5.5 0 0 1 8 5zm3 .5v7a.5.5 0 0 1-1 0v-7a.5.5 0 0 1 1 0z"
+                  d="M5.5 5.5A.5.5 0 0 1 6 6v6a.5.5 0 0 1-1 0V6a.5.5 0 0 1 .5-.5zm2.5 0a.5.5 0 0 1 .5.5v6a.5.5 0 0 1-1 0V6a.5.5 0 0 1 .5-.5zm3 .5a.5.5 0 0 0-1 0v6a.5.5 0 0 0 1 0V6z"
+                />
+                <path
+                  fill-rule="evenodd"
+                  d="M14.5 3a1 1 0 0 1-1 1H13v9a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V4h-.5a1 1 0 0 1-1-1V2a1 1 0 0 1 1-1H6a1 1 0 0 1 1-1h2a1 1 0 0 1 1 1h3.5a1 1 0 0 1 1 1v1zM4.118 4 4 4.059V13a1 1 0 0 0 1 1h6a1 1 0 0 0 1-1V4.059L11.882 4H4.118zM2.5 3V2h11v1h-11z"
                 />
               </svg>
             </button>
           </td>
-
-          <td class="m-2" v-if="deckNumber > 39" style="text-align: left">
+          <td class="m-2" :class="card.cardType" style="text-align: left">
             {{
               (
                 (card.cardCount / deckNumber +
@@ -341,6 +403,48 @@
               v-model="cardCountInput"
               required
             />
+          </div>
+          <div
+            class="btn-group w-100 mb-1"
+            role="group"
+            aria-label="Basic radio toggle button group"
+          >
+            <input
+              type="radio"
+              class="btn-check"
+              name="type"
+              id="btnradio9"
+              autocomplete="off"
+              @change="type = 'monster'"
+              :checked="type == 'monster'"
+            />
+            <label class="btn btn-outline-primary col-4" for="btnradio9"
+              >Monster</label
+            >
+            <input
+              type="radio"
+              class="btn-check"
+              name="type"
+              id="btnradio10"
+              autocomplete="off"
+              @change="type = 'spell'"
+              :checked="type == 'spell'"
+            />
+            <label class="btn btn-outline-primary col-4" for="btnradio10"
+              >Spell</label
+            >
+            <input
+              type="radio"
+              class="btn-check"
+              name="type"
+              id="btnradio11"
+              autocomplete="off"
+              @change="type = 'trap'"
+              :checked="type == 'trap'"
+            />
+            <label class="btn btn-outline-primary col-4" for="btnradio11"
+              >Trap</label
+            >
           </div>
           <div
             class="btn-group mb-1 w-100"
@@ -448,6 +552,7 @@
               name="btnradio"
               id="btnradio4"
               autocomplete="off"
+              @change="value = -1"
               :checked="value == -1"
             />
             <label class="btn btn-outline-primary w-25" for="btnradio4"
@@ -459,6 +564,7 @@
               name="btnradio"
               id="btnradio5"
               autocomplete="off"
+              @change="value = 0"
               :checked="value == 0"
             />
             <label class="btn btn-outline-primary w-25" for="btnradio5"
@@ -470,6 +576,7 @@
               name="btnradio"
               id="btnradio6"
               autocomplete="off"
+              @change="value = 0.5"
               :checked="value == 0.5"
             />
             <label class="btn btn-outline-primary w-25" for="btnradio6"
@@ -481,6 +588,7 @@
               name="btnradio"
               id="btnradio7"
               autocomplete="off"
+              @change="value = 1"
               :checked="value == 1"
             />
             <label class="btn btn-outline-primary w-25" for="btnradio7"
@@ -502,7 +610,15 @@
 </template>
 <script lang="ts">
 import { defineComponent } from "vue";
-import { Card, Deck, getData, getDeck, setData, setDeck } from "@/API";
+import {
+  Card,
+  cardType,
+  Deck,
+  getData,
+  getDeck,
+  setData,
+  setDeck,
+} from "@/API";
 
 export default defineComponent({
   mounted() {
@@ -525,6 +641,7 @@ export default defineComponent({
       deckValue: 0,
       value: 0,
       deckNumber: 0,
+      type: "monster" as cardType,
 
       handTrap: false,
       seacher: false,
@@ -569,10 +686,10 @@ export default defineComponent({
   },
   methods: {
     addCard: function () {
-      this.checkRadio(0);
       this.deck.cards[this.deck.cards.length] = {
         cardId: this.deck.cards.length,
         cardName: this.cardNameInput,
+        cardType: this.type,
         cardCount: parseInt(this.cardCountInput),
         cardHandTrap: this.handTrap,
         cardSeacher: this.seacher,
@@ -584,15 +701,46 @@ export default defineComponent({
         cardInteraption: this.interaption,
         cardValue: this.value,
       };
+      this.inputReset();
+      this.countCard();
+      this.deckRatingValue();
+      this.sortDeck();
+      this.safeDeck();
+    },
+    editCard: function () {
+      this.deck.cards[this.editCardId] = {
+        cardId: this.deck.cards[this.editCardId].cardId,
+        cardName: this.cardNameInput,
+        cardType: this.type,
+        cardCount: parseInt(this.cardCountInput),
+        cardHandTrap: this.handTrap,
+        cardSeacher: this.seacher,
+        cardComboStarter: this.comboStarter,
+        cardComboPiece: this.comboPiece,
+        cardSearchable: this.searchable,
+        cardOncePerTurn: this.oncePerTurn,
+        cardNegate: this.negate,
+        cardInteraption: this.interaption,
+        cardValue: this.value,
+      };
+      this.countCard();
+      this.deckRatingValue();
+      this.sortDeck();
+      this.safeDeck();
+      this.closeCardEditModal();
+    },
+    inputReset() {
       this.handTrap = false;
       this.seacher = false;
       this.comboStarter = false;
       this.comboPiece = false;
+      this.searchable = false;
+      this.oncePerTurn = false;
+      this.negate = false;
+      this.interaption = false;
+      this.type = "monster";
       this.cardNameInput = "";
       this.cardCountInput = "";
-      this.countCard();
-      this.deckRatingValue();
-      this.safeDeck();
     },
     deletCard(cardId: number) {
       this.deck.cards.splice(cardId, 1);
@@ -620,35 +768,9 @@ export default defineComponent({
       modal!.style.display = "block";
     },
     closeCardEditModal() {
-      this.cardNameInput = "";
-      this.cardCountInput = "";
-      this.handTrap = false;
-      this.seacher = false;
-      this.comboStarter = false;
-      this.comboPiece = false;
+      this.inputReset();
       var modal = document.getElementById("cardEditModal");
       modal!.style.display = "none";
-    },
-    editCard: function () {
-      this.checkRadio(4);
-      this.deck.cards[this.editCardId] = {
-        cardId: this.deck.cards[this.editCardId].cardId,
-        cardName: this.cardNameInput,
-        cardCount: parseInt(this.cardCountInput),
-        cardHandTrap: this.handTrap,
-        cardSeacher: this.seacher,
-        cardComboStarter: this.comboStarter,
-        cardComboPiece: this.comboPiece,
-        cardSearchable: this.searchable,
-        cardOncePerTurn: this.oncePerTurn,
-        cardNegate: this.negate,
-        cardInteraption: this.interaption,
-        cardValue: this.value,
-      };
-      this.safeDeck();
-      this.countCard();
-      this.deckRatingValue();
-      this.closeCardEditModal();
     },
     countCard: function () {
       this.deckNumber = 0;
@@ -721,38 +843,6 @@ export default defineComponent({
         }
       }
     },
-    checkRadio: function (help: number) {
-      let i = help;
-      for (i; i < 4 + help; i++) {
-        // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-        // @ts-ignore
-        if (document.getElementById(`btnradio${i}`).checked) {
-          break;
-        }
-      }
-      i -= help;
-
-      switch (i) {
-        case 0:
-          this.value = -1;
-          break;
-        case 1:
-          this.value = 0;
-          break;
-        case 2:
-          this.value = 0.5;
-          break;
-        case 3:
-          this.value = 1;
-          break;
-      }
-      // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-      // @ts-ignore
-      document.getElementById(`btnradio${1}`).checked = true;
-      // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-      // @ts-ignore
-      document.getElementById(`btnradio${5}`).checked = true;
-    },
     deckRatingValue() {
       if (this.helpDeck.length > 0) {
         this.deckValue =
@@ -815,6 +905,34 @@ export default defineComponent({
         setDeck(this.deck);
       }
     },
+    sortDeck() {
+      this.deck.cards
+        .sort(function (a, b) {
+          if (a.cardName < b.cardName) {
+            return -1;
+          }
+          if (a.cardName > b.cardName) {
+            return 1;
+          }
+          return 0;
+        })
+        .sort(function (a, b) {
+          return b.cardCount - a.cardCount;
+        })
+        .sort(function (a, b) {
+          let map = {
+            monster: 1,
+            spell: 2,
+            trap: 3,
+          };
+          return map[a.cardType] - map[b.cardType];
+        });
+      let counter = 0;
+      for (let card of this.deck.cards) {
+        card.cardId = counter;
+        counter++;
+      }
+    },
   },
 });
 </script>
@@ -863,5 +981,17 @@ ul {
   color: black;
   text-decoration: none;
   cursor: pointer;
+}
+.monster {
+  background-color: #b5542c !important;
+  border: none;
+}
+.spell {
+  background-color: #289287 !important;
+  border: none;
+}
+.trap {
+  background-color: #a91475 !important;
+  border: none;
 }
 </style>

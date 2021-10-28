@@ -1,5 +1,6 @@
 export interface Card {
   cardId: number;
+  cardType: "monster"|"spell"|"trap";
   cardName: string;
   cardCount: number;
   cardHandTrap: boolean;
@@ -12,7 +13,7 @@ export interface Card {
   cardInteraption: boolean;
   cardValue: number;
 }
-
+export type cardType= "monster"|"spell"|"trap"
 export interface Deck {
   name: string;
   cards: Card[];
