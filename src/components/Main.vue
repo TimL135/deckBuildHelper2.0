@@ -73,7 +73,10 @@
           @change="type = 'monster'"
           :checked="type == 'monster'"
         />
-        <label class="btn btn-outline-primary col-4" for="btnradio9"
+        <label
+          class="inputs btn btn-outline-primary col-4"
+          :class="{ monster: type == 'monster' }"
+          for="btnradio9"
           >Monster</label
         >
         <input
@@ -85,7 +88,10 @@
           @change="type = 'spell'"
           :checked="type == 'spell'"
         />
-        <label class="btn btn-outline-primary col-4" for="btnradio10"
+        <label
+          class="inputs btn btn-outline-primary col-4"
+          :class="{ spell: type == 'spell' }"
+          for="btnradio10"
           >Spell</label
         >
         <input
@@ -97,7 +103,10 @@
           @change="type = 'trap'"
           :checked="type == 'trap'"
         />
-        <label class="btn btn-outline-primary col-4" for="btnradio11"
+        <label
+          class="inputs btn btn-outline-primary col-4"
+          :class="{ trap: type == 'trap' }"
+          for="btnradio11"
           >Trap</label
         >
       </div>
@@ -113,7 +122,7 @@
           autocomplete="off"
           v-model="handTrap"
         />
-        <label class="btn btn-outline-primary w-25" for="btncheck1"
+        <label class="inputs btn btn-outline-primary w-25" for="btncheck1"
           >Handtrap</label
         >
 
@@ -124,7 +133,7 @@
           autocomplete="off"
           v-model="seacher"
         />
-        <label class="btn btn-outline-primary w-25" for="btncheck2"
+        <label class="inputs btn btn-outline-primary w-25" for="btncheck2"
           >Searcher</label
         >
 
@@ -136,7 +145,7 @@
           v-model="comboStarter"
         />
 
-        <label class="btn btn-outline-primary w-25" for="btncheck3"
+        <label class="inputs btn btn-outline-primary w-25" for="btncheck3"
           >Combo Starter</label
         >
         <input
@@ -147,7 +156,7 @@
           v-model="negate"
         />
 
-        <label class="btn btn-outline-primary w-25" for="btncheck4"
+        <label class="inputs btn btn-outline-primary w-25" for="btncheck4"
           >Negate</label
         >
       </div>
@@ -164,7 +173,7 @@
           autocomplete="off"
           v-model="oncePerTurn"
         />
-        <label class="btn btn-outline-primary w-25" for="btncheck5"
+        <label class="inputs btn btn-outline-primary w-25" for="btncheck5"
           >Once per Turn</label
         >
         <input
@@ -174,7 +183,7 @@
           autocomplete="off"
           v-model="searchable"
         />
-        <label class="btn btn-outline-primary w-25" for="btncheck6"
+        <label class="inputs btn btn-outline-primary w-25" for="btncheck6"
           >Searchable</label
         >
         <input
@@ -184,7 +193,7 @@
           autocomplete="off"
           v-model="comboPiece"
         />
-        <label class="btn btn-outline-primary w-25" for="btncheck7"
+        <label class="inputs btn btn-outline-primary w-25" for="btncheck7"
           >Combo Piece</label
         >
         <input
@@ -194,7 +203,7 @@
           autocomplete="off"
           v-model="interaption"
         />
-        <label class="btn btn-outline-primary w-25" for="btncheck8"
+        <label class="inputs btn btn-outline-primary w-25" for="btncheck8"
           >Interruption</label
         >
       </div>
@@ -213,7 +222,9 @@
           @change="value = -1"
           :checked="value == -1"
         />
-        <label class="btn btn-outline-primary w-25" for="btnradio0">-1</label>
+        <label class="inputs btn btn-outline-primary w-25" for="btnradio0"
+          >-1</label
+        >
         <input
           type="radio"
           class="btn-check"
@@ -223,7 +234,9 @@
           @change="value = 0"
           :checked="value == 0"
         />
-        <label class="btn btn-outline-primary w-25" for="btnradio1">0</label>
+        <label class="inputs btn btn-outline-primary w-25" for="btnradio1"
+          >0</label
+        >
         <input
           type="radio"
           class="btn-check"
@@ -233,7 +246,7 @@
           @change="value = 0.5"
           :checked="value == 0.5"
         />
-        <label class="btn btn-outline-primary w-25" for="btnradio2"
+        <label class="inputs btn btn-outline-primary w-25" for="btnradio2"
           >Maybe +1</label
         >
         <input
@@ -245,7 +258,9 @@
           @change="value = 1"
           :checked="value == 1"
         />
-        <label class="btn btn-outline-primary w-25" for="btnradio3">+1</label>
+        <label class="inputs btn btn-outline-primary w-25" for="btnradio3"
+          >+1</label
+        >
       </div>
       <br />
       <button type="submit" class="w-100 btn btn-primary">Confirm</button>
@@ -333,6 +348,7 @@
             </button>
             <button
               @click="deletCard(card.cardId)"
+              class="me-2"
               style="background-color: #ffffff00; border: none"
             >
               <svg
@@ -413,36 +429,36 @@
               type="radio"
               class="btn-check"
               name="type"
-              id="btnradio9"
+              id="btnradio12"
               autocomplete="off"
               @change="type = 'monster'"
               :checked="type == 'monster'"
             />
-            <label class="btn btn-outline-primary col-4" for="btnradio9"
+            <label class="btn btn-outline-primary col-4" for="btnradio12"
               >Monster</label
             >
             <input
               type="radio"
               class="btn-check"
               name="type"
-              id="btnradio10"
+              id="btnradio13"
               autocomplete="off"
               @change="type = 'spell'"
               :checked="type == 'spell'"
             />
-            <label class="btn btn-outline-primary col-4" for="btnradio10"
+            <label class="btn btn-outline-primary col-4" for="btnradio13"
               >Spell</label
             >
             <input
               type="radio"
               class="btn-check"
               name="type"
-              id="btnradio11"
+              id="btnradio14"
               autocomplete="off"
               @change="type = 'trap'"
               :checked="type == 'trap'"
             />
-            <label class="btn btn-outline-primary col-4" for="btnradio11"
+            <label class="btn btn-outline-primary col-4" for="btnradio14"
               >Trap</label
             >
           </div>
@@ -955,6 +971,7 @@ ul {
 .btn-outline-primary:focus + .btn-outline-primary {
   box-shadow: none !important;
 }
+
 .modal {
   display: none;
   position: fixed;
@@ -986,6 +1003,7 @@ ul {
   text-decoration: none;
   cursor: pointer;
 }
+
 .monster {
   background-color: #b5542c !important;
   border: none;
