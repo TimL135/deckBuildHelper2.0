@@ -6,7 +6,7 @@
     crossorigin="anonymous"
   />
  <div id="nav">
-    <router-link to=/Main>Main</router-link> |
+    <router-link to=/>Main</router-link> |
     <router-link to=/StartHand>StartHand</router-link>
   </div>
   
@@ -20,7 +20,7 @@
   -moz-osx-font-smoothing: grayscale;
   text-align: center;
   color: #2c3e50;
-  margin-top:0px ;
+  margin-top: 0px;
 }
 
 #nav {
@@ -35,5 +35,4 @@
     }
   }
 }
-
 </style>
