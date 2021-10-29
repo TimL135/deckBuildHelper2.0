@@ -872,23 +872,16 @@ export default defineComponent({
               10
           ) / 10;
       }
-      this.deckRating =
-        12.5 * (1 - Math.pow(Math.exp(1), -0.5 * this.deckValue));
+      this.deckRating = 12.5 * (1 - Math.pow(2, -0.5 * this.deckValue));
+      this.deckRating += 12.5 * (1 - Math.pow(2, -0.4 * this.handTrapCount));
+      this.deckRating += 12.5 * (1 - Math.pow(2, -0.2 * this.seacherCount));
       this.deckRating +=
-        12.5 * (1 - Math.pow(Math.exp(1), -1 * this.handTrapCount));
-      this.deckRating +=
-        12.5 * (1 - Math.pow(Math.exp(1), -0.2 * this.seacherCount));
-      this.deckRating +=
-        12.5 * (1 - Math.pow(Math.exp(1), -1 * this.comboStarterCount));
-      this.deckRating +=
-        12.5 * (1 - Math.pow(Math.exp(1), -0.2 * this.comboPieceCount));
-      this.deckRating +=
-        12.5 * (1 - Math.pow(Math.exp(1), -0.2 * this.searchableCount));
-      this.deckRating +=
-        12.5 * (1 - Math.pow(Math.exp(1), -1 * this.negateCount));
-      this.deckRating +=
-        12.5 * (1 - Math.pow(Math.exp(1), -1 * this.interaptionCount));
-
+        12.5 * (1 - Math.pow(2, -0.7 * this.comboStarterCount));
+      this.deckRating += 12.5 * (1 - Math.pow(2, -0.2 * this.comboPieceCount));
+      this.deckRating += 12.5 * (1 - Math.pow(2, -0.2 * this.searchableCount));
+      this.deckRating += 12.5 * (1 - Math.pow(2, -0.4 * this.negateCount));
+      this.deckRating += 12.5 * (1 - Math.pow(2, -0.4 * this.interaptionCount));
+      this.deckRating = (this.deckRating / this.helpDeck.length) * 40;
       this.deckRating = Math.round(this.deckRating * 10) / 10;
     },
     safeDeck() {
@@ -971,7 +964,11 @@ ul {
 .btn-outline-primary:focus + .btn-outline-primary {
   box-shadow: none !important;
 }
-
+.btn-check:hover + .btn-outline-primary,
+.btn-outline-primary:hover + .btn-outline-primary {
+  background-color: transparent;
+  color: #000;
+}
 .modal {
   display: none;
   position: fixed;

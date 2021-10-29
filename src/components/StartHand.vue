@@ -7,31 +7,31 @@
   />
 
   <div class="container">
-    <select class="form-select" v-model="handCards[0]">
+    <select class="form-select" v-model="handCards[0]" @change="countCard()">
       <option selected>1. Karte</option>
       <option v-for="card in deck" :key="card.cardName">
         {{ card.cardName }}
       </option>
     </select>
-    <select class="form-select" v-model="handCards[1]">
+    <select class="form-select" v-model="handCards[1]" @change="countCard()">
       <option selected>2. Karte</option>
       <option v-for="card in deck" :key="card.cardName">
         {{ card.cardName }}
       </option>
     </select>
-    <select class="form-select" v-model="handCards[2]">
+    <select class="form-select" v-model="handCards[2]" @change="countCard()">
       <option selected>3. Karte</option>
       <option v-for="card in deck" :key="card.cardName">
         {{ card.cardName }}
       </option>
     </select>
-    <select class="form-select" v-model="handCards[3]">
+    <select class="form-select" v-model="handCards[3]" @change="countCard()">
       <option selected>4. Karte</option>
       <option v-for="card in deck" :key="card.cardName">
         {{ card.cardName }}
       </option>
     </select>
-    <select class="form-select" v-model="handCards[4]">
+    <select class="form-select" v-model="handCards[4]" @change="countCard()">
       <option selected>5. Karte</option>
       <option v-for="card in deck" :key="card.cardName">
         {{ card.cardName }}
