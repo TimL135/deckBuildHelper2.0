@@ -773,73 +773,77 @@ export default defineComponent({
       modal!.style.display = "none";
     },
     countCard: function () {
-      this.deckNumber = 0;
+      if (this.deck.cards) {
+        this.deckNumber = 0;
 
-      this.handTrapCount = 0;
-      this.uniqueHandTrapCount = 0;
+        this.handTrapCount = 0;
+        this.uniqueHandTrapCount = 0;
 
-      this.seacherCount = 0;
-      this.uniqueSeacherCount = 0;
+        this.seacherCount = 0;
+        this.uniqueSeacherCount = 0;
 
-      this.comboStarterCount = 0;
-      this.uniqueComboStarterCount = 0;
+        this.comboStarterCount = 0;
+        this.uniqueComboStarterCount = 0;
 
-      this.comboPieceCount = 0;
-      this.uniqueComboPieceCount = 0;
+        this.comboPieceCount = 0;
+        this.uniqueComboPieceCount = 0;
 
-      this.searchableCount = 0;
-      this.uniqueSearchableCount = 0;
+        this.searchableCount = 0;
+        this.uniqueSearchableCount = 0;
 
-      this.oncePerTurnCount = 0;
-      this.uniqueOncePerTurnCount = 0;
+        this.oncePerTurnCount = 0;
+        this.uniqueOncePerTurnCount = 0;
 
-      this.negateCount = 0;
-      this.uniqueNegateCount = 0;
+        this.negateCount = 0;
+        this.uniqueNegateCount = 0;
 
-      this.interaptionCount = 0;
-      this.uniqueInteraptionCount = 0;
+        this.interaptionCount = 0;
+        this.uniqueInteraptionCount = 0;
 
-      for (let card of this.deck.cards) {
-        this.deckNumber += card.cardCount;
-        if (card.cardHandTrap) {
-          this.handTrapCount += card.cardCount;
-          this.uniqueHandTrapCount++;
-        }
-        if (card.cardSeacher) {
-          this.seacherCount += card.cardCount;
-          this.uniqueSeacherCount++;
-        }
-        if (card.cardComboStarter) {
-          this.comboStarterCount += card.cardCount;
-          this.uniqueComboStarterCount++;
-        }
-        if (card.cardComboPiece) {
-          this.comboPieceCount += card.cardCount;
-          this.uniqueComboPieceCount++;
-        }
-        if (card.cardSearchable) {
-          this.searchableCount += card.cardCount;
-          this.uniqueSearchableCount++;
-        }
-        if (card.cardOncePerTurn) {
-          this.oncePerTurnCount += card.cardCount;
-          this.uniqueOncePerTurnCount++;
-        }
-        if (card.cardNegate) {
-          this.negateCount += card.cardCount;
-          this.uniqueNegateCount++;
-        }
-        if (card.cardInteraption) {
-          this.interaptionCount += card.cardCount;
-          this.uniqueInteraptionCount++;
+        for (let card of this.deck.cards) {
+          this.deckNumber += card.cardCount;
+          if (card.cardHandTrap) {
+            this.handTrapCount += card.cardCount;
+            this.uniqueHandTrapCount++;
+          }
+          if (card.cardSeacher) {
+            this.seacherCount += card.cardCount;
+            this.uniqueSeacherCount++;
+          }
+          if (card.cardComboStarter) {
+            this.comboStarterCount += card.cardCount;
+            this.uniqueComboStarterCount++;
+          }
+          if (card.cardComboPiece) {
+            this.comboPieceCount += card.cardCount;
+            this.uniqueComboPieceCount++;
+          }
+          if (card.cardSearchable) {
+            this.searchableCount += card.cardCount;
+            this.uniqueSearchableCount++;
+          }
+          if (card.cardOncePerTurn) {
+            this.oncePerTurnCount += card.cardCount;
+            this.uniqueOncePerTurnCount++;
+          }
+          if (card.cardNegate) {
+            this.negateCount += card.cardCount;
+            this.uniqueNegateCount++;
+          }
+          if (card.cardInteraption) {
+            this.interaptionCount += card.cardCount;
+            this.uniqueInteraptionCount++;
+          }
         }
       }
     },
     uniqueCardDeck() {
       this.helpDeck = [];
-      for (let card of this.deck.cards) {
-        if (!this.helpDeck.find((c) => c.cardName == card!.cardName)) {
-          this.helpDeck.push(card);
+      if (this.deck.cards) {
+        for (let card of this.deck.cards) {
+          if (!this.helpDeck.find((c) => c.cardName == card!.cardName)) {
+            this.helpDeck.push(card);
+          }
         }
       }
     },
