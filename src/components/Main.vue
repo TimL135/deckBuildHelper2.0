@@ -759,6 +759,7 @@ export default defineComponent({
       this.cardCountInput = "";
     },
     deletCard(cardId: number) {
+      if(confirm(`Are you sure to delete ${this.deck.cards[cardId].cardName}`)){
       this.deck.cards.splice(cardId, 1);
       for (cardId; cardId < this.deck.cards.length; cardId++) {
         this.deck.cards[cardId].cardId--;
@@ -766,6 +767,7 @@ export default defineComponent({
       this.countCard();
       this.deckRatingValue();
       this.safeDeck();
+    }
     },
     openCardEditModal(index: number) {
       this.editCardId = index;
@@ -881,7 +883,7 @@ export default defineComponent({
       this.deckRating += 12.5 * (1 - Math.pow(2, -0.2 * this.searchableCount));
       this.deckRating += 12.5 * (1 - Math.pow(2, -0.4 * this.negateCount));
       this.deckRating += 12.5 * (1 - Math.pow(2, -0.4 * this.interaptionCount));
-      this.deckRating = (this.deckRating / this.helpDeck.length) * 40;
+      this.deckRating = (this.deckRating / this.deckNumber) * 40;
       this.deckRating = Math.round(this.deckRating * 10) / 10;
     },
     safeDeck() {
