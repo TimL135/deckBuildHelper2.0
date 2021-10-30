@@ -371,17 +371,21 @@
           </td>
           <td class="m-2" :class="card.cardType" style="text-align: left">
             {{
-              100-(
-              ((deckNumber - card.cardCount) / deckNumber) +
-              ((deckNumber - (card.cardCount+1)) / (deckNumber -
-              1))+
-              ((deckNumber - (card.cardCount+2)) / (deckNumber -
-              2))+
-              ((deckNumber - (card.cardCount+3)) / (deckNumber -
-              3)) +
-              ((deckNumber - (card.cardCount+4)) / (deckNumber -
-              4))).toFixed(2)
-            }}%({{ ((100 -(deckNumber - (card.cardCount+5)) / (deckNumber-5))).toFixed(2)}}%)
+              (
+                (1 -
+                ((deckNumber - card.cardCount) / deckNumber) *
+                  ((deckNumber - (card.cardCount + 1)) / (deckNumber - 1)) *
+                  ((deckNumber - (card.cardCount + 2)) / (deckNumber - 2)) *
+                  ((deckNumber - (card.cardCount + 3)) / (deckNumber - 3)) *
+                  ((deckNumber - (card.cardCount + 4)) / (deckNumber - 4))) *
+                  100
+              ).toFixed(2)
+            }}%({{
+              (
+                (1 -
+                (deckNumber - (card.cardCount + 5)) / (deckNumber - 5))*100
+              ).toFixed(2)
+            }}%)
           </td>
         </tr>
       </tbody>
