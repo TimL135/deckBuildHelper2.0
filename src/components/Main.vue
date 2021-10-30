@@ -273,12 +273,10 @@
         Card amount:<br />{{ deckNumber }}
       </div>
       <div class="col-4 border rounded border-primary">
-        <div v-if="deckNumber > 39">Deckrating:<br />{{ deckRating }}%</div>
+        <div>Deckrating:<br />{{ deckRating }}%</div>
       </div>
       <div class="col-4 border rounded border-primary">
-        <div v-if="deckNumber > 39">
-          Deckvalue average:<br />{{ deckValue }}
-        </div>
+        <div>Deckvalue average:<br />{{ deckValue }}</div>
       </div>
     </div>
     <div class="d-flex mb-1">
@@ -373,15 +371,17 @@
           </td>
           <td class="m-2" :class="card.cardType" style="text-align: left">
             {{
-              (
-                (card.cardCount / deckNumber +
-                  card.cardCount / (deckNumber - 1) +
-                  card.cardCount / (deckNumber - 2) +
-                  card.cardCount / (deckNumber - 3) +
-                  card.cardCount / (deckNumber - 4)) *
-                100
-              ).toFixed(2)
-            }}%({{ ((card.cardCount / (deckNumber - 5)) * 100).toFixed(2) }}%)
+              100-(
+              ((deckNumber - card.cardCount) / deckNumber) +
+              ((deckNumber - (card.cardCount+1)) / (deckNumber -
+              1))+
+              ((deckNumber - (card.cardCount+2)) / (deckNumber -
+              2))+
+              ((deckNumber - (card.cardCount+3)) / (deckNumber -
+              3)) +
+              ((deckNumber - (card.cardCount+4)) / (deckNumber -
+              4))).toFixed(2)
+            }}%({{ ((100 -(deckNumber - (card.cardCount+5)) / (deckNumber-5))).toFixed(2)}}%)
           </td>
         </tr>
       </tbody>
@@ -420,7 +420,7 @@
               aria-describedby="addon-wrapping"
               v-model="cardCountInput"
               min="1"
-          max="3"
+              max="3"
               required
             />
           </div>
@@ -757,6 +757,7 @@ export default defineComponent({
         cardInteraption: this.interaption,
         cardValue: this.value,
       };
+      this.uniqueCardDeck();
       this.inputReset();
       this.countCard();
       this.deckRatingValue();
@@ -779,6 +780,7 @@ export default defineComponent({
         cardInteraption: this.interaption,
         cardValue: this.value,
       };
+      this.uniqueCardDeck();
       this.countCard();
       this.deckRatingValue();
       this.sortDeck();
@@ -909,6 +911,13 @@ export default defineComponent({
       }
     },
     uniqueCardDeck() {
+      this.allCards = [];
+      for (let card of this.deck.cards) {
+        let count = card.cardCount;
+        for (count; count > 0; count--) {
+          this.allCards.push(card);
+        }
+      }
       this.helpDeck = [];
       if (this.deck.cards) {
         for (let card of this.deck.cards) {
@@ -919,10 +928,10 @@ export default defineComponent({
       }
     },
     deckRatingValue() {
-      if (this.helpDeck.length > 0) {
+      if (this.allCards.length > 0) {
         this.deckValue =
           Math.round(
-            (this.helpDeck.map((c) => c.cardValue).reduce((a, b) => a + b) /
+            (this.allCards.map((c) => c.cardValue).reduce((a, b) => a + b) /
               this.allCards.length) *
               10
           ) / 10;
@@ -936,7 +945,9 @@ export default defineComponent({
       this.deckRating += 12.5 * (1 - Math.pow(2, -0.2 * this.searchableCount));
       this.deckRating += 12.5 * (1 - Math.pow(2, -0.4 * this.negateCount));
       this.deckRating += 12.5 * (1 - Math.pow(2, -0.4 * this.interaptionCount));
-      this.deckRating = (this.deckRating / this.deckNumber) * 40;
+      if (this.deckNumber > 40) {
+        this.deckRating = (this.deckRating / this.deckNumber) * 40;
+      }
       this.deckRating = Math.round(this.deckRating * 10) / 10;
     },
     safeDeck() {
