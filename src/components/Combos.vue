@@ -132,6 +132,7 @@
           type="button"
           class="btn btn-primary w-25 mt-1"
           style="float: right"
+          @click="addCombo()"
         >
           Confirm
         </button>
@@ -230,9 +231,12 @@
 </template>
 <script lang="ts">
 import { defineComponent } from "vue";
-import { Card, Combo, Deck, getData, getDeck, setDeck } from "@/API";
+import { Card, Combo, Deck, getData, getDeck, setData, setDeck } from "@/API";
 export default defineComponent({
   mounted() {
+        if (getData()) {
+      this.decks = getData();
+    }
     if (getDeck()) {
       this.deck = getDeck();
       this.uniqueCardDeck();
@@ -244,6 +248,7 @@ export default defineComponent({
       editComboIndex:0,
       deleteComboIndex:0,
       helpDeck: [] as Card[],
+       decks: [] as Deck[],
       comboCards: ["1. Karte", "2. Karte", "3. Karte", "4. Karte", "5. Karte"],
     };
   },
@@ -266,8 +271,16 @@ export default defineComponent({
           cardArray.push(card as Card);
         }
       }
+      if(this.deck.combos){
       this.deck.combos.push({ cards: cardArray });
-      setDeck(this.deck);
+      }else{
+        this.deck={
+          name:this.deck.name,
+          cards:this.deck.cards,
+          combos:[{ cards: cardArray }]
+        }
+      }
+      this.safeDeck();
       this.inputReset();
       this.closeComboAddModal();
     },
@@ -282,12 +295,12 @@ export default defineComponent({
         }
       }
        this.deck.combos[this.editComboIndex]={ cards: cardArray };
-       setDeck(this.deck);
+        this.safeDeck();
        this.closeComboEditModal();
     },
     deleteCombo(index:number){
 this.deck.combos.splice(index,1)
-setDeck(this.deck);
+ this.safeDeck();
 this.closeComboDeleteModal()
     },
     uniqueCardDeck() {
@@ -332,6 +345,11 @@ this.closeComboDeleteModal()
       this.inputReset()
       var modal = document.getElementById("comboEditModal");
       modal!.style.display = "none";
+    },
+      safeDeck() {
+      this.decks[this.decks.findIndex(d=>d.name==this.deck.name)]=this.deck
+      setDeck(this.deck);
+      setData(this.decks);
     },
   },
 });

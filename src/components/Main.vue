@@ -956,6 +956,7 @@ export default defineComponent({
       this.deckRating = Math.round(this.deckRating * 10) / 10;
     },
     safeDeck() {
+      this.decks[this.decks.findIndex(d=>d.name==this.deck.name)]=this.deck
       setDeck(this.deck);
       setData(this.decks);
     },
@@ -987,7 +988,7 @@ export default defineComponent({
           }
         }
         this.countCard();
-        //setDeck(this.deck);
+        setDeck(this.deck);
       }
     },
     sortDeck() {
