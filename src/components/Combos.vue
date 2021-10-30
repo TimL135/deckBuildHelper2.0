@@ -74,6 +74,7 @@
             <div
               v-for="card in combo.cards"
               :key="card.cardName"
+              class="mb-1"
               :class="card.cardType"
             >
               {{ card.cardName }}
