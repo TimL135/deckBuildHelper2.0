@@ -1,7 +1,7 @@
 import { createRouter, createWebHashHistory, RouteRecordRaw } from "vue-router";
 import Main from "@/components/Main.vue";
 import StartHand from "@/components/StartHand.vue";
-
+import Combos from "@/components/Combos.vue";
 const routes: Array<RouteRecordRaw> = [
   {
     path: "/",
@@ -12,6 +12,11 @@ const routes: Array<RouteRecordRaw> = [
     path: "/StartHand",
     name: "StartHand",
     component: StartHand,
+  },
+  {
+    path: "/Combos",
+    name: "Combos",
+    component: Combos,
   },
   
 ];

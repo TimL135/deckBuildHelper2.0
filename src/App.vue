@@ -7,7 +7,8 @@
   />
  <div id="nav">
     <router-link to=/>Main</router-link> |
-    <router-link to=/StartHand>StartHand</router-link>
+    <router-link to=/StartHand>StartHand</router-link> |
+    <router-link to=/Combos>Combos</router-link>
   </div>
   
   <router-view />

@@ -14,19 +14,24 @@ export interface Card {
   cardValue: number;
 }
 export type cardType= "monster"|"spell"|"trap"
+
 export interface Deck {
   name: string;
   cards: Card[];
+  combos: Combo[];
+}
+export interface Combo {
+  cards: Card[];
 }
 
-export function setData(data: Deck[]) {
-  localStorage.setItem("decks", JSON.stringify(data));
+export function setData(decks: Deck[]) {
+  localStorage.setItem("decks", JSON.stringify(decks));
 }
 export function getData(): Deck[] {
   return JSON.parse(localStorage.getItem("decks") || "false");
 }
-export function setDeck(data: Deck) {
-  localStorage.setItem("deck", JSON.stringify(data));
+export function setDeck(deck: Deck) {
+  localStorage.setItem("deck", JSON.stringify(deck));
 }
 export function getDeck(): Deck {
   return JSON.parse(localStorage.getItem("deck") || "false");

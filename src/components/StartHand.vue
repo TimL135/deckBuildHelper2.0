@@ -6,7 +6,7 @@
     crossorigin="anonymous"
   />
 
-  <div class="container">
+  <div class="container" style="margin-top: 3vh">
     <select class="form-select" v-model="handCards[0]" @change="countCard()">
       <option selected>1. Karte</option>
       <option v-for="card in deck" :key="card.cardName">

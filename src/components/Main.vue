@@ -685,6 +685,7 @@ export default defineComponent({
     }
     if (getDeck()) {
       this.selectedDeck = getDeck().name;
+      this.deck=getDeck();
       this.loadDeck();
       this.uniqueCardDeck();
       this.deckRatingValue();
@@ -972,6 +973,7 @@ export default defineComponent({
           this.decks.push({
             name: this.selectedDeck,
             cards: [],
+            combos:[],
           });
           this.deck =
             this.decks[
@@ -985,7 +987,7 @@ export default defineComponent({
           }
         }
         this.countCard();
-        setDeck(this.deck);
+        //setDeck(this.deck);
       }
     },
     sortDeck() {
