@@ -51,11 +51,13 @@
       <div class="input-group mb-1">
         <span class="input-group-text w-25" id="basic-addon1">Quantity</span>
         <input
-          type="text"
+          type="number"
           class="form-control"
           aria-label="Username"
           aria-describedby="addon-wrapping"
           v-model="cardCountInput"
+          min="1"
+          max="3"
           required
         />
       </div>
@@ -347,7 +349,7 @@
               </svg>
             </button>
             <button
-              @click="deletCard(card.cardId)"
+              @click="openCardDeleteModal(card.cardId)"
               class="me-2"
               style="background-color: #ffffff00; border: none"
             >
@@ -391,7 +393,7 @@
       <span
         class="close"
         style="float: right; width: 42px height:42px; margin-left: 95%"
-        @click="closeCardEditModal"
+        @click="closeCardEditModal()"
         >&times;</span
       >
       <div class="container">
@@ -412,11 +414,13 @@
               >Quantity</span
             >
             <input
-              type="text"
+              type="number"
               class="form-control"
               aria-label="Username"
               aria-describedby="addon-wrapping"
               v-model="cardCountInput"
+              min="1"
+          max="3"
               required
             />
           </div>
@@ -623,6 +627,40 @@
       </div>
     </div>
   </div>
+  <!-- new modal -->
+  <div id="cardDeleteModal" class="modal">
+    <div class="modal-content">
+      <span
+        class="close"
+        style="float: right; width: 42px height:42px; margin-left: 95%"
+        @click="closeCardDeleteModal()"
+        >&times;</span
+      >
+      <div class="container">
+        <div class="d-flex justify-content: center">
+          <div class="w-100 border rounded border-primary fs-3">
+            Are you sure to delete {{ cardNameInput }}
+          </div>
+        </div>
+        <div class="d-flex justify-content: center">
+          <button
+            type="button"
+            class="btn btn-success w-50"
+            @click="deleteCard(deleteCardId)"
+          >
+            Yes
+          </button>
+          <button
+            type="button"
+            class="btn btn-danger w-50"
+            @click="closeCardDeleteModal()"
+          >
+            No
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
 </template>
 <script lang="ts">
 import { defineComponent } from "vue";
@@ -693,6 +731,8 @@ export default defineComponent({
       uniqueInteraptionCount: 0,
 
       editCardId: 0,
+      deleteCardId: 0,
+
       cardNameInput: "",
       cardCountInput: "",
       deck: {} as Deck,
@@ -754,12 +794,14 @@ export default defineComponent({
       this.oncePerTurn = false;
       this.negate = false;
       this.interaption = false;
+      this.value = 0;
+      this.editCardId = 0;
+      this.deleteCardId = 0;
       this.type = "monster";
       this.cardNameInput = "";
       this.cardCountInput = "";
     },
-    deletCard(cardId: number) {
-      if(confirm(`Are you sure to delete ${this.deck.cards[cardId].cardName}`)){
+    deleteCard(cardId: number) {
       this.deck.cards.splice(cardId, 1);
       for (cardId; cardId < this.deck.cards.length; cardId++) {
         this.deck.cards[cardId].cardId--;
@@ -767,7 +809,18 @@ export default defineComponent({
       this.countCard();
       this.deckRatingValue();
       this.safeDeck();
-    }
+      this.closeCardDeleteModal();
+    },
+    openCardDeleteModal(index: number) {
+      this.deleteCardId = index;
+      this.cardNameInput = this.deck.cards[index].cardName;
+      var modal = document.getElementById("cardDeleteModal");
+      modal!.style.display = "block";
+    },
+    closeCardDeleteModal() {
+      this.inputReset();
+      var modal = document.getElementById("cardDeleteModal");
+      modal!.style.display = "none";
     },
     openCardEditModal(index: number) {
       this.editCardId = index;
