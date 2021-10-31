@@ -82,44 +82,46 @@
         {{ card.cardName }}
       </option>
     </select>
-
+<div>
     <button
       @click="randomStartHand()"
       type="button"
-      class="btn btn-primary m-1"
+      class="btn btn-primary w-100 mt-1"
     >
       Random
     </button>
+</div>
+<br>
     <div class="d-flex mb-1">
       <div class="w-100 border rounded border-primary">Value:{{ value }}</div>
     </div>
     <div class="d-flex mb-1">
-      <div class="w-25 border rounded border-primary">
+      <div class="w-25 border rounded-start border-primary">
         Handtraps:<br />{{ handTrapCount }}({{ uniqueHandTrapCount }})
       </div>
-      <div class="w-25 border rounded border-primary">
+      <div class="w-25 border border-primary">
         Seacher:<br />{{ seacherCount }}({{ uniqueSeacherCount }})
       </div>
-      <div class="w-25 border rounded border-primary">
+      <div class="w-25 border border-primary">
         Combo Starter:<br />{{ comboStarterCount }}({{
           uniqueComboStarterCount
         }})
       </div>
-      <div class="w-25 border rounded border-primary">
+      <div class="w-25 border rounded-end border-primary">
         Negate:<br />{{ negateCount }}({{ uniqueNegateCount }})
       </div>
     </div>
     <div class="d-flex mb-1">
-      <div class="w-25 border rounded border-primary">
+      <div class="w-25 border rounded-start border-primary">
         Once per Turn:<br />{{ oncePerTurnCount }}({{ uniqueOncePerTurnCount }})
       </div>
       <div class="w-25 border rounded border-primary">
         Searchable:<br />{{ searchableCount }}({{ uniqueSearchableCount }})
       </div>
-      <div class="w-25 border rounded border-primary">
+      <div class="w-25 border border-primary">
         Combo Piece:<br />{{ comboPieceCount }}({{ uniqueComboPieceCount }})
       </div>
-      <div class="w-25 border rounded border-primary">
+      <div class="w-25 border rounded-end border-primary">
         Interaption:<br />{{ interaptionCount }}({{ uniqueInteraptionCount }})
       </div>
     </div>

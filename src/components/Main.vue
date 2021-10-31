@@ -36,237 +36,16 @@
       </button>
     </div>
     <br />
-    <form @submit.prevent="addCard">
-      <div class="input-group mb-1">
-        <span class="input-group-text w-25" id="basic-addon1">Name</span>
-        <input
-          type="text"
-          class="form-control"
-          aria-label="Username"
-          aria-describedby="addon-wrapping"
-          v-model="cardNameInput"
-          required
-        />
-      </div>
-      <div class="input-group mb-1">
-        <span class="input-group-text w-25" id="basic-addon1">Quantity</span>
-        <input
-          type="number"
-          class="form-control"
-          aria-label="Username"
-          aria-describedby="addon-wrapping"
-          v-model="cardCountInput"
-          min="1"
-          max="3"
-          required
-        />
-      </div>
-      <div
-        class="btn-group w-100 mb-1"
-        role="group"
-        aria-label="Basic radio toggle button group"
-      >
-        <input
-          type="radio"
-          class="btn-check"
-          name="type"
-          id="btnradio9"
-          autocomplete="off"
-          @change="type = 'monster'"
-          :checked="type == 'monster'"
-        />
-        <label
-          class="inputs btn btn-outline-primary col-4"
-          :class="{ monster: type == 'monster' }"
-          for="btnradio9"
-          >Monster</label
-        >
-        <input
-          type="radio"
-          class="btn-check"
-          name="type"
-          id="btnradio10"
-          autocomplete="off"
-          @change="type = 'spell'"
-          :checked="type == 'spell'"
-        />
-        <label
-          class="inputs btn btn-outline-primary col-4"
-          :class="{ spell: type == 'spell' }"
-          for="btnradio10"
-          >Spell</label
-        >
-        <input
-          type="radio"
-          class="btn-check"
-          name="type"
-          id="btnradio11"
-          autocomplete="off"
-          @change="type = 'trap'"
-          :checked="type == 'trap'"
-        />
-        <label
-          class="inputs btn btn-outline-primary col-4"
-          :class="{ trap: type == 'trap' }"
-          for="btnradio11"
-          >Trap</label
-        >
-      </div>
-      <div
-        class="btn-group mb-1 w-100"
-        role="group"
-        aria-label="Basic checkbox toggle button group"
-      >
-        <input
-          type="checkbox"
-          class="btn-check"
-          id="btncheck1"
-          autocomplete="off"
-          v-model="handTrap"
-        />
-        <label class="inputs btn btn-outline-primary w-25" for="btncheck1"
-          >Handtrap</label
-        >
-
-        <input
-          type="checkbox"
-          class="btn-check"
-          id="btncheck2"
-          autocomplete="off"
-          v-model="seacher"
-        />
-        <label class="inputs btn btn-outline-primary w-25" for="btncheck2"
-          >Searcher</label
-        >
-
-        <input
-          type="checkbox"
-          class="btn-check"
-          id="btncheck3"
-          autocomplete="off"
-          v-model="comboStarter"
-        />
-
-        <label class="inputs btn btn-outline-primary w-25" for="btncheck3"
-          >Combo Starter</label
-        >
-        <input
-          type="checkbox"
-          class="btn-check"
-          id="btncheck4"
-          autocomplete="off"
-          v-model="negate"
-        />
-
-        <label class="inputs btn btn-outline-primary w-25" for="btncheck4"
-          >Negate</label
-        >
-      </div>
-      <br />
-      <div
-        class="btn-group mb-1 w-100"
-        role="group"
-        aria-label="Basic checkbox toggle button group"
-      >
-        <input
-          type="checkbox"
-          class="btn-check"
-          id="btncheck5"
-          autocomplete="off"
-          v-model="oncePerTurn"
-        />
-        <label class="inputs btn btn-outline-primary w-25" for="btncheck5"
-          >Once per Turn</label
-        >
-        <input
-          type="checkbox"
-          class="btn-check"
-          id="btncheck6"
-          autocomplete="off"
-          v-model="searchable"
-        />
-        <label class="inputs btn btn-outline-primary w-25" for="btncheck6"
-          >Searchable</label
-        >
-        <input
-          type="checkbox"
-          class="btn-check"
-          id="btncheck7"
-          autocomplete="off"
-          v-model="comboPiece"
-        />
-        <label class="inputs btn btn-outline-primary w-25" for="btncheck7"
-          >Combo Piece</label
-        >
-        <input
-          type="checkbox"
-          class="btn-check"
-          id="btncheck8"
-          autocomplete="off"
-          v-model="interaption"
-        />
-        <label class="inputs btn btn-outline-primary w-25" for="btncheck8"
-          >Interruption</label
-        >
-      </div>
-      <br />
-      <div
-        class="btn-group w-100 mb-1"
-        role="group"
-        aria-label="Basic radio toggle button group"
-      >
-        <input
-          type="radio"
-          class="btn-check"
-          name="btnradio"
-          id="btnradio0"
-          autocomplete="off"
-          @change="value = -1"
-          :checked="value == -1"
-        />
-        <label class="inputs btn btn-outline-primary w-25" for="btnradio0"
-          >-1</label
-        >
-        <input
-          type="radio"
-          class="btn-check"
-          name="btnradio"
-          id="btnradio1"
-          autocomplete="off"
-          @change="value = 0"
-          :checked="value == 0"
-        />
-        <label class="inputs btn btn-outline-primary w-25" for="btnradio1"
-          >0</label
-        >
-        <input
-          type="radio"
-          class="btn-check"
-          name="btnradio"
-          id="btnradio2"
-          autocomplete="off"
-          @change="value = 0.5"
-          :checked="value == 0.5"
-        />
-        <label class="inputs btn btn-outline-primary w-25" for="btnradio2"
-          >Maybe +1</label
-        >
-        <input
-          type="radio"
-          class="btn-check"
-          name="btnradio"
-          id="btnradio3"
-          autocomplete="off"
-          @change="value = 1"
-          :checked="value == 1"
-        />
-        <label class="inputs btn btn-outline-primary w-25" for="btnradio3"
-          >+1</label
-        >
-      </div>
-      <br />
-      <button type="submit" class="w-100 btn btn-primary">Confirm</button>
-    </form>
+    <div>
+    <button
+      type="submit"
+      class="w-100 btn btn-primary"
+      @click="openCardAddModal()"
+    >
+      Add new Card
+    </button>
+    </div>
+    
     <br />
     <div class="d-flex mb-1">
       <div class="col-4 border rounded-start border-primary">
@@ -373,17 +152,17 @@
             {{
               (
                 (1 -
-                ((deckNumber - card.cardCount) / deckNumber) *
-                  ((deckNumber - (card.cardCount + 1)) / (deckNumber - 1)) *
-                  ((deckNumber - (card.cardCount + 2)) / (deckNumber - 2)) *
-                  ((deckNumber - (card.cardCount + 3)) / (deckNumber - 3)) *
-                  ((deckNumber - (card.cardCount + 4)) / (deckNumber - 4))) *
-                  100
+                  ((deckNumber - card.cardCount) / deckNumber) *
+                    ((deckNumber - (card.cardCount + 1)) / (deckNumber - 1)) *
+                    ((deckNumber - (card.cardCount + 2)) / (deckNumber - 2)) *
+                    ((deckNumber - (card.cardCount + 3)) / (deckNumber - 3)) *
+                    ((deckNumber - (card.cardCount + 4)) / (deckNumber - 4))) *
+                100
               ).toFixed(2)
             }}%({{
               (
-                (1 -
-                (deckNumber - (card.cardCount + 5)) / (deckNumber - 5))*100
+                (1 - (deckNumber - (card.cardCount + 5)) / (deckNumber - 5)) *
+                100
               ).toFixed(2)
             }}%)
           </td>
@@ -401,7 +180,7 @@
         >&times;</span
       >
       <div class="container">
-        <form @submit.prevent="editCard">
+        <form @submit.prevent="editAddCard">
           <div class="input-group mb-1">
             <span class="input-group-text w-25" id="basic-addon1">Name</span>
             <input
@@ -442,7 +221,7 @@
               @change="type = 'monster'"
               :checked="type == 'monster'"
             />
-            <label class="btn btn-outline-primary col-4" for="btnradio12"
+            <label class="btn btn-outline-primary col-4" :class="{ monster: type == 'monster' }" for="btnradio12"
               >Monster</label
             >
             <input
@@ -454,7 +233,7 @@
               @change="type = 'spell'"
               :checked="type == 'spell'"
             />
-            <label class="btn btn-outline-primary col-4" for="btnradio13"
+            <label class="btn btn-outline-primary col-4" :class="{ spell: type == 'spell' }" for="btnradio13"
               >Spell</label
             >
             <input
@@ -466,7 +245,7 @@
               @change="type = 'trap'"
               :checked="type == 'trap'"
             />
-            <label class="btn btn-outline-primary col-4" for="btnradio14"
+            <label class="btn btn-outline-primary col-4" :class="{ trap: type == 'trap' }" for="btnradio14"
               >Trap</label
             >
           </div>
@@ -622,7 +401,7 @@
           <br />
           <button
             type="submit"
-            class="btn btn-primary w-25 mt-1"
+            class="btn btn-primary w-100 mt-1"
             style="float: right"
           >
             Confirm
@@ -641,7 +420,7 @@
         >&times;</span
       >
       <div class="container">
-        <div class="d-flex justify-content: center">
+        <div class="d-flex justify-content: center mb-1">
           <div class="w-100 border rounded border-primary fs-3">
             Are you sure to delete {{ cardNameInput }}
           </div>
@@ -685,7 +464,7 @@ export default defineComponent({
     }
     if (getDeck()) {
       this.selectedDeck = getDeck().name;
-      this.deck=getDeck();
+      this.deck = getDeck();
       this.loadDeck();
       this.uniqueCardDeck();
       this.deckRatingValue();
@@ -740,12 +519,21 @@ export default defineComponent({
 
       cardNameInput: "",
       cardCountInput: "",
+      editAdd: "",
       deck: {} as Deck,
       allCards: [] as Card[],
       decks: [] as Deck[],
     };
   },
   methods: {
+    editAddCard() {
+      if (this.editAdd == "add") {
+        this.addCard();
+      }
+      if (this.editAdd == "edit") {
+        this.editCard();
+      }
+    },
     addCard: function () {
       this.deck.cards[this.deck.cards.length] = {
         cardId: this.deck.cards.length,
@@ -768,6 +556,7 @@ export default defineComponent({
       this.deckRatingValue();
       this.sortDeck();
       this.safeDeck();
+      this.closeCardEditModal();
     },
     editCard: function () {
       this.deck.cards[this.editCardId] = {
@@ -829,7 +618,13 @@ export default defineComponent({
       var modal = document.getElementById("cardDeleteModal");
       modal!.style.display = "none";
     },
+    openCardAddModal() {
+      this.editAdd = "add";
+      var modal = document.getElementById("cardEditModal");
+      modal!.style.display = "block";
+    },
     openCardEditModal(index: number) {
+      this.editAdd = "edit";
       this.editCardId = index;
       this.cardNameInput = this.deck.cards[index].cardName;
       this.cardCountInput = JSON.stringify(this.deck.cards[index].cardCount);
@@ -842,6 +637,7 @@ export default defineComponent({
       this.negate = this.deck.cards[index].cardNegate;
       this.interaption = this.deck.cards[index].cardInteraption;
       this.value = this.deck.cards[index].cardValue;
+      this.type = this.deck.cards[index].cardType;
       var modal = document.getElementById("cardEditModal");
       modal!.style.display = "block";
     },
@@ -956,7 +752,8 @@ export default defineComponent({
       this.deckRating = Math.round(this.deckRating * 10) / 10;
     },
     safeDeck() {
-      this.decks[this.decks.findIndex(d=>d.name==this.deck.name)]=this.deck
+      this.decks[this.decks.findIndex((d) => d.name == this.deck.name)] =
+        this.deck;
       setDeck(this.deck);
       setData(this.decks);
     },
@@ -974,7 +771,7 @@ export default defineComponent({
           this.decks.push({
             name: this.selectedDeck,
             cards: [],
-            combos:[],
+            combos: [],
           });
           this.deck =
             this.decks[
