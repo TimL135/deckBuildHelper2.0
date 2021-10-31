@@ -71,13 +71,8 @@
             </button>
           </td>
           <td>
-            <div
-              v-for="card in combo.cards"
-              :key="card.cardName"
-              class="mb-1"
-              :class="card.cardType"
-            >
-              {{ card.cardName }}
+            <div v-for="card in combo" :key="card" class="mb-1" :class="deck.cards.find(c=>c.cardName==card).cardType">
+              {{ card }}
             </div>
           </td>
         </tr>
@@ -95,34 +90,34 @@
       >
       <div class="container">
         <div class="d-flex justify-content: center">
-          <div class="w-100 border rounded border-primary fs-3">
-            <select class="form-select" v-model="comboCards[0]">
-              <option selected>1. Karte</option>
-              <option v-for="card in helpDeck" :key="card.cardName">
+          <div class="w-100">
+            <select class="form-select" v-model="comboCards[0]" :class="comboCardsType[0]" @change="changeType()">
+              <option class="placeholder" selected>1. Card</option>
+              <option v-for="card in helpDeck" :key="card.cardName" :class="card.cardType">
                 {{ card.cardName }}
               </option>
             </select>
-            <select class="form-select" v-model="comboCards[1]">
-              <option selected>2. Karte</option>
-              <option v-for="card in helpDeck" :key="card.cardName">
+            <select class="form-select" v-model="comboCards[1]" :class="comboCardsType[1]" @change="changeType()">
+              <option class="placeholder" selected>2. Card</option>
+              <option v-for="card in helpDeck" :key="card.cardName" :class="card.cardType">
                 {{ card.cardName }}
               </option>
             </select>
-            <select class="form-select" v-model="comboCards[2]">
-              <option selected>3. Karte</option>
-              <option v-for="card in helpDeck" :key="card.cardName">
+            <select class="form-select" v-model="comboCards[2]" :class="comboCardsType[2]" @change="changeType()">
+              <option class="placeholder" selected>3. Card</option>
+              <option v-for="card in helpDeck" :key="card.cardName" :class="card.cardType">
                 {{ card.cardName }}
               </option>
             </select>
-            <select class="form-select" v-model="comboCards[3]">
-              <option selected>4. Karte</option>
-              <option v-for="card in helpDeck" :key="card.cardName">
+            <select class="form-select" v-model="comboCards[3]" :class="comboCardsType[3]" @change="changeType()">
+              <option class="placeholder" selected>4. Card</option>
+              <option v-for="card in helpDeck" :key="card.cardName" :class="card.cardType">
                 {{ card.cardName }}
               </option>
             </select>
-            <select class="form-select" v-model="comboCards[4]">
-              <option selected>5. Karte</option>
-              <option v-for="card in helpDeck" :key="card.cardName">
+            <select class="form-select" v-model="comboCards[4]" :class="comboCardsType[4]" @change="changeType()">
+              <option class="placeholder" selected>5. Card</option>
+              <option v-for="card in helpDeck" :key="card.cardName" :class="card.cardType">
                 {{ card.cardName }}
               </option>
             </select>
@@ -151,34 +146,34 @@
       >
       <div class="container">
         <div class="d-flex justify-content: center">
-          <div class="w-100 border rounded border-primary fs-3">
-            <select class="form-select" v-model="comboCards[0]">
-              <option selected>1. Karte</option>
-              <option v-for="card in helpDeck" :key="card.cardName">
+          <div class="w-100">
+            <select class="form-select" v-model="comboCards[0]" :class="comboCardsType[0]" @change="changeType()">
+              <option class="placeholder" selected>1. Card</option>
+              <option v-for="card in helpDeck" :key="card.cardName" :class="card.cardType">
                 {{ card.cardName }}
               </option>
             </select>
-            <select class="form-select" v-model="comboCards[1]">
-              <option selected>2. Karte</option>
-              <option v-for="card in helpDeck" :key="card.cardName">
+            <select class="form-select" v-model="comboCards[1]" :class="comboCardsType[1]" @change="changeType()">
+              <option class="placeholder" selected>2. Card</option>
+              <option v-for="card in helpDeck" :key="card.cardName" :class="card.cardType">
                 {{ card.cardName }}
               </option>
             </select>
-            <select class="form-select" v-model="comboCards[2]">
-              <option selected>3. Karte</option>
-              <option v-for="card in helpDeck" :key="card.cardName">
+            <select class="form-select" v-model="comboCards[2]" :class="comboCardsType[2]" @change="changeType()">
+              <option class="placeholder" selected>3. Card</option>
+              <option v-for="card in helpDeck" :key="card.cardName" :class="card.cardType">
                 {{ card.cardName }}
               </option>
             </select>
-            <select class="form-select" v-model="comboCards[3]">
-              <option selected>4. Karte</option>
-              <option v-for="card in helpDeck" :key="card.cardName">
+            <select class="form-select" v-model="comboCards[3]" :class="comboCardsType[3]" @change="changeType()">
+              <option class="placeholder" selected>4. Card</option>
+              <option v-for="card in helpDeck" :key="card.cardName" :class="card.cardType"> 
                 {{ card.cardName }}
               </option>
             </select>
-            <select class="form-select" v-model="comboCards[4]">
-              <option selected>5. Karte</option>
-              <option v-for="card in helpDeck" :key="card.cardName">
+            <select class="form-select" v-model="comboCards[4]" :class="comboCardsType[4]" @change="changeType()">
+              <option class="placeholder" selected>5. Card</option>
+              <option v-for="card in helpDeck" :key="card.cardName" :class="card.cardType">
                 {{ card.cardName }}
               </option>
             </select>
@@ -206,8 +201,8 @@
       >
       <div class="container">
         <div class="d-flex justify-content: center">
-          <div class="w-100 border rounded border-primary fs-3">
-            Are you sure to delete Combo{{deleteComboIndex+1}}
+          <div class="w-100 mb-1">
+            Are you sure to delete Combo{{ deleteComboIndex + 1 }}
           </div>
         </div>
         <div class="d-flex justify-content: center">
@@ -235,7 +230,7 @@ import { defineComponent } from "vue";
 import { Card, Combo, Deck, getData, getDeck, setData, setDeck } from "@/API";
 export default defineComponent({
   mounted() {
-        if (getData()) {
+    if (getData()) {
       this.decks = getData();
     }
     if (getDeck()) {
@@ -246,15 +241,17 @@ export default defineComponent({
   data() {
     return {
       deck: {} as Deck,
-      editComboIndex:0,
-      deleteComboIndex:0,
+      editComboIndex: 0,
+      deleteComboIndex: 0,
       helpDeck: [] as Card[],
-       decks: [] as Deck[],
-      comboCards: ["1. Karte", "2. Karte", "3. Karte", "4. Karte", "5. Karte"],
+      decks: [] as Deck[],
+      comboCards: ["1. Card", "2. Card", "3. Card", "4. Card", "5. Card"],
+      comboCardsType: [] as string[],
     };
   },
   methods: {
     closeComboAddModal() {
+this.inputReset()
       var modal = document.getElementById("comboAddModal");
       modal!.style.display = "none";
     },
@@ -263,46 +260,50 @@ export default defineComponent({
       modal!.style.display = "block";
     },
     addCombo() {
-      let cardArray = [] as Card[];
+      let cardArray = [] as string[];
       for (let i = 0; i < 5; i++) {
-        if (!this.comboCards[i].includes(". Karte")) {
+        if (!this.comboCards[i].includes(". Card")) {
           let card = this.deck.cards.find(
             (x) => x.cardName == this.comboCards[i]
           );
-          cardArray.push(card as Card);
+          if (card) {
+            cardArray.push(card.cardName);
+          }
         }
       }
-      if(this.deck.combos){
-      this.deck.combos.push({ cards: cardArray });
-      }else{
-        this.deck={
-          name:this.deck.name,
-          cards:this.deck.cards,
-          combos:[{ cards: cardArray }]
-        }
+      if (this.deck.combos) {
+        this.deck.combos.push(cardArray);
+      } else {
+        this.deck = {
+          name: this.deck.name,
+          cards: this.deck.cards,
+          combos: [cardArray],
+        };
       }
       this.safeDeck();
       this.inputReset();
       this.closeComboAddModal();
     },
-    editCombo(){
- let cardArray = [] as Card[];
+    editCombo() {
+      let cardArray = [] as string[];
       for (let i = 0; i < 5; i++) {
-        if (!this.comboCards[i].includes(". Karte")) {
+        if (!this.comboCards[i].includes(". Card")) {
           let card = this.deck.cards.find(
             (x) => x.cardName == this.comboCards[i]
           );
-          cardArray.push(card as Card);
+          if (card) {
+            cardArray.push(card.cardName);
+          }
         }
       }
-       this.deck.combos[this.editComboIndex]={ cards: cardArray };
-        this.safeDeck();
-       this.closeComboEditModal();
+      this.deck.combos[this.editComboIndex] = cardArray;
+      this.safeDeck();
+      this.closeComboEditModal();
     },
-    deleteCombo(index:number){
-this.deck.combos.splice(index,1)
- this.safeDeck();
-this.closeComboDeleteModal()
+    deleteCombo() {
+      this.deck.combos.splice(this.deleteComboIndex, 1);
+      this.safeDeck();
+      this.closeComboDeleteModal();
     },
     uniqueCardDeck() {
       this.helpDeck = [];
@@ -315,43 +316,52 @@ this.closeComboDeleteModal()
       }
     },
     inputReset() {
-      this.comboCards = [
-        "1. Karte",
-        "2. Karte",
-        "3. Karte",
-        "4. Karte",
-        "5. Karte",
-      ];
+      this.comboCards = ["1. Card", "2. Card", "3. Card", "4. Card", "5. Card"];
+      this.changeType()
     },
     openComboDeleteModal(index: number) {
-      this.deleteComboIndex=index
+      this.deleteComboIndex = index;
       var modal = document.getElementById("comboDeleteModal");
       modal!.style.display = "block";
     },
     closeComboDeleteModal() {
+      this.inputReset()
       var modal = document.getElementById("comboDeleteModal");
       modal!.style.display = "none";
     },
     openComboEditModal(index: number) {
+       
       let i = 0;
-      this.editComboIndex=index
-      for (let card of this.deck.combos[index].cards) {
-        this.comboCards[i] = card.cardName;
-        i++
+      this.editComboIndex = index;
+      for (let card of this.deck.combos[index]) {
+        this.comboCards[i] = card;
+        i++;
       }
+      this.changeType()
       var modal = document.getElementById("comboEditModal");
       modal!.style.display = "block";
     },
     closeComboEditModal() {
-      this.inputReset()
+      this.inputReset();
       var modal = document.getElementById("comboEditModal");
       modal!.style.display = "none";
     },
-      safeDeck() {
-      this.decks[this.decks.findIndex(d=>d.name==this.deck.name)]=this.deck
+    safeDeck() {
+      this.decks[this.decks.findIndex((d) => d.name == this.deck.name)] =
+        this.deck;
       setDeck(this.deck);
       setData(this.decks);
     },
+    changeType(){
+for (let i = 0; i < 5; i++) {
+       let tmp = this.deck.cards.find((c) => c.cardName == this.comboCards[i]);
+        if (tmp) {
+          this.comboCardsType[i] = tmp.cardType;
+        }else{
+          this.comboCardsType[i] =""
+        }
+}
+    }
   },
 });
 </script>
@@ -366,6 +376,10 @@ this.closeComboDeleteModal()
 }
 .trap {
   background-color: #a91475 !important;
+  border: none;
+}
+.placeholder {
+  background-color: #fff !important;
   border: none;
 }
 </style>

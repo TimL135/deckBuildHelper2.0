@@ -7,33 +7,78 @@
   />
 
   <div class="container" style="margin-top: 3vh">
-    <select class="form-select" v-model="handCards[0]" @change="countCard()">
-      <option selected>1. Karte</option>
-      <option v-for="card in deck" :key="card.cardName">
+    <select
+      class="form-select"
+      v-model="handCards[0]"
+      :class="handCardsType[0]"
+      @change="countCard()"
+    >
+      <option class="placeholder" selected>1. Card</option>
+      <option
+        v-for="card in deck.cards"
+        :key="card.cardName"
+        :class="card.cardType"
+      >
         {{ card.cardName }}
       </option>
     </select>
-    <select class="form-select" v-model="handCards[1]" @change="countCard()">
-      <option selected>2. Karte</option>
-      <option v-for="card in deck" :key="card.cardName">
+    <select
+      class="form-select"
+      v-model="handCards[1]"
+      :class="handCardsType[1]"
+      @change="countCard()"
+    >
+      <option class="placeholder" selected>2. Card</option>
+      <option
+        v-for="card in deck.cards"
+        :key="card.cardName"
+        :class="card.cardType"
+      >
         {{ card.cardName }}
       </option>
     </select>
-    <select class="form-select" v-model="handCards[2]" @change="countCard()">
-      <option selected>3. Karte</option>
-      <option v-for="card in deck" :key="card.cardName">
+    <select
+      class="form-select"
+      v-model="handCards[2]"
+      :class="handCardsType[2]"
+      @change="countCard()"
+    >
+      <option class="placeholder" selected>3. Card</option>
+      <option
+        v-for="card in deck.cards"
+        :key="card.cardName"
+        :class="card.cardType"
+      >
         {{ card.cardName }}
       </option>
     </select>
-    <select class="form-select" v-model="handCards[3]" @change="countCard()">
-      <option selected>4. Karte</option>
-      <option v-for="card in deck" :key="card.cardName">
+    <select
+      class="form-select"
+      v-model="handCards[3]"
+      :class="handCardsType[3]"
+      @change="countCard()"
+    >
+      <option class="placeholder" selected>4. Card</option>
+      <option
+        v-for="card in deck.cards"
+        :key="card.cardName"
+        :class="card.cardType"
+      >
         {{ card.cardName }}
       </option>
     </select>
-    <select class="form-select" v-model="handCards[4]" @change="countCard()">
-      <option selected>5. Karte</option>
-      <option v-for="card in deck" :key="card.cardName">
+    <select
+      class="form-select"
+      v-model="handCards[4]"
+      :class="handCardsType[4]"
+      @change="countCard()"
+    >
+      <option class="placeholder" selected>5. Card</option>
+      <option
+        v-for="card in deck.cards"
+        :key="card.cardName"
+        :class="card.cardType"
+      >
         {{ card.cardName }}
       </option>
     </select>
@@ -79,21 +124,43 @@
       </div>
     </div>
   </div>
+  <br>
+  <h1>Possible Combos</h1>
+  <table class="table table-striped">
+      <thead>
+        <tr>
+          <th class="w-25">Combo</th>
+          <th class="w-75">Cards</th>
+        </tr>
+      </thead>
+      <tbody>
+         <tr v-for="combo in possibleCombos" :key="combo">
+          <td>
+            {{ possibleCombos.findIndex((c) => c == combo) + 1 }}
+          </td>
+          <td>
+            <div v-for="card in combo" :key="card" class="mb-1" :class="deck.cards.find(c=>c.cardName==card).cardType">
+              {{ card }}
+            </div>
+          </td>
+        </tr>
+      </tbody>
+  </table>
 </template>
 <script lang="ts">
-import { Card, Deck, getData, getDeck } from "@/API";
+import { Card, Combo, Deck, getData, getDeck } from "@/API";
 import { defineComponent } from "vue";
 export default defineComponent({
   mounted() {
     if (getDeck()) {
-      this.deck = getDeck().cards;
+      this.deck = getDeck();
     }
   },
   data() {
     return {
-      deck: [] as Card[],
-      decks: [] as Deck[],
+      deck: {} as Deck,
       allCards: [] as string[],
+      possibleCombos: [] as Combo[],
       handTrapCount: 0,
       uniqueHandTrapCount: 0,
 
@@ -118,16 +185,17 @@ export default defineComponent({
       interaptionCount: 0,
       uniqueInteraptionCount: 0,
       value: 0,
-      handCards: ["1. Karte", "2. Karte", "3. Karte", "4. Karte", "5. Karte"],
+      handCards: ["1. Card", "2. Card", "3. Card", "4. Card", "5. Card"],
+      handCardsType: [] as string[],
     };
   },
   methods: {
     randomStartHand: function () {
       if (getDeck()) {
-        this.deck = getDeck().cards;
+        this.deck = getDeck();
       }
       this.allCards = [];
-      for (let card of this.deck) {
+      for (let card of this.deck.cards) {
         for (card.cardCount; card.cardCount > 0; card.cardCount--) {
           this.allCards.push(card.cardName);
         }
@@ -167,7 +235,13 @@ export default defineComponent({
       let handValueCards = [] as Card[];
       let uniqueCards = [] as Card[];
       for (let i = 0; i < 5; i++) {
-        let card = this.deck.find((x) => x.cardName == this.handCards[i]);
+        let tmp = this.deck.cards.find((c) => c.cardName == this.handCards[i]);
+        if (tmp) {
+          this.handCardsType[i] = tmp.cardType;
+        }else{
+          this.handCardsType[i] =""
+        }
+        let card = this.deck.cards.find((x) => x.cardName == this.handCards[i]);
         if (card) {
           if (card.cardHandTrap) {
             this.handTrapCount++;
@@ -238,6 +312,15 @@ export default defineComponent({
           this.uniqueInteraptionCount++;
         }
       }
+      this.checkCombos();
+    },
+    checkCombos() {
+      this.possibleCombos = [];
+      for (let combo of this.deck.combos) {
+        if (combo.every((c) => this.handCards.includes(c))) {
+          this.possibleCombos.push(combo);
+        }
+      }
     },
     getRandomInt: function (max: number) {
       return Math.floor(Math.random() * max);
@@ -249,5 +332,17 @@ export default defineComponent({
 .btn-check:focus + .btn-primary,
 .btn-primary:focus {
   box-shadow: none !important;
+}
+.monster {
+  background-color: #b5542c !important;
+  border: none;
+}
+.spell {
+  background-color: #289287 !important;
+  border: none;
+}
+.trap {
+  background-color: #a91475 !important;
+  border: none;
 }
 </style>

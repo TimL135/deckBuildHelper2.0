@@ -269,43 +269,43 @@
     </form>
     <br />
     <div class="d-flex mb-1">
-      <div class="col-4 border rounded border-primary">
+      <div class="col-4 border rounded-start border-primary">
         Card amount:<br />{{ deckNumber }}
       </div>
-      <div class="col-4 border rounded border-primary">
+      <div class="col-4 border border-primary">
         <div>Deckrating:<br />{{ deckRating }}%</div>
       </div>
-      <div class="col-4 border rounded border-primary">
+      <div class="col-4 border rounded-end border-primary">
         <div>Deckvalue average:<br />{{ deckValue }}</div>
       </div>
     </div>
     <div class="d-flex mb-1">
-      <div class="w-25 border rounded border-primary">
+      <div class="w-25 border rounded-start border-primary">
         Handtraps:<br />{{ handTrapCount }}({{ uniqueHandTrapCount }})
       </div>
-      <div class="w-25 border rounded border-primary">
+      <div class="w-25 border border-primary">
         Seacher:<br />{{ seacherCount }}({{ uniqueSeacherCount }})
       </div>
-      <div class="w-25 border rounded border-primary">
+      <div class="w-25 border border-primary">
         Combo Starter:<br />{{ comboStarterCount }}({{
           uniqueComboStarterCount
         }})
       </div>
-      <div class="w-25 border rounded border-primary">
+      <div class="w-25 border rounded-end border-primary">
         Negate:<br />{{ negateCount }}({{ uniqueNegateCount }})
       </div>
     </div>
     <div class="d-flex mb-1">
-      <div class="w-25 border rounded border-primary">
+      <div class="w-25 border rounded-start border-primary">
         Once per Turn:<br />{{ oncePerTurnCount }}({{ uniqueOncePerTurnCount }})
       </div>
-      <div class="w-25 border rounded border-primary">
+      <div class="w-25 border border-primary">
         Searchable:<br />{{ searchableCount }}({{ uniqueSearchableCount }})
       </div>
-      <div class="w-25 border rounded border-primary">
+      <div class="w-25 border border-primary">
         Combo Piece:<br />{{ comboPieceCount }}({{ uniqueComboPieceCount }})
       </div>
-      <div class="w-25 border rounded border-primary">
+      <div class="w-25 border rounded-end border-primary">
         Interaption:<br />{{ interaptionCount }}({{ uniqueInteraptionCount }})
       </div>
     </div>
