@@ -79,7 +79,7 @@
               v-for="card in combo"
               :key="card"
               class="mb-1"
-              :class="deck.cards.find((c) => c.cardName == card).cardType"
+              :class="deck.cards.find((c) => c.cardName == card)?.cardType"
             >
               {{ card }}
             </div>

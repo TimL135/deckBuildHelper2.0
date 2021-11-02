@@ -20,7 +20,7 @@
         </tr>
       </thead>
       <tbody>
-        <tr v-for="cardGroup in deck.cardGroups" :key="cardGroup.name">
+        <tr v-for="cardGroup in deck.cardGroups" :key="cardGroup.name" >
           <td>{{ cardGroup.name }}</td>
           <td>
             <button
@@ -76,7 +76,7 @@
             </button>
           </td>
           <td>
-            <div v-for="card in cardGroup.cards" :key="card" class="mb-1">
+            <div v-for="card in cardGroup.cards" :key="card" class="mb-1" :class="deck.cards.find((c) => c.cardName == card)?.cardType">
               {{ card }}
             </div>
           </td>
@@ -98,6 +98,7 @@
         <div class="input-group mb-1">
           <span class="input-group-text w-25" id="basic-addon1">Name</span>
           <input
+           
             type="text"
             class="form-control"
             aria-label="Username"
@@ -109,6 +110,7 @@
         <div v-for="cardInput in this.cardInputs.length" :key="cardInput">
           <select
             class="form-select"
+            :class="cardInputTypes[cardInput -1]"
             v-model="cardInputs[cardInput - 1]"
             @change="checkCardInputs()"
           >
@@ -189,6 +191,7 @@ export default defineComponent({
       cardGroupNameInput: "",
       editAdd: "",
       cardInputs: ["1. Card"] as string[],
+      cardInputTypes:[] as string[],
       helpDeck: [] as Card[],
       deck: {} as Deck,
       decks: [] as Deck[],
@@ -209,6 +212,7 @@ export default defineComponent({
       modal!.style.display = "block";
     },
     closeCardGroupAddModal() {
+      
       if(this.deck.cardGroups.length>0){
       if (
         this.deck.cardGroups[this.editCardGroupIndex].cards[
@@ -218,6 +222,7 @@ export default defineComponent({
         this.deck.cardGroups[this.editCardGroupIndex].cards.pop();
       }}
       this.inputReset();
+      this.changeType()
       var modal = document.getElementById("cardGroupAddModal");
       modal!.style.display = "none";
     },
@@ -248,13 +253,15 @@ export default defineComponent({
       this.safeDeck();
     },
     openCardGroupEditModal(index: number) {
+      console.log(index)
       this.editAdd = "edit";
       this.editCardGroupIndex = index;
       this.cardGroupNameInput = this.deck.cardGroups[index].name;
       this.cardInputs = this.deck.cardGroups[index].cards;
       this.cardInputs.push(`${this.cardInputs.length + 1}. Card`);
+      this.changeType()
       var modal = document.getElementById("cardGroupAddModal");
-      modal!.style.display = "block";
+      modal!.style.display = "block";   
     },
     editCardGroup() {
       let tmp = [...this.cardInputs];
@@ -299,6 +306,7 @@ export default defineComponent({
         }
       }
       this.cardInputs.push(`${this.cardInputs.length + 1}. Card`);
+    this.changeType()
     },
     uniqueCardDeck() {
       this.helpDeck = [];
@@ -320,9 +328,33 @@ export default defineComponent({
       this.cardGroupNameInput = "";
       this.cardInputs = ["1. Card"];
     },
+     changeType() {
+      this.cardInputTypes=[] 
+      for (let i = 0; i < this.cardInputs.length-1 ; i++) {
+        let tmp = this.deck.cards.find((c) => c.cardName == this.cardInputs[i]);
+        if (tmp) {
+          this.cardInputTypes[i] = tmp.cardType;
+        } else {
+          this.cardInputTypes[i] = "";
+        }
+      }
+      this.cardInputTypes.push("")
+    },
   },
 });
 </script>
 
 <style>
+.monster {
+  background-color: #b5542c !important;
+  border: none;
+}
+.spell {
+  background-color: #289287 !important;
+  border: none;
+}
+.trap {
+  background-color: #a91475 !important;
+  border: none;
+}
 </style>
