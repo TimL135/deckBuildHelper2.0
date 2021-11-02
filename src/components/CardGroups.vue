@@ -209,13 +209,14 @@ export default defineComponent({
       modal!.style.display = "block";
     },
     closeCardGroupAddModal() {
+      if(this.deck.cardGroups.length>0){
       if (
         this.deck.cardGroups[this.editCardGroupIndex].cards[
           this.deck.cardGroups[this.editCardGroupIndex].cards.length - 1
         ].includes(". Card")
       ) {
         this.deck.cardGroups[this.editCardGroupIndex].cards.pop();
-      }
+      }}
       this.inputReset();
       var modal = document.getElementById("cardGroupAddModal");
       modal!.style.display = "none";
