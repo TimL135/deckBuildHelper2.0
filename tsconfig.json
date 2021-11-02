@@ -33,7 +33,7 @@
     "src/**/*.vue",
     "tests/**/*.ts",
     "tests/**/*.tsx"
-, "src/registerServiceWorker.ts"  ],
+, "src/registerServiceWorker.ts", "src/components/CardGroups.vue"  ],
   "exclude": [
     "node_modules"
   ]

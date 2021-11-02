@@ -198,6 +198,7 @@
             >
             <input
               type="number"
+              oninput="this.value = this.value.replace(/[^1-3.]/g, '').replace(/(\..*)\./g, '$1');" 
               class="form-control"
               aria-label="Username"
               aria-describedby="addon-wrapping"
@@ -421,7 +422,7 @@
       >
       <div class="container">
         <div class="d-flex justify-content: center mb-1">
-          <div class="w-100 border rounded border-primary fs-3">
+          <div class="w-100 ">
             Are you sure to delete {{ cardNameInput }}
           </div>
         </div>
@@ -772,6 +773,7 @@ export default defineComponent({
             name: this.selectedDeck,
             cards: [],
             combos: [],
+            cardGroups:[],
           });
           this.deck =
             this.decks[

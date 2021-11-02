@@ -82,16 +82,16 @@
         {{ card.cardName }}
       </option>
     </select>
-<div>
-    <button
-      @click="randomStartHand()"
-      type="button"
-      class="btn btn-primary w-100 mt-1"
-    >
-      Random
-    </button>
-</div>
-<br>
+    <div>
+      <button
+        @click="randomStartHand()"
+        type="button"
+        class="btn btn-primary w-100 mt-1"
+      >
+        Random
+      </button>
+    </div>
+    <br />
     <div class="d-flex mb-1">
       <div class="w-100 border rounded border-primary">Value:{{ value }}</div>
     </div>
@@ -125,29 +125,35 @@
         Interaption:<br />{{ interaptionCount }}({{ uniqueInteraptionCount }})
       </div>
     </div>
-  </div>
-  <br>
+  
+  <br />
   <h1>Possible Combos</h1>
   <table class="table table-striped">
-      <thead>
-        <tr>
-          <th class="w-25">Combo</th>
-          <th class="w-75">Cards</th>
-        </tr>
-      </thead>
-      <tbody>
-         <tr v-for="combo in possibleCombos" :key="combo">
-          <td>
-            {{ possibleCombos.findIndex((c) => c == combo) + 1 }}
-          </td>
-          <td>
-            <div v-for="card in combo" :key="card" class="mb-1" :class="deck.cards.find(c=>c.cardName==card).cardType">
-              {{ card }}
-            </div>
-          </td>
-        </tr>
-      </tbody>
+    <thead>
+      <tr>
+        <th class="w-25">Combo</th>
+        <th class="w-75">Cards</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr v-for="combo in possibleCombos" :key="combo">
+        <td>
+          {{ possibleCombos.findIndex((c) => c == combo) + 1 }}
+        </td>
+        <td>
+          <div
+            v-for="card in combo"
+            :key="card"
+            class="mb-1"
+            :class="deck.cards.find((c) => c.cardName == card).cardType"
+          >
+            {{ card }}
+          </div>
+        </td>
+      </tr>
+    </tbody>
   </table>
+  </div>
 </template>
 <script lang="ts">
 import { Card, Combo, Deck, getData, getDeck } from "@/API";
@@ -240,8 +246,8 @@ export default defineComponent({
         let tmp = this.deck.cards.find((c) => c.cardName == this.handCards[i]);
         if (tmp) {
           this.handCardsType[i] = tmp.cardType;
-        }else{
-          this.handCardsType[i] =""
+        } else {
+          this.handCardsType[i] = "";
         }
         let card = this.deck.cards.find((x) => x.cardName == this.handCards[i]);
         if (card) {

@@ -2,6 +2,7 @@ import { createRouter, createWebHashHistory, RouteRecordRaw } from "vue-router";
 import Main from "@/components/Main.vue";
 import StartHand from "@/components/StartHand.vue";
 import Combos from "@/components/Combos.vue";
+import CardGroups from "@/components/CardGroups.vue"
 const routes: Array<RouteRecordRaw> = [
   {
     path: "/",
@@ -17,6 +18,11 @@ const routes: Array<RouteRecordRaw> = [
     path: "/Combos",
     name: "Combos",
     component: Combos,
+  },
+  {
+    path: "/CardGroups",
+    name: "CardGroups",
+    component: CardGroups,
   },
   
 ];

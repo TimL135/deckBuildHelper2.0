@@ -1,5 +1,6 @@
 <template>
   <div class="container" style="margin-top: 3vh">
+    <div>
     <button
       type="button"
       class="w-100 btn btn-primary"
@@ -7,6 +8,9 @@
     >
       Add new Combo
     </button>
+    </div>
+    <br />
+
     <!-- new table -->
     <table class="table table-striped">
       <thead>
@@ -71,7 +75,12 @@
             </button>
           </td>
           <td>
-            <div v-for="card in combo" :key="card" class="mb-1" :class="deck.cards.find(c=>c.cardName==card).cardType">
+            <div
+              v-for="card in combo"
+              :key="card"
+              class="mb-1"
+              :class="deck.cards.find((c) => c.cardName == card).cardType"
+            >
               {{ card }}
             </div>
           </td>
@@ -91,33 +100,78 @@
       <div class="container">
         <div class="d-flex justify-content: center">
           <div class="w-100">
-            <select class="form-select" v-model="comboCards[0]" :class="comboCardsType[0]" @change="changeType()">
+            <select
+              class="form-select"
+              v-model="comboCards[0]"
+              :class="comboCardsType[0]"
+              @change="changeType()"
+            >
               <option class="placeholder" selected>1. Card</option>
-              <option v-for="card in helpDeck" :key="card.cardName" :class="card.cardType">
+              <option
+                v-for="card in helpDeck"
+                :key="card.cardName"
+                :class="card.cardType"
+              >
                 {{ card.cardName }}
               </option>
             </select>
-            <select class="form-select" v-model="comboCards[1]" :class="comboCardsType[1]" @change="changeType()">
+            <select
+              class="form-select"
+              v-model="comboCards[1]"
+              :class="comboCardsType[1]"
+              @change="changeType()"
+            >
               <option class="placeholder" selected>2. Card</option>
-              <option v-for="card in helpDeck" :key="card.cardName" :class="card.cardType">
+              <option
+                v-for="card in helpDeck"
+                :key="card.cardName"
+                :class="card.cardType"
+              >
                 {{ card.cardName }}
               </option>
             </select>
-            <select class="form-select" v-model="comboCards[2]" :class="comboCardsType[2]" @change="changeType()">
+            <select
+              class="form-select"
+              v-model="comboCards[2]"
+              :class="comboCardsType[2]"
+              @change="changeType()"
+            >
               <option class="placeholder" selected>3. Card</option>
-              <option v-for="card in helpDeck" :key="card.cardName" :class="card.cardType">
+              <option
+                v-for="card in helpDeck"
+                :key="card.cardName"
+                :class="card.cardType"
+              >
                 {{ card.cardName }}
               </option>
             </select>
-            <select class="form-select" v-model="comboCards[3]" :class="comboCardsType[3]" @change="changeType()">
+            <select
+              class="form-select"
+              v-model="comboCards[3]"
+              :class="comboCardsType[3]"
+              @change="changeType()"
+            >
               <option class="placeholder" selected>4. Card</option>
-              <option v-for="card in helpDeck" :key="card.cardName" :class="card.cardType">
+              <option
+                v-for="card in helpDeck"
+                :key="card.cardName"
+                :class="card.cardType"
+              >
                 {{ card.cardName }}
               </option>
             </select>
-            <select class="form-select" v-model="comboCards[4]" :class="comboCardsType[4]" @change="changeType()">
+            <select
+              class="form-select"
+              v-model="comboCards[4]"
+              :class="comboCardsType[4]"
+              @change="changeType()"
+            >
               <option class="placeholder" selected>5. Card</option>
-              <option v-for="card in helpDeck" :key="card.cardName" :class="card.cardType">
+              <option
+                v-for="card in helpDeck"
+                :key="card.cardName"
+                :class="card.cardType"
+              >
                 {{ card.cardName }}
               </option>
             </select>
@@ -147,33 +201,78 @@
       <div class="container">
         <div class="d-flex justify-content: center">
           <div class="w-100">
-            <select class="form-select" v-model="comboCards[0]" :class="comboCardsType[0]" @change="changeType()">
+            <select
+              class="form-select"
+              v-model="comboCards[0]"
+              :class="comboCardsType[0]"
+              @change="changeType()"
+            >
               <option class="placeholder" selected>1. Card</option>
-              <option v-for="card in helpDeck" :key="card.cardName" :class="card.cardType">
+              <option
+                v-for="card in helpDeck"
+                :key="card.cardName"
+                :class="card.cardType"
+              >
                 {{ card.cardName }}
               </option>
             </select>
-            <select class="form-select" v-model="comboCards[1]" :class="comboCardsType[1]" @change="changeType()">
+            <select
+              class="form-select"
+              v-model="comboCards[1]"
+              :class="comboCardsType[1]"
+              @change="changeType()"
+            >
               <option class="placeholder" selected>2. Card</option>
-              <option v-for="card in helpDeck" :key="card.cardName" :class="card.cardType">
+              <option
+                v-for="card in helpDeck"
+                :key="card.cardName"
+                :class="card.cardType"
+              >
                 {{ card.cardName }}
               </option>
             </select>
-            <select class="form-select" v-model="comboCards[2]" :class="comboCardsType[2]" @change="changeType()">
+            <select
+              class="form-select"
+              v-model="comboCards[2]"
+              :class="comboCardsType[2]"
+              @change="changeType()"
+            >
               <option class="placeholder" selected>3. Card</option>
-              <option v-for="card in helpDeck" :key="card.cardName" :class="card.cardType">
+              <option
+                v-for="card in helpDeck"
+                :key="card.cardName"
+                :class="card.cardType"
+              >
                 {{ card.cardName }}
               </option>
             </select>
-            <select class="form-select" v-model="comboCards[3]" :class="comboCardsType[3]" @change="changeType()">
+            <select
+              class="form-select"
+              v-model="comboCards[3]"
+              :class="comboCardsType[3]"
+              @change="changeType()"
+            >
               <option class="placeholder" selected>4. Card</option>
-              <option v-for="card in helpDeck" :key="card.cardName" :class="card.cardType"> 
+              <option
+                v-for="card in helpDeck"
+                :key="card.cardName"
+                :class="card.cardType"
+              >
                 {{ card.cardName }}
               </option>
             </select>
-            <select class="form-select" v-model="comboCards[4]" :class="comboCardsType[4]" @change="changeType()">
+            <select
+              class="form-select"
+              v-model="comboCards[4]"
+              :class="comboCardsType[4]"
+              @change="changeType()"
+            >
               <option class="placeholder" selected>5. Card</option>
-              <option v-for="card in helpDeck" :key="card.cardName" :class="card.cardType">
+              <option
+                v-for="card in helpDeck"
+                :key="card.cardName"
+                :class="card.cardType"
+              >
                 {{ card.cardName }}
               </option>
             </select>
@@ -251,7 +350,7 @@ export default defineComponent({
   },
   methods: {
     closeComboAddModal() {
-this.inputReset()
+      this.inputReset();
       var modal = document.getElementById("comboAddModal");
       modal!.style.display = "none";
     },
@@ -278,6 +377,7 @@ this.inputReset()
           name: this.deck.name,
           cards: this.deck.cards,
           combos: [cardArray],
+          cardGroups: this.deck.cardGroups,
         };
       }
       this.safeDeck();
@@ -317,7 +417,7 @@ this.inputReset()
     },
     inputReset() {
       this.comboCards = ["1. Card", "2. Card", "3. Card", "4. Card", "5. Card"];
-      this.changeType()
+      this.changeType();
     },
     openComboDeleteModal(index: number) {
       this.deleteComboIndex = index;
@@ -325,19 +425,18 @@ this.inputReset()
       modal!.style.display = "block";
     },
     closeComboDeleteModal() {
-      this.inputReset()
+      this.inputReset();
       var modal = document.getElementById("comboDeleteModal");
       modal!.style.display = "none";
     },
     openComboEditModal(index: number) {
-       
       let i = 0;
       this.editComboIndex = index;
       for (let card of this.deck.combos[index]) {
         this.comboCards[i] = card;
         i++;
       }
-      this.changeType()
+      this.changeType();
       var modal = document.getElementById("comboEditModal");
       modal!.style.display = "block";
     },
@@ -352,16 +451,16 @@ this.inputReset()
       setDeck(this.deck);
       setData(this.decks);
     },
-    changeType(){
-for (let i = 0; i < 5; i++) {
-       let tmp = this.deck.cards.find((c) => c.cardName == this.comboCards[i]);
+    changeType() {
+      for (let i = 0; i < 5; i++) {
+        let tmp = this.deck.cards.find((c) => c.cardName == this.comboCards[i]);
         if (tmp) {
           this.comboCardsType[i] = tmp.cardType;
-        }else{
-          this.comboCardsType[i] =""
+        } else {
+          this.comboCardsType[i] = "";
         }
-}
-    }
+      }
+    },
   },
 });
 </script>

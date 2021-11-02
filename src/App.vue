@@ -8,7 +8,8 @@
  <div id="nav">
     <router-link to=/>Main</router-link> |
     <router-link to=/StartHand>Starthand</router-link> |
-    <router-link to=/Combos>Combos</router-link>
+    <router-link to=/Combos>Combos</router-link> |
+    <router-link to=/CardGroups>Cardgroups</router-link>
   </div>
   
   <router-view />

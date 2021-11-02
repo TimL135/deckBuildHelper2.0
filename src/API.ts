@@ -19,9 +19,14 @@ export interface Deck {
   name: string;
   cards: Card[];
   combos: Combo[];
+  cardGroups:Cardgroup[];
 }
 export type Combo = string[];
 
+export interface Cardgroup{
+  name: string;
+cards: string[];
+}
 
 export function setData(decks: Deck[]) {
   localStorage.setItem("decks", JSON.stringify(decks));
