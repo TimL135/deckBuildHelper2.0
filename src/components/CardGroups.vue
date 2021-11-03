@@ -288,24 +288,8 @@ export default defineComponent({
       this.closeCardGroupDeleteModal();
     },
     checkCardInputs() {
-      if (this.cardInputs[this.cardInputs.length - 1].includes(". Card")) {
-        this.cardInputs.pop();
-      }
-      for (let cardInput in this.cardInputs) {
-        if (this.cardInputs[cardInput].includes(". Card")) {
-          for (
-            let i = parseInt(cardInput) + 1;
-            i < this.cardInputs.length;
-            i++
-          ) {
-            if (!this.cardInputs[i].includes(". Card")) {
-              this.cardInputs[i - 1] = this.cardInputs[i];
-            }
-          }
-          this.cardInputs.pop();
-        }
-      }
-      this.cardInputs.push(`${this.cardInputs.length + 1}. Card`);
+    this.cardInputs = this.cardInputs.filter(c=>!c.includes(". Card"))
+    this.cardInputs.push(`${this.cardInputs.length+1}. Card`)
     this.changeType()
     },
     uniqueCardDeck() {

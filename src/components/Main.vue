@@ -37,15 +37,15 @@
     </div>
     <br />
     <div>
-    <button
-      type="submit"
-      class="w-100 btn btn-primary"
-      @click="openCardAddModal()"
-    >
-      Add new Card
-    </button>
+      <button
+        type="submit"
+        class="w-100 btn btn-primary"
+        @click="openCardAddModal()"
+      >
+        Add new Card
+      </button>
     </div>
-    
+
     <br />
     <div class="d-flex mb-1">
       <div class="col-4 border rounded-start border-primary">
@@ -198,7 +198,7 @@
             >
             <input
               type="number"
-              oninput="this.value = this.value.replace(/[^1-3.]/g, '').replace(/(\..*)\./g, '$1');" 
+              oninput="this.value = this.value.replace(/[^1-3.]/g, '').replace(/(\..*)\./g, '$1');"
               class="form-control"
               aria-label="Username"
               aria-describedby="addon-wrapping"
@@ -222,7 +222,10 @@
               @change="type = 'monster'"
               :checked="type == 'monster'"
             />
-            <label class="btn btn-outline-primary col-4" :class="{ monster: type == 'monster' }" for="btnradio12"
+            <label
+              class="btn btn-outline-primary col-4"
+              :class="{ monster: type == 'monster' }"
+              for="btnradio12"
               >Monster</label
             >
             <input
@@ -234,7 +237,10 @@
               @change="type = 'spell'"
               :checked="type == 'spell'"
             />
-            <label class="btn btn-outline-primary col-4" :class="{ spell: type == 'spell' }" for="btnradio13"
+            <label
+              class="btn btn-outline-primary col-4"
+              :class="{ spell: type == 'spell' }"
+              for="btnradio13"
               >Spell</label
             >
             <input
@@ -246,7 +252,10 @@
               @change="type = 'trap'"
               :checked="type == 'trap'"
             />
-            <label class="btn btn-outline-primary col-4" :class="{ trap: type == 'trap' }" for="btnradio14"
+            <label
+              class="btn btn-outline-primary col-4"
+              :class="{ trap: type == 'trap' }"
+              for="btnradio14"
               >Trap</label
             >
           </div>
@@ -422,9 +431,7 @@
       >
       <div class="container">
         <div class="d-flex justify-content: center mb-1">
-          <div class="w-100 ">
-            Are you sure to delete {{ cardNameInput }}
-          </div>
+          <div class="w-100">Are you sure to delete {{ cardNameInput }}</div>
         </div>
         <div class="d-flex justify-content: center">
           <button
@@ -560,6 +567,19 @@ export default defineComponent({
       this.closeCardEditModal();
     },
     editCard: function () {
+        for (let combo of this.deck.combos) {
+        let tmp = this.deck.combos.findIndex((c) => c==combo);
+        if(combo.findIndex((c) => c == this.deck.cards[this.editCardId].cardName) != -1){
+       combo[combo.findIndex((c) => c == this.deck.cards[this.editCardId].cardName)]=this.cardNameInput
+       }  
+        this.deck.combos[tmp] = combo;
+        
+      }
+      for (let cardGroup in this.deck.cardGroups) {
+       
+           this.deck.cardGroups[cardGroup].cards[this.deck.cardGroups[cardGroup].cards.findIndex(
+            (c) => c == this.deck.cards[this.editCardId].cardName)]=this.cardNameInput
+        }
       this.deck.cards[this.editCardId] = {
         cardId: this.deck.cards[this.editCardId].cardId,
         cardName: this.cardNameInput,
@@ -599,6 +619,30 @@ export default defineComponent({
       this.cardCountInput = "";
     },
     deleteCard(cardId: number) {
+      for (let combo of this.deck.combos) {
+        let tmp = this.deck.combos.findIndex((c) => c==combo);
+        if(combo.findIndex((c) => c == this.deck.cards[cardId].cardName) != -1){
+        combo.splice(
+          combo.findIndex((c) => c == this.deck.cards[cardId].cardName),
+          1
+        );}  
+        this.deck.combos[tmp] = combo;
+        if (!this.deck.combos[tmp].length) {
+          this.deck.combos.splice(tmp, 1);
+        }
+      }
+      for (let cardGroup in this.deck.cardGroups) {
+        this.deck.cardGroups[cardGroup].cards.splice(
+          this.deck.cardGroups[cardGroup].cards.findIndex(
+            (c) => c == this.deck.cards[cardId].cardName
+          ),
+          1
+        );
+ if(!this.deck.cardGroups[cardGroup].cards.length){
+   this.deck.cardGroups.splice(parseInt(cardGroup),1)
+ }
+      }
+
       this.deck.cards.splice(cardId, 1);
       for (cardId; cardId < this.deck.cards.length; cardId++) {
         this.deck.cards[cardId].cardId--;
@@ -773,7 +817,7 @@ export default defineComponent({
             name: this.selectedDeck,
             cards: [],
             combos: [],
-            cardGroups:[],
+            cardGroups: [],
           });
           this.deck =
             this.decks[

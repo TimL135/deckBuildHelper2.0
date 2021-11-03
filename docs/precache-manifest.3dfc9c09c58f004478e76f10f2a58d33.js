@@ -1,15 +1,15 @@
 self.__precacheManifest = (self.__precacheManifest || []).concat([
   {
-    "revision": "06e3a927f6344a04e18a51b1f4baad66",
+    "revision": "5fb9732439c8be84de5db6169249be22",
     "url": "/deckBuildHelper2.0/index.html"
   },
   {
-    "revision": "96a16713ef97c28ad269",
-    "url": "/deckBuildHelper2.0/js/app.47fad8f0.js"
+    "revision": "8dfec4cfd67d81efc35d",
+    "url": "/deckBuildHelper2.0/js/app.218094a1.js"
   },
   {
-    "revision": "c9c4533f0882a25d7b24",
-    "url": "/deckBuildHelper2.0/js/chunk-vendors.7461ca7e.js"
+    "revision": "c04ef208d8a01da5d5c8",
+    "url": "/deckBuildHelper2.0/js/chunk-vendors.90cc823e.js"
   },
   {
     "revision": "0328b1f49adee7f877ec6161288a62f7",
