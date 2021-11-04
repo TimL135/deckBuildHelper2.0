@@ -125,34 +125,34 @@
         Interaption:<br />{{ interaptionCount }}({{ uniqueInteraptionCount }})
       </div>
     </div>
-  
-  <br />
-  <h1>Possible Combos</h1>
-  <table class="table table-striped">
-    <thead>
-      <tr>
-        <th class="w-25">Combo</th>
-        <th class="w-75">Cards</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr v-for="combo in possibleCombos" :key="combo">
-        <td>
-          {{ possibleCombos.findIndex((c) => c == combo) + 1 }}
-        </td>
-        <td>
-          <div
-            v-for="card in combo"
-            :key="card"
-            class="mb-1"
-            :class="deck.cards.find((c) => c.cardName == card).cardType"
-          >
-            {{ card }}
-          </div>
-        </td>
-      </tr>
-    </tbody>
-  </table>
+
+    <br />
+    <h1>Possible Combos</h1>
+    <table class="table table-striped">
+      <thead>
+        <tr>
+          <th class="w-25">Combo</th>
+          <th class="w-75">Cards</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr v-for="combo in possibleCombos" :key="combo">
+          <td>
+            {{ possibleCombos.findIndex((c) => c == combo) + 1 }}
+          </td>
+          <td>
+            <div
+              v-for="card in combo"
+              :key="card"
+              class="mb-1"
+              :class="deck.cards.find((c) => c.cardName == card)?.cardType"
+            >
+              {{ typeof card === "object" ? card.name : card }}
+            </div>
+          </td>
+        </tr>
+      </tbody>
+    </table>
   </div>
 </template>
 <script lang="ts">
@@ -325,7 +325,17 @@ export default defineComponent({
     checkCombos() {
       this.possibleCombos = [];
       for (let combo of this.deck.combos) {
-        if (combo.every((c) => this.handCards.includes(c))) {
+        let comboHandCards = [...this.handCards];
+        if (
+          combo.every((c) =>
+            typeof c === "object"
+              ? // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+                // @ts-ignore
+                c.cards.some((c1) => comboHandCards.includes(c1)?comboHandCards.splice(comboHandCards.findIndex(c2=>c2==c1),1):{})
+              : comboHandCards.includes(c)?comboHandCards.splice(comboHandCards.findIndex(c2=>c2==c),1):{}
+          )
+        ) 
+        {
           this.possibleCombos.push(combo);
         }
       }

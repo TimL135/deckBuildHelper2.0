@@ -1,13 +1,13 @@
 <template>
   <div class="container" style="margin-top: 3vh">
     <div>
-    <button
-      type="button"
-      class="w-100 btn btn-primary"
-      @click="openComboAddModal()"
-    >
-      Add new Combo
-    </button>
+      <button
+        type="button"
+        class="w-100 btn btn-primary"
+        @click="openComboAddModal()"
+      >
+        Add new Combo
+      </button>
     </div>
     <br />
 
@@ -81,7 +81,7 @@
               class="mb-1"
               :class="deck.cards.find((c) => c.cardName == card)?.cardType"
             >
-              {{ card }}
+              {{ typeof card === "object" ? card.name : card }}
             </div>
           </td>
         </tr>
@@ -114,6 +114,14 @@
               >
                 {{ card.cardName }}
               </option>
+              <option
+                class="placeholder"
+                v-for="cardGroup in deck.cardGroups"
+                :key="cardGroup.name"
+                :value="cardGroup"
+              >
+                {{ cardGroup.name }}
+              </option>
             </select>
             <select
               class="form-select"
@@ -128,6 +136,14 @@
                 :class="card.cardType"
               >
                 {{ card.cardName }}
+              </option>
+              <option
+                class="placeholder"
+                v-for="cardGroup in deck.cardGroups"
+                :key="cardGroup.name"
+                :value="cardGroup"
+              >
+                {{ cardGroup.name }}
               </option>
             </select>
             <select
@@ -144,6 +160,14 @@
               >
                 {{ card.cardName }}
               </option>
+              <option
+                class="placeholder"
+                v-for="cardGroup in deck.cardGroups"
+                :key="cardGroup.name"
+                :value="cardGroup"
+              >
+                {{ cardGroup.name }}
+              </option>
             </select>
             <select
               class="form-select"
@@ -159,6 +183,14 @@
               >
                 {{ card.cardName }}
               </option>
+              <option
+                class="placeholder"
+                v-for="cardGroup in deck.cardGroups"
+                :key="cardGroup.name"
+                :value="cardGroup"
+              >
+                {{ cardGroup.name }}
+              </option>
             </select>
             <select
               class="form-select"
@@ -173,6 +205,14 @@
                 :class="card.cardType"
               >
                 {{ card.cardName }}
+              </option>
+              <option
+                class="placeholder"
+                v-for="cardGroup in deck.cardGroups"
+                :key="cardGroup.name"
+                :value="cardGroup"
+              >
+                {{ cardGroup.name }}
               </option>
             </select>
           </div>
@@ -215,6 +255,14 @@
               >
                 {{ card.cardName }}
               </option>
+              <option
+                class="placeholder"
+                v-for="cardGroup in deck.cardGroups"
+                :key="cardGroup.name"
+                :value="cardGroup"
+              >
+                {{ cardGroup.name }}
+              </option>
             </select>
             <select
               class="form-select"
@@ -229,6 +277,14 @@
                 :class="card.cardType"
               >
                 {{ card.cardName }}
+              </option>
+              <option
+                class="placeholder"
+                v-for="cardGroup in deck.cardGroups"
+                :key="cardGroup.name"
+                :value="cardGroup"
+              >
+                {{ cardGroup.name }}
               </option>
             </select>
             <select
@@ -245,6 +301,14 @@
               >
                 {{ card.cardName }}
               </option>
+              <option
+                class="placeholder"
+                v-for="cardGroup in deck.cardGroups"
+                :key="cardGroup.name"
+                :value="cardGroup"
+              >
+                {{ cardGroup.name }}
+              </option>
             </select>
             <select
               class="form-select"
@@ -260,6 +324,14 @@
               >
                 {{ card.cardName }}
               </option>
+              <option
+                class="placeholder"
+                v-for="cardGroup in deck.cardGroups"
+                :key="cardGroup.name"
+                :value="cardGroup"
+              >
+                {{ cardGroup.name }}
+              </option>
             </select>
             <select
               class="form-select"
@@ -274,6 +346,14 @@
                 :class="card.cardType"
               >
                 {{ card.cardName }}
+              </option>
+              <option
+                class="placeholder"
+                v-for="cardGroup in deck.cardGroups"
+                :key="cardGroup.name"
+                :value="cardGroup"
+              >
+                {{ cardGroup.name }}
               </option>
             </select>
           </div>
@@ -344,7 +424,13 @@ export default defineComponent({
       deleteComboIndex: 0,
       helpDeck: [] as Card[],
       decks: [] as Deck[],
-      comboCards: ["1. Card", "2. Card", "3. Card", "4. Card", "5. Card"],
+      comboCards: [
+        "1. Card",
+        "2. Card",
+        "3. Card",
+        "4. Card",
+        "5. Card",
+      ] as any[],
       comboCardsType: [] as string[],
     };
   },
@@ -361,12 +447,16 @@ export default defineComponent({
     addCombo() {
       let cardArray = [] as string[];
       for (let i = 0; i < 5; i++) {
-        if (!this.comboCards[i].includes(". Card")) {
-          let card = this.deck.cards.find(
-            (x) => x.cardName == this.comboCards[i]
-          );
-          if (card) {
-            cardArray.push(card.cardName);
+        if (typeof this.comboCards[i] === "object") {
+          cardArray.push(this.comboCards[i]);
+        } else {
+          if (!this.comboCards[i].includes(". Card")) {
+            let card = this.deck.cards.find(
+              (x) => x.cardName == this.comboCards[i]
+            );
+            if (card) {
+              cardArray.push(card.cardName);
+            }
           }
         }
       }
@@ -387,12 +477,16 @@ export default defineComponent({
     editCombo() {
       let cardArray = [] as string[];
       for (let i = 0; i < 5; i++) {
-        if (!this.comboCards[i].includes(". Card")) {
-          let card = this.deck.cards.find(
-            (x) => x.cardName == this.comboCards[i]
-          );
-          if (card) {
-            cardArray.push(card.cardName);
+        if (typeof this.comboCards[i] === "object") {
+          cardArray.push(this.comboCards[i]);
+        } else {
+          if (!this.comboCards[i].includes(". Card")) {
+            let card = this.deck.cards.find(
+              (x) => x.cardName == this.comboCards[i]
+            );
+            if (card) {
+              cardArray.push(card.cardName);
+            }
           }
         }
       }

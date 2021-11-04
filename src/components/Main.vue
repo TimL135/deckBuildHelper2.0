@@ -567,19 +567,28 @@ export default defineComponent({
       this.closeCardEditModal();
     },
     editCard: function () {
-        for (let combo of this.deck.combos) {
-        let tmp = this.deck.combos.findIndex((c) => c==combo);
-        if(combo.findIndex((c) => c == this.deck.cards[this.editCardId].cardName) != -1){
-       combo[combo.findIndex((c) => c == this.deck.cards[this.editCardId].cardName)]=this.cardNameInput
-       }  
+      for (let combo of this.deck.combos) {
+        let tmp = this.deck.combos.findIndex((c) => c == combo);
+        if (
+          combo.findIndex(
+            (c) => c == this.deck.cards[this.editCardId].cardName
+          ) != -1
+        ) {
+          combo[
+            combo.findIndex(
+              (c) => c == this.deck.cards[this.editCardId].cardName
+            )
+          ] = this.cardNameInput;
+        }
         this.deck.combos[tmp] = combo;
-        
       }
       for (let cardGroup in this.deck.cardGroups) {
-       
-           this.deck.cardGroups[cardGroup].cards[this.deck.cardGroups[cardGroup].cards.findIndex(
-            (c) => c == this.deck.cards[this.editCardId].cardName)]=this.cardNameInput
-        }
+        this.deck.cardGroups[cardGroup].cards[
+          this.deck.cardGroups[cardGroup].cards.findIndex(
+            (c) => c == this.deck.cards[this.editCardId].cardName
+          )
+        ] = this.cardNameInput;
+      }
       this.deck.cards[this.editCardId] = {
         cardId: this.deck.cards[this.editCardId].cardId,
         cardName: this.cardNameInput,
@@ -620,12 +629,15 @@ export default defineComponent({
     },
     deleteCard(cardId: number) {
       for (let combo of this.deck.combos) {
-        let tmp = this.deck.combos.findIndex((c) => c==combo);
-        if(combo.findIndex((c) => c == this.deck.cards[cardId].cardName) != -1){
-        combo.splice(
-          combo.findIndex((c) => c == this.deck.cards[cardId].cardName),
-          1
-        );}  
+        let tmp = this.deck.combos.findIndex((c) => c == combo);
+        if (
+          combo.findIndex((c) => c == this.deck.cards[cardId].cardName) != -1
+        ) {
+          combo.splice(
+            combo.findIndex((c) => c == this.deck.cards[cardId].cardName),
+            1
+          );
+        }
         this.deck.combos[tmp] = combo;
         if (!this.deck.combos[tmp].length) {
           this.deck.combos.splice(tmp, 1);
@@ -638,9 +650,9 @@ export default defineComponent({
           ),
           1
         );
- if(!this.deck.cardGroups[cardGroup].cards.length){
-   this.deck.cardGroups.splice(parseInt(cardGroup),1)
- }
+        if (!this.deck.cardGroups[cardGroup].cards.length) {
+          this.deck.cardGroups.splice(parseInt(cardGroup), 1);
+        }
       }
 
       this.deck.cards.splice(cardId, 1);
