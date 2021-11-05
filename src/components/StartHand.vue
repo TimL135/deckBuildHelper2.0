@@ -331,8 +331,8 @@ export default defineComponent({
             typeof c === "object"
               ? // eslint-disable-next-line @typescript-eslint/ban-ts-comment
                 // @ts-ignore
-                c.cards.some((c1) => comboHandCards.includes(c1)?comboHandCards.splice(comboHandCards.findIndex(c2=>c2==c1),1):{})
-              : comboHandCards.includes(c)?comboHandCards.splice(comboHandCards.findIndex(c2=>c2==c),1):{}
+                c.cards.some((c1) => comboHandCards.includes(c1)?comboHandCards.splice(comboHandCards.findIndex(c2=>c2==c1),1):null)
+              : comboHandCards.includes(c)?comboHandCards.splice(comboHandCards.findIndex(c2=>c2==c),1):null
           )
         ) 
         {
