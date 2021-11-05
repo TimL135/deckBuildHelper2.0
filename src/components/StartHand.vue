@@ -148,7 +148,7 @@
             <div
               v-for="card in combo"
               :key="card"
-              class="mb-1"
+              class="mb-1 green"
               :class="deck.cards.find((c) => c.cardName == card)?.cardType"
             >
               {{ typeof card === "object" ? card.name : card }}
@@ -182,6 +182,9 @@ export default defineComponent({
   },
   methods: {
     randomStartHand() {
+        if (getDeck()) {
+      this.deck = getDeck();
+    }
       this.allCards = [];
       for (let card of this.deck.cards) {
         for (card.cardCount; card.cardCount > 0; card.cardCount--) {
