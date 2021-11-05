@@ -129,7 +129,7 @@
         </div>
         <button
           type="submit"
-          class="btn btn-primary w-100 mt-1"
+          class="btn orange w-100 mt-1"
           style="float: right"
         >
           Confirm
