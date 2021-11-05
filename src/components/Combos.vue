@@ -3,7 +3,7 @@
     <div>
       <button
         type="button"
-        class="w-100 btn btn-primary"
+        class="w-100 btn orange"
         @click="openComboAddModal()"
       >
         Add new Combo
@@ -37,7 +37,6 @@
                 xmlns="http://www.w3.org/2000/svg"
                 width="30"
                 height="30"
-                fill="currentColor"
                 class="bi bi-gear"
                 viewBox="0 0 16 16"
               >
@@ -60,7 +59,6 @@
                 xmlns="http://www.w3.org/2000/svg"
                 width="30"
                 height="30"
-                fill="currentColor"
                 class="bi bi-trash"
                 viewBox="0 0 16 16"
               >
@@ -101,7 +99,7 @@
         <div class="d-flex justify-content: center">
           <div class="w-100">
             <select
-              class="form-select"
+              class="form-select mb-1"
               v-model="comboCards[0]"
               :class="comboCardsType[0]"
               @change="changeType()"
@@ -124,7 +122,7 @@
               </option>
             </select>
             <select
-              class="form-select"
+              class="form-select mb-1"
               v-model="comboCards[1]"
               :class="comboCardsType[1]"
               @change="changeType()"
@@ -147,7 +145,7 @@
               </option>
             </select>
             <select
-              class="form-select"
+              class="form-select mb-1"
               v-model="comboCards[2]"
               :class="comboCardsType[2]"
               @change="changeType()"
@@ -170,7 +168,7 @@
               </option>
             </select>
             <select
-              class="form-select"
+              class="form-select mb-1"
               v-model="comboCards[3]"
               :class="comboCardsType[3]"
               @change="changeType()"
@@ -193,7 +191,7 @@
               </option>
             </select>
             <select
-              class="form-select"
+              class="form-select mb-1"
               v-model="comboCards[4]"
               :class="comboCardsType[4]"
               @change="changeType()"
@@ -220,8 +218,7 @@
 
         <button
           type="button"
-          class="btn btn-primary w-25 mt-1"
-          style="float: right"
+          class="btn orange w-100 mt-1"
           @click="addCombo()"
         >
           Confirm

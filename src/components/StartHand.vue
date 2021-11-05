@@ -8,12 +8,13 @@
 
   <div class="container" style="margin-top: 3vh">
     <select
-      class="form-select"
+     style="border:1px solid #ffa107"
+      class="form-select orange mb-1"
       v-model="handCards[0]"
       :class="handCardsType[0]"
       @change="countCard()"
     >
-      <option class="placeholder" selected>1. Card</option>
+      <option class="orange" selected>1. Card</option>
       <option
         v-for="card in deck.cards"
         :key="card.cardName"
@@ -23,12 +24,13 @@
       </option>
     </select>
     <select
-      class="form-select"
+     style="border:1px solid #ffa107"
+      class="form-select orange mb-1"
       v-model="handCards[1]"
       :class="handCardsType[1]"
       @change="countCard()"
     >
-      <option class="placeholder" selected>2. Card</option>
+      <option class="orange" selected>2. Card</option>
       <option
         v-for="card in deck.cards"
         :key="card.cardName"
@@ -38,12 +40,13 @@
       </option>
     </select>
     <select
-      class="form-select"
+     style="border:1px solid #ffa107"
+      class="form-select orange mb-1"
       v-model="handCards[2]"
       :class="handCardsType[2]"
       @change="countCard()"
     >
-      <option class="placeholder" selected>3. Card</option>
+      <option class="orange" selected>3. Card</option>
       <option
         v-for="card in deck.cards"
         :key="card.cardName"
@@ -53,12 +56,13 @@
       </option>
     </select>
     <select
-      class="form-select"
+     style="border:1px solid #ffa107"
+      class="form-select orange mb-1"
       v-model="handCards[3]"
       :class="handCardsType[3]"
       @change="countCard()"
     >
-      <option class="placeholder" selected>4. Card</option>
+      <option class="orange" selected>4. Card</option>
       <option
         v-for="card in deck.cards"
         :key="card.cardName"
@@ -68,12 +72,13 @@
       </option>
     </select>
     <select
-      class="form-select"
+     style="border:1px solid #ffa107"
+      class="form-select orange mb-1"
       v-model="handCards[4]"
       :class="handCardsType[4]"
       @change="countCard()"
     >
-      <option class="placeholder" selected>5. Card</option>
+      <option class="orange" selected>5. Card</option>
       <option
         v-for="card in deck.cards"
         :key="card.cardName"
@@ -86,40 +91,40 @@
       <button
         @click="randomStartHand()"
         type="button"
-        class="btn btn-primary w-100 mt-1"
+        class="btn orange w-100 mt-1"
       >
         Random
       </button>
     </div>
     <br />
     <div class="d-flex mb-1">
-      <div class="w-100 border rounded border-primary">Value:{{ value }}</div>
+      <div class="w-100 rounded" style="border:1px solid #ffa107">Value:{{ value }}</div>
     </div>
     <div class="d-flex mb-1">
-      <div class="w-25 border rounded-start border-primary">
+      <div class="w-25 rounded-start" style="border:1px solid #ffa107">
         Handtraps:<br />{{ counts[0] }}({{ uniqueCounts[0] }})
       </div>
-      <div class="w-25 border border-primary">
+      <div class="w-25" style="border:1px solid #ffa107">
         Seacher:<br />{{ counts[1] }}({{ uniqueCounts[1] }})
       </div>
-      <div class="w-25 border border-primary">
+      <div class="w-25" style="border:1px solid #ffa107">
         Combo Starter:<br />{{ counts[2] }}({{ uniqueCounts[2] }})
       </div>
-      <div class="w-25 border rounded-end border-primary">
+      <div class="w-25 rounded-end" style="border:1px solid #ffa107">
         Negate:<br />{{ counts[6] }}({{ uniqueCounts[6] }})
       </div>
     </div>
     <div class="d-flex mb-1">
-      <div class="w-25 border rounded-start border-primary">
+      <div class="w-25 rounded-start" style="border:1px solid #ffa107">
         Once per Turn:<br />{{ counts[5] }}({{ uniqueCounts[5] }})
       </div>
-      <div class="w-25 border border-primary">
+      <div class="w-25" style="border:1px solid #ffa107">
         Searchable:<br />{{ counts[4] }}({{ uniqueCounts[4] }})
       </div>
-      <div class="w-25 border border-primary">
+      <div class="w-25" style="border:1px solid #ffa107">
         Combo Piece:<br />{{ counts[3] }}({{ uniqueCounts[3] }})
       </div>
-      <div class="w-25 border rounded-end border-primary">
+      <div class="w-25 rounded-end" style="border:1px solid #ffa107">
         Interaption:<br />{{ counts[7] }}({{ uniqueCounts[7] }})
       </div>
     </div>

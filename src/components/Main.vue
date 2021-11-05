@@ -9,12 +9,13 @@
   <div class="container" style="margin-top: 3vh">
     <div class="input-group">
       <input
+       style="border:1px solid #ffa107"
         autocomplete="off"
         type="text"
-        class="form-control"
+        class="form-control orange"
         aria-label="Recipient's username"
         aria-describedby="button-addon2"
-        placeholder="Deck"
+        orange="Deck"
         name="plan"
         list="plans"
         v-model="selectedDeck"
@@ -28,7 +29,7 @@
       </datalist>
       <button
         type="button"
-        class="btn btn-primary w-25"
+        class="btn orange w-25"
         id="button-addon2"
         @click="loadDeck()"
       >
@@ -39,7 +40,7 @@
     <div>
       <button
         type="submit"
-        class="w-100 btn btn-primary"
+        class="w-100 btn orange"
         @click="openCardAddModal()"
       >
         Add new Card
@@ -48,41 +49,41 @@
 
     <br />
     <div class="d-flex mb-1">
-      <div class="col-4 border rounded-start border-primary">
+      <div class="col-4 rounded-start" style="border:1px solid #ffa107">
         Card amount:<br />{{ deckNumber }}
       </div>
-      <div class="col-4 border border-primary">
+      <div class="col-4" style="border:1px solid #ffa107">
         <div>Deckrating:<br />{{ deckRating }}%</div>
       </div>
-      <div class="col-4 border rounded-end border-primary">
+      <div class="col-4 rounded-end " style="border:1px solid #ffa107">
         <div>Deckvalue average:<br />{{ deckValue }}</div>
       </div>
     </div>
     <div class="d-flex mb-1">
-      <div class="w-25 border rounded-start border-primary">
+      <div class="w-25 rounded-start " style="border:1px solid #ffa107">
         Handtraps:<br />{{ counts[0] }}({{ uniqueCounts[0] }})
       </div>
-      <div class="w-25 border border-primary">
+      <div class="w-25" style="border:1px solid #ffa107">
         Seacher:<br />{{ counts[1] }}({{ uniqueCounts[1] }})
       </div>
-      <div class="w-25 border border-primary">
+      <div class="w-25" style="border:1px solid #ffa107">
         Combo Starter:<br />{{ counts[2] }}({{ uniqueCounts[2] }})
       </div>
-      <div class="w-25 border rounded-end border-primary">
+      <div class="w-25 rounded-end " style="border:1px solid #ffa107">
         Negate:<br />{{ counts[6] }}({{ uniqueCounts[6] }})
       </div>
     </div>
     <div class="d-flex mb-1">
-      <div class="w-25 border rounded-start border-primary">
+      <div class="w-25 rounded-start" style="border:1px solid #ffa107">
         Once per Turn:<br />{{ counts[5] }}({{ uniqueCounts[5] }})
       </div>
-      <div class="w-25 border border-primary">
+      <div class="w-25" style="border:1px solid #ffa107">
         Searchable:<br />{{ counts[4] }}({{ uniqueCounts[4] }})
       </div>
-      <div class="w-25 border border-primary">
+      <div class="w-25" style="border:1px solid #ffa107">
         Combo Piece:<br />{{ counts[3] }}({{ uniqueCounts[3] }})
       </div>
-      <div class="w-25 border rounded-end border-primary">
+      <div class="w-25 rounded-end" style="border:1px solid #ffa107">
         Interaption:<br />{{ counts[7] }}({{ uniqueCounts[7] }})
       </div>
     </div>
@@ -111,7 +112,7 @@
                 xmlns="http://www.w3.org/2000/svg"
                 width="30"
                 height="30"
-                fill="currentColor"
+                
                 class="bi bi-gear"
                 viewBox="0 0 16 16"
               >
@@ -132,7 +133,7 @@
                 xmlns="http://www.w3.org/2000/svg"
                 width="30"
                 height="30"
-                fill="currentColor"
+               
                 class="bi bi-trash"
                 viewBox="0 0 16 16"
               >
@@ -180,7 +181,7 @@
       <div class="container">
         <form @submit.prevent="editAddCard">
           <div class="input-group mb-1">
-            <span class="input-group-text w-25" id="basic-addon1">Name</span>
+            <span class="input-group-text w-25 orange" id="basic-addon1">Name</span>
             <input
               type="text"
               class="form-control"
@@ -191,7 +192,7 @@
             />
           </div>
           <div class="input-group mb-1">
-            <span class="input-group-text w-25" id="basic-addon1"
+            <span class="input-group-text w-25 orange" id="basic-addon1"
               >Quantity</span
             >
             <input
@@ -221,7 +222,7 @@
               :checked="type == 'monster'"
             />
             <label
-              class="btn btn-outline-primary col-4"
+              class="btn orange col-4"
               :class="{ monster: type == 'monster' }"
               for="btnradio12"
               >Monster</label
@@ -236,7 +237,7 @@
               :checked="type == 'spell'"
             />
             <label
-              class="btn btn-outline-primary col-4"
+              class="btn orange col-4"
               :class="{ spell: type == 'spell' }"
               for="btnradio13"
               >Spell</label
@@ -251,14 +252,14 @@
               :checked="type == 'trap'"
             />
             <label
-              class="btn btn-outline-primary col-4"
+              class="btn orange col-4"
               :class="{ trap: type == 'trap' }"
               for="btnradio14"
               >Trap</label
             >
           </div>
           <div
-            class="btn-group mb-1 w-100"
+            class="btn-group rounded orange mb-1 w-100"
             role="group"
             aria-label="Basic checkbox toggle button group"
           >
@@ -306,7 +307,7 @@
           </div>
           <br />
           <div
-            class="btn-group mb-1 w-100"
+            class="btn-group rounded orange mb-1 w-100"
             role="group"
             aria-label="Basic checkbox toggle button group"
           >
@@ -353,13 +354,13 @@
           </div>
           <br />
           <div
-            class="btn-group w-100"
+            class="btn-group rounded w-100 orange"
             role="group"
             aria-label="Basic radio toggle button group"
           >
             <input
               type="radio"
-              class="btn-check"
+              class="btn-check "
               name="btnradio"
               id="btnradio4"
               autocomplete="off"
@@ -409,8 +410,7 @@
           <br />
           <button
             type="submit"
-            class="btn btn-primary w-100 mt-1"
-            style="float: right"
+            class="btn w-100 mt-1 orange"
           >
             Confirm
           </button>

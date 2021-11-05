@@ -3,7 +3,10 @@
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   text-align: center;
-  color: #2c3e50;
+  color: #ffa107;
+  height: 100vh;
+  background-color: #000 ;
+  font-weight: bold !important;
 }
 ul {
   list-style: none;
@@ -17,18 +20,20 @@ ul {
   width: 100%;
   height: 100%;
   overflow: auto;
-  background-color: rgb(0, 0, 0);
   background-color: rgba(0, 0, 0, 0.4);
 }
 .modal-content {
-  background-color: #fefefe;
+  background-color: #42b983 !important;
   margin: 15% auto;
   padding: 5px;
   border: 1px solid #888;
-  width: 50%;
+}
+label{
+padding: 0px !important;
+height: 10vh !important;
 }
 .close {
-  color: #aaa;
+  color: red;
   float: right;
   font-size: 28px;
   font-weight: bold;
@@ -39,12 +44,29 @@ ul {
   text-decoration: none;
   cursor: pointer;
 }
+.btn-check:checked+.btn-outline-primary{
+    background-color:#289287 !important;
+    color: #000 !important;
+}
+.btn-check+.btn-outline-primary{
+   
+    color: #289287 !important;
+}
+.btn{
+    border-color:#000 !important;
+    font-weight: bold !important;
+}
+.form-control,.form-select{
+    font-weight: bold !important;
+    background-color:#ffa107 !important;
+    border-color:#ffa107 !important;
+}
+
 .btn-check:focus + .btn-outline-primary,
 .btn-outline-primary:focus + .btn-outline-primary {
   box-shadow: none !important;
 }
-.btn-check:focus + .btn-primary,
-.btn-primary:focus {
+.btn:focus {
   box-shadow: none !important;
 }
 .btn-check:hover + .btn-outline-primary,
@@ -52,9 +74,12 @@ ul {
   background-color: transparent;
   color: #000;
 }
-.placeholder {
-    background-color: #fff !important;
+.orange {
+    background-color: #ffa107 !important;
     border: none;
+    border-color:#ffa107 !important;
+    opacity: 1 !important;
+    cursor:default;
   }
 .monster {
     background-color: #b5542c !important;
@@ -67,4 +92,15 @@ ul {
   .trap {
     background-color: #a91475 !important;
     border: none;
+  }
+  
+.table-striped>tbody>tr:nth-of-type(odd) {
+    --bs-table-accent-bg: var(--bs-table-striped-bg);
+    color: #ffa107 !important;  
+}
+  table{
+    font-weight: bold !important;
+border-color: #ffa107 !important ;
+      color: #ffa107 !important;
+      fill: #ffa107 !important
   }

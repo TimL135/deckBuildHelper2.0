@@ -3,7 +3,8 @@
     <div>
       <button
         type="button"
-        class="w-100 btn btn-primary"
+        class="w-100 btn orange "
+
         @click="openCardGroupAddModal()"
       >
         Add new Cardgroup
@@ -36,7 +37,6 @@
                 xmlns="http://www.w3.org/2000/svg"
                 width="30"
                 height="30"
-                fill="currentColor"
                 class="bi bi-gear"
                 viewBox="0 0 16 16"
               >
@@ -61,7 +61,6 @@
                 xmlns="http://www.w3.org/2000/svg"
                 width="30"
                 height="30"
-                fill="currentColor"
                 class="bi bi-trash"
                 viewBox="0 0 16 16"
               >
@@ -101,7 +100,7 @@
 
       <form @submit.prevent="editAddCard()">
         <div class="input-group mb-1">
-          <span class="input-group-text w-25" id="basic-addon1">Name</span>
+          <span class="input-group-text orange w-25" id="basic-addon1">Name</span>
           <input
             type="text"
             class="form-control"
