@@ -1,0 +1,70 @@
+#app {
+  font-family: Avenir, Helvetica, Arial, sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  text-align: center;
+  color: #2c3e50;
+}
+ul {
+  list-style: none;
+}
+.modal {
+  display: none;
+  position: fixed;
+  z-index: 1;
+  left: 0;
+  top: 0;
+  width: 100%;
+  height: 100%;
+  overflow: auto;
+  background-color: rgb(0, 0, 0);
+  background-color: rgba(0, 0, 0, 0.4);
+}
+.modal-content {
+  background-color: #fefefe;
+  margin: 15% auto;
+  padding: 5px;
+  border: 1px solid #888;
+  width: 50%;
+}
+.close {
+  color: #aaa;
+  float: right;
+  font-size: 28px;
+  font-weight: bold;
+}
+.close:hover,
+.close:focus {
+  color: black;
+  text-decoration: none;
+  cursor: pointer;
+}
+.btn-check:focus + .btn-outline-primary,
+.btn-outline-primary:focus + .btn-outline-primary {
+  box-shadow: none !important;
+}
+.btn-check:focus + .btn-primary,
+.btn-primary:focus {
+  box-shadow: none !important;
+}
+.btn-check:hover + .btn-outline-primary,
+.btn-outline-primary:hover + .btn-outline-primary {
+  background-color: transparent;
+  color: #000;
+}
+.placeholder {
+    background-color: #fff !important;
+    border: none;
+  }
+.monster {
+    background-color: #b5542c !important;
+    border: none;
+  }
+  .spell {
+    background-color: #289287 !important;
+    border: none;
+  }
+  .trap {
+    background-color: #a91475 !important;
+    border: none;
+  }

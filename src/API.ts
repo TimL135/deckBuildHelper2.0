@@ -1,16 +1,8 @@
 export interface Card {
-  cardId: number;
   cardType: "monster"|"spell"|"trap";
   cardName: string;
   cardCount: number;
-  cardHandTrap: boolean;
-  cardSeacher: boolean;
-  cardComboStarter: boolean;
-  cardComboPiece: boolean;
-  cardSearchable: boolean;
-  cardOncePerTurn: boolean;
-  cardNegate: boolean;
-  cardInteraption: boolean;
+  cardProperties:boolean[];
   cardValue: number;
 }
 export type cardType= "monster"|"spell"|"trap"

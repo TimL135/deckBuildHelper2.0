@@ -97,36 +97,35 @@
     </div>
     <div class="d-flex mb-1">
       <div class="w-25 border rounded-start border-primary">
-        Handtraps:<br />{{ handTrapCount }}({{ uniqueHandTrapCount }})
+        Handtraps:<br />{{ counts[0] }}({{ uniqueCounts[0] }})
       </div>
       <div class="w-25 border border-primary">
-        Seacher:<br />{{ seacherCount }}({{ uniqueSeacherCount }})
+        Seacher:<br />{{ counts[1] }}({{ uniqueCounts[1] }})
       </div>
       <div class="w-25 border border-primary">
-        Combo Starter:<br />{{ comboStarterCount }}({{
-          uniqueComboStarterCount
-        }})
+        Combo Starter:<br />{{ counts[2] }}({{ uniqueCounts[2] }})
       </div>
       <div class="w-25 border rounded-end border-primary">
-        Negate:<br />{{ negateCount }}({{ uniqueNegateCount }})
+        Negate:<br />{{ counts[6] }}({{ uniqueCounts[6] }})
       </div>
     </div>
     <div class="d-flex mb-1">
       <div class="w-25 border rounded-start border-primary">
-        Once per Turn:<br />{{ oncePerTurnCount }}({{ uniqueOncePerTurnCount }})
-      </div>
-      <div class="w-25 border rounded border-primary">
-        Searchable:<br />{{ searchableCount }}({{ uniqueSearchableCount }})
+        Once per Turn:<br />{{ counts[5] }}({{ uniqueCounts[5] }})
       </div>
       <div class="w-25 border border-primary">
-        Combo Piece:<br />{{ comboPieceCount }}({{ uniqueComboPieceCount }})
+        Searchable:<br />{{ counts[4] }}({{ uniqueCounts[4] }})
+      </div>
+      <div class="w-25 border border-primary">
+        Combo Piece:<br />{{ counts[3] }}({{ uniqueCounts[3] }})
       </div>
       <div class="w-25 border rounded-end border-primary">
-        Interaption:<br />{{ interaptionCount }}({{ uniqueInteraptionCount }})
+        Interaption:<br />{{ counts[7] }}({{ uniqueCounts[7] }})
       </div>
     </div>
 
     <br />
+    <!-- new table -->
     <h1>Possible Combos</h1>
     <table class="table table-striped">
       <thead>
@@ -138,7 +137,7 @@
       <tbody>
         <tr v-for="combo in possibleCombos" :key="combo">
           <td>
-            {{ possibleCombos.findIndex((c) => c == combo) + 1 }}
+            {{ possibleCombos.findIndex((cardName) => cardName == combo) + 1 }}
           </td>
           <td>
             <div
@@ -156,7 +155,7 @@
   </div>
 </template>
 <script lang="ts">
-import { Card, Combo, Deck, getData, getDeck } from "@/API";
+import { Card, Combo, Deck, getDeck } from "@/API";
 import { defineComponent } from "vue";
 export default defineComponent({
   mounted() {
@@ -169,39 +168,15 @@ export default defineComponent({
       deck: {} as Deck,
       allCards: [] as string[],
       possibleCombos: [] as Combo[],
-      handTrapCount: 0,
-      uniqueHandTrapCount: 0,
-
-      seacherCount: 0,
-      uniqueSeacherCount: 0,
-
-      comboStarterCount: 0,
-      uniqueComboStarterCount: 0,
-
-      comboPieceCount: 0,
-      uniqueComboPieceCount: 0,
-
-      searchableCount: 0,
-      uniqueSearchableCount: 0,
-
-      oncePerTurnCount: 0,
-      uniqueOncePerTurnCount: 0,
-
-      negateCount: 0,
-      uniqueNegateCount: 0,
-
-      interaptionCount: 0,
-      uniqueInteraptionCount: 0,
+      counts: [0, 0, 0, 0, 0, 0, 0, 0] as number[],
+      uniqueCounts: [0, 0, 0, 0, 0, 0, 0, 0] as number[],
       value: 0,
       handCards: ["1. Card", "2. Card", "3. Card", "4. Card", "5. Card"],
       handCardsType: [] as string[],
     };
   },
   methods: {
-    randomStartHand: function () {
-      if (getDeck()) {
-        this.deck = getDeck();
-      }
+    randomStartHand() {
       this.allCards = [];
       for (let card of this.deck.cards) {
         for (card.cardCount; card.cardCount > 0; card.cardCount--) {
@@ -214,31 +189,9 @@ export default defineComponent({
       }
       this.countCard();
     },
-    countCard: function () {
-      this.handTrapCount = 0;
-      this.uniqueHandTrapCount = 0;
-
-      this.seacherCount = 0;
-      this.uniqueSeacherCount = 0;
-
-      this.comboStarterCount = 0;
-      this.uniqueComboStarterCount = 0;
-
-      this.comboPieceCount = 0;
-      this.uniqueComboPieceCount = 0;
-
-      this.searchableCount = 0;
-      this.uniqueSearchableCount = 0;
-
-      this.oncePerTurnCount = 0;
-      this.uniqueOncePerTurnCount = 0;
-
-      this.negateCount = 0;
-      this.uniqueNegateCount = 0;
-
-      this.interaptionCount = 0;
-      this.uniqueInteraptionCount = 0;
-
+    countCard() {
+      this.counts = [0, 0, 0, 0, 0, 0, 0, 0];
+      this.uniqueCounts = [0, 0, 0, 0, 0, 0, 0, 0];
       this.value = 0;
       let handValueCards = [] as Card[];
       let uniqueCards = [] as Card[];
@@ -251,29 +204,10 @@ export default defineComponent({
         }
         let card = this.deck.cards.find((x) => x.cardName == this.handCards[i]);
         if (card) {
-          if (card.cardHandTrap) {
-            this.handTrapCount++;
-          }
-          if (card.cardSeacher) {
-            this.seacherCount++;
-          }
-          if (card.cardComboStarter) {
-            this.comboStarterCount++;
-          }
-          if (card.cardComboPiece) {
-            this.comboPieceCount++;
-          }
-          if (card.cardOncePerTurn) {
-            this.oncePerTurnCount++;
-          }
-          if (card.cardSearchable) {
-            this.searchableCount++;
-          }
-          if (card.cardNegate) {
-            this.negateCount++;
-          }
-          if (card.cardInteraption) {
-            this.interaptionCount++;
+          for (let c in this.counts) {
+            if (card.cardProperties[c]) {
+              this.counts[c]++;
+            }
           }
           if (card.cardValue < 0) {
             handValueCards.push(card);
@@ -295,29 +229,10 @@ export default defineComponent({
           .reduce((a, b) => a + b);
       }
       for (let card of uniqueCards) {
-        if (card.cardHandTrap) {
-          this.uniqueHandTrapCount++;
-        }
-        if (card.cardSeacher) {
-          this.uniqueSeacherCount++;
-        }
-        if (card.cardComboStarter) {
-          this.uniqueComboStarterCount++;
-        }
-        if (card.cardComboPiece) {
-          this.uniqueComboPieceCount++;
-        }
-        if (card.cardOncePerTurn) {
-          this.uniqueOncePerTurnCount++;
-        }
-        if (card.cardSearchable) {
-          this.uniqueSearchableCount++;
-        }
-        if (card.cardNegate) {
-          this.uniqueNegateCount++;
-        }
-        if (card.cardInteraption) {
-          this.uniqueInteraptionCount++;
+        for (let c in this.uniqueCounts) {
+          if (card.cardProperties[c]) {
+            this.uniqueCounts[c]++;
+          }
         }
       }
       this.checkCombos();
@@ -327,40 +242,33 @@ export default defineComponent({
       for (let combo of this.deck.combos) {
         let comboHandCards = [...this.handCards];
         if (
-          combo.every((c) =>
-            typeof c === "object"
+          combo.every((cardName) =>
+            typeof cardName === "object"
               ? // eslint-disable-next-line @typescript-eslint/ban-ts-comment
                 // @ts-ignore
-                c.cards.some((c1) => comboHandCards.includes(c1)?comboHandCards.splice(comboHandCards.findIndex(c2=>c2==c1),1):null)
-              : comboHandCards.includes(c)?comboHandCards.splice(comboHandCards.findIndex(c2=>c2==c),1):null
+                cardName.cards.some((cardInCardGroup) =>
+                  comboHandCards.includes(cardInCardGroup)
+                    ? comboHandCards.splice(
+                        comboHandCards.findIndex((card) => card == cardInCardGroup),
+                        1
+                      )
+                    : null
+                )
+              : comboHandCards.includes(cardName)
+              ? comboHandCards.splice(
+                  comboHandCards.findIndex((card) => card == cardName),
+                  1
+                )
+              : null
           )
-        ) 
-        {
+        ) {
           this.possibleCombos.push(combo);
         }
       }
     },
-    getRandomInt: function (max: number) {
+    getRandomInt(max: number) {
       return Math.floor(Math.random() * max);
     },
   },
 });
 </script>
-<style lang="css">
-.btn-check:focus + .btn-primary,
-.btn-primary:focus {
-  box-shadow: none !important;
-}
-.monster {
-  background-color: #b5542c !important;
-  border: none;
-}
-.spell {
-  background-color: #289287 !important;
-  border: none;
-}
-.trap {
-  background-color: #a91475 !important;
-  border: none;
-}
-</style>

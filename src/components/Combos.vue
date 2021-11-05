@@ -89,12 +89,12 @@
     </table>
   </div>
   <!-- new modal -->
-  <div id="comboAddModal" class="modal">
+  <div id="comboAddEditModal" class="modal">
     <div class="modal-content">
       <span
         class="close"
         style="float: right; width: 42px height:42px; margin-left: 95%"
-        @click="closeComboAddModal()"
+        @click="closeComboAddEditModal()"
         >&times;</span
       >
       <div class="container">
@@ -230,146 +230,6 @@
     </div>
   </div>
   <!-- new modal -->
-  <div id="comboEditModal" class="modal">
-    <div class="modal-content">
-      <span
-        class="close"
-        style="float: right; width: 42px height:42px; margin-left: 95%"
-        @click="closeComboEditModal()"
-        >&times;</span
-      >
-      <div class="container">
-        <div class="d-flex justify-content: center">
-          <div class="w-100">
-            <select
-              class="form-select"
-              v-model="comboCards[0]"
-              :class="comboCardsType[0]"
-              @change="changeType()"
-            >
-              <option class="placeholder" selected>1. Card</option>
-              <option
-                v-for="card in helpDeck"
-                :key="card.cardName"
-                :class="card.cardType"
-              >
-                {{ card.cardName }}
-              </option>
-              <option
-                class="placeholder"
-                v-for="cardGroup in deck.cardGroups"
-                :key="cardGroup.name"
-                :value="cardGroup"
-              >
-                {{ cardGroup.name }}
-              </option>
-            </select>
-            <select
-              class="form-select"
-              v-model="comboCards[1]"
-              :class="comboCardsType[1]"
-              @change="changeType()"
-            >
-              <option class="placeholder" selected>2. Card</option>
-              <option
-                v-for="card in helpDeck"
-                :key="card.cardName"
-                :class="card.cardType"
-              >
-                {{ card.cardName }}
-              </option>
-              <option
-                class="placeholder"
-                v-for="cardGroup in deck.cardGroups"
-                :key="cardGroup.name"
-                :value="cardGroup"
-              >
-                {{ cardGroup.name }}
-              </option>
-            </select>
-            <select
-              class="form-select"
-              v-model="comboCards[2]"
-              :class="comboCardsType[2]"
-              @change="changeType()"
-            >
-              <option class="placeholder" selected>3. Card</option>
-              <option
-                v-for="card in helpDeck"
-                :key="card.cardName"
-                :class="card.cardType"
-              >
-                {{ card.cardName }}
-              </option>
-              <option
-                class="placeholder"
-                v-for="cardGroup in deck.cardGroups"
-                :key="cardGroup.name"
-                :value="cardGroup"
-              >
-                {{ cardGroup.name }}
-              </option>
-            </select>
-            <select
-              class="form-select"
-              v-model="comboCards[3]"
-              :class="comboCardsType[3]"
-              @change="changeType()"
-            >
-              <option class="placeholder" selected>4. Card</option>
-              <option
-                v-for="card in helpDeck"
-                :key="card.cardName"
-                :class="card.cardType"
-              >
-                {{ card.cardName }}
-              </option>
-              <option
-                class="placeholder"
-                v-for="cardGroup in deck.cardGroups"
-                :key="cardGroup.name"
-                :value="cardGroup"
-              >
-                {{ cardGroup.name }}
-              </option>
-            </select>
-            <select
-              class="form-select"
-              v-model="comboCards[4]"
-              :class="comboCardsType[4]"
-              @change="changeType()"
-            >
-              <option class="placeholder" selected>5. Card</option>
-              <option
-                v-for="card in helpDeck"
-                :key="card.cardName"
-                :class="card.cardType"
-              >
-                {{ card.cardName }}
-              </option>
-              <option
-                class="placeholder"
-                v-for="cardGroup in deck.cardGroups"
-                :key="cardGroup.name"
-                :value="cardGroup"
-              >
-                {{ cardGroup.name }}
-              </option>
-            </select>
-          </div>
-        </div>
-        <button
-          type="button"
-          class="btn btn-primary w-25 mt-1"
-          style="float: right"
-          @click="editCombo()"
-        >
-          Confirm
-        </button>
-      </div>
-    </div>
-  </div>
-  <!-- new modal -->
   <div id="comboDeleteModal" class="modal">
     <div class="modal-content">
       <span
@@ -406,7 +266,7 @@
 </template>
 <script lang="ts">
 import { defineComponent } from "vue";
-import { Card, Combo, Deck, getData, getDeck, setData, setDeck } from "@/API";
+import { Card, Deck, getData, getDeck, setData, setDeck } from "@/API";
 export default defineComponent({
   mounted() {
     if (getData()) {
@@ -419,6 +279,7 @@ export default defineComponent({
   },
   data() {
     return {
+      editAdd:"add",
       deck: {} as Deck,
       editComboIndex: 0,
       deleteComboIndex: 0,
@@ -435,14 +296,37 @@ export default defineComponent({
     };
   },
   methods: {
-    closeComboAddModal() {
-      this.inputReset();
-      var modal = document.getElementById("comboAddModal");
-      modal!.style.display = "none";
-    },
     openComboAddModal() {
-      var modal = document.getElementById("comboAddModal");
-      modal!.style.display = "block";
+      this.editAdd="add"
+      var modal = document.getElementById("comboAddEditModal");
+      if (modal) modal.style.display = "block";
+    },
+    closeComboAddEditModal() {
+      this.inputReset();
+      var modal = document.getElementById("comboAddEditModal");
+      if (modal) modal.style.display = "none";
+    },
+    openComboEditModal(index: number) {
+        this.editAdd="edit"
+      this.editComboIndex = index;
+      let i = 0;
+      for (let card of this.deck.combos[index]) {
+        this.comboCards[i] = card;
+        i++;
+      }
+      this.changeType();
+      var modal = document.getElementById("comboAddEditModal");
+      if (modal) modal.style.display = "block";
+    },
+    openComboDeleteModal(index: number) {
+      this.deleteComboIndex = index;
+      var modal = document.getElementById("comboDeleteModal");
+      if (modal) modal.style.display = "block";
+    },
+    closeComboDeleteModal() {
+      this.inputReset();
+      var modal = document.getElementById("comboDeleteModal");
+      if (modal) modal.style.display = "none";
     },
     addCombo() {
       let cardArray = [] as string[];
@@ -460,39 +344,17 @@ export default defineComponent({
           }
         }
       }
-      if (this.deck.combos) {
-        this.deck.combos.push(cardArray);
-      } else {
-        this.deck = {
-          name: this.deck.name,
-          cards: this.deck.cards,
-          combos: [cardArray],
-          cardGroups: this.deck.cardGroups,
-        };
+       switch (this.editAdd) {
+        case "add":
+          this.deck.combos.push(cardArray);
+          break;
+        case "edit":
+         this.deck.combos[this.editComboIndex] = cardArray;
+          break;
       }
+       
       this.safeDeck();
-      this.inputReset();
-      this.closeComboAddModal();
-    },
-    editCombo() {
-      let cardArray = [] as string[];
-      for (let i = 0; i < 5; i++) {
-        if (typeof this.comboCards[i] === "object") {
-          cardArray.push(this.comboCards[i]);
-        } else {
-          if (!this.comboCards[i].includes(". Card")) {
-            let card = this.deck.cards.find(
-              (x) => x.cardName == this.comboCards[i]
-            );
-            if (card) {
-              cardArray.push(card.cardName);
-            }
-          }
-        }
-      }
-      this.deck.combos[this.editComboIndex] = cardArray;
-      this.safeDeck();
-      this.closeComboEditModal();
+      this.closeComboAddEditModal();
     },
     deleteCombo() {
       this.deck.combos.splice(this.deleteComboIndex, 1);
@@ -500,44 +362,11 @@ export default defineComponent({
       this.closeComboDeleteModal();
     },
     uniqueCardDeck() {
-      this.helpDeck = [];
-      if (this.deck.cards) {
-        for (let card of this.deck.cards) {
-          if (!this.helpDeck.find((c) => c.cardName == card!.cardName)) {
-            this.helpDeck.push(card);
-          }
-        }
-      }
+      this.helpDeck = [...new Set(this.deck.cards.filter((c) => c.cardName))];
     },
     inputReset() {
       this.comboCards = ["1. Card", "2. Card", "3. Card", "4. Card", "5. Card"];
       this.changeType();
-    },
-    openComboDeleteModal(index: number) {
-      this.deleteComboIndex = index;
-      var modal = document.getElementById("comboDeleteModal");
-      modal!.style.display = "block";
-    },
-    closeComboDeleteModal() {
-      this.inputReset();
-      var modal = document.getElementById("comboDeleteModal");
-      modal!.style.display = "none";
-    },
-    openComboEditModal(index: number) {
-      let i = 0;
-      this.editComboIndex = index;
-      for (let card of this.deck.combos[index]) {
-        this.comboCards[i] = card;
-        i++;
-      }
-      this.changeType();
-      var modal = document.getElementById("comboEditModal");
-      modal!.style.display = "block";
-    },
-    closeComboEditModal() {
-      this.inputReset();
-      var modal = document.getElementById("comboEditModal");
-      modal!.style.display = "none";
     },
     safeDeck() {
       this.decks[this.decks.findIndex((d) => d.name == this.deck.name)] =
@@ -558,21 +387,3 @@ export default defineComponent({
   },
 });
 </script>
-<style lang="css">
-.monster {
-  background-color: #b5542c !important;
-  border: none;
-}
-.spell {
-  background-color: #289287 !important;
-  border: none;
-}
-.trap {
-  background-color: #a91475 !important;
-  border: none;
-}
-.placeholder {
-  background-color: #fff !important;
-  border: none;
-}
-</style>

@@ -60,32 +60,30 @@
     </div>
     <div class="d-flex mb-1">
       <div class="w-25 border rounded-start border-primary">
-        Handtraps:<br />{{ handTrapCount }}({{ uniqueHandTrapCount }})
+        Handtraps:<br />{{ counts[0] }}({{ uniqueCounts[0] }})
       </div>
       <div class="w-25 border border-primary">
-        Seacher:<br />{{ seacherCount }}({{ uniqueSeacherCount }})
+        Seacher:<br />{{ counts[1] }}({{ uniqueCounts[1] }})
       </div>
       <div class="w-25 border border-primary">
-        Combo Starter:<br />{{ comboStarterCount }}({{
-          uniqueComboStarterCount
-        }})
+        Combo Starter:<br />{{ counts[2] }}({{ uniqueCounts[2] }})
       </div>
       <div class="w-25 border rounded-end border-primary">
-        Negate:<br />{{ negateCount }}({{ uniqueNegateCount }})
+        Negate:<br />{{ counts[6] }}({{ uniqueCounts[6] }})
       </div>
     </div>
     <div class="d-flex mb-1">
       <div class="w-25 border rounded-start border-primary">
-        Once per Turn:<br />{{ oncePerTurnCount }}({{ uniqueOncePerTurnCount }})
+        Once per Turn:<br />{{ counts[5] }}({{ uniqueCounts[5] }})
       </div>
       <div class="w-25 border border-primary">
-        Searchable:<br />{{ searchableCount }}({{ uniqueSearchableCount }})
+        Searchable:<br />{{ counts[4] }}({{ uniqueCounts[4] }})
       </div>
       <div class="w-25 border border-primary">
-        Combo Piece:<br />{{ comboPieceCount }}({{ uniqueComboPieceCount }})
+        Combo Piece:<br />{{ counts[3] }}({{ uniqueCounts[3] }})
       </div>
       <div class="w-25 border rounded-end border-primary">
-        Interaption:<br />{{ interaptionCount }}({{ uniqueInteraptionCount }})
+        Interaption:<br />{{ counts[7] }}({{ uniqueCounts[7] }})
       </div>
     </div>
     <br />
@@ -105,7 +103,7 @@
           </th>
           <td :class="card.cardType">
             <button
-              @click="openCardEditModal(card.cardId)"
+              @click="openCardEditModal(card.cardName)"
               class="me-2"
               style="background-color: #ffffff00; border: none"
             >
@@ -126,7 +124,7 @@
               </svg>
             </button>
             <button
-              @click="openCardDeleteModal(card.cardId)"
+              @click="openCardDeleteModal(card.cardName)"
               class="me-2"
               style="background-color: #ffffff00; border: none"
             >
@@ -171,12 +169,12 @@
     </table>
   </div>
   <!-- new modal -->
-  <div id="cardEditModal" class="modal">
+  <div id="cardAddEditModal" class="modal">
     <div class="modal-content">
       <span
         class="close"
         style="float: right; width: 42px height:42px; margin-left: 95%"
-        @click="closeCardEditModal()"
+        @click="closeCardAddEditModal()"
         >&times;</span
       >
       <div class="container">
@@ -269,7 +267,7 @@
               class="btn-check"
               id="btncheck9"
               autocomplete="off"
-              v-model="handTrap"
+              v-model="properties[0]"
             />
             <label class="btn btn-outline-primary w-25" for="btncheck9"
               >Handtrap</label
@@ -279,7 +277,7 @@
               class="btn-check"
               id="btncheck10"
               autocomplete="off"
-              v-model="seacher"
+              v-model="properties[1]"
             />
             <label class="btn btn-outline-primary w-25" for="btncheck10"
               >Searcher</label
@@ -289,7 +287,7 @@
               class="btn-check"
               id="btncheck11"
               autocomplete="off"
-              v-model="comboStarter"
+              v-model="properties[2]"
             />
             <label class="btn btn-outline-primary w-25" for="btncheck11"
               >Combo Starter</label
@@ -299,7 +297,7 @@
               class="btn-check"
               id="btncheck12"
               autocomplete="off"
-              v-model="negate"
+              v-model="properties[6]"
             />
 
             <label class="btn btn-outline-primary w-25" for="btncheck12"
@@ -317,7 +315,7 @@
               class="btn-check"
               id="btncheck13"
               autocomplete="off"
-              v-model="oncePerTurn"
+              v-model="properties[5]"
             />
             <label class="btn btn-outline-primary w-25" for="btncheck13"
               >Once per Turn</label
@@ -327,7 +325,7 @@
               class="btn-check"
               id="btncheck14"
               autocomplete="off"
-              v-model="searchable"
+              v-model="properties[4]"
             />
             <label class="btn btn-outline-primary w-25" for="btncheck14"
               >Searchable</label
@@ -337,7 +335,7 @@
               class="btn-check"
               id="btncheck15"
               autocomplete="off"
-              v-model="comboPiece"
+              v-model="properties[3]"
             />
             <label class="btn btn-outline-primary w-25" for="btncheck15"
               >Combo Piece</label
@@ -347,7 +345,7 @@
               class="btn-check"
               id="btncheck16"
               autocomplete="off"
-              v-model="interaption"
+              v-model="properties[7]"
             />
             <label class="btn btn-outline-primary w-25" for="btncheck16"
               >Interaption</label
@@ -464,7 +462,6 @@ import {
   setData,
   setDeck,
 } from "@/API";
-
 export default defineComponent({
   mounted() {
     if (getData()) {
@@ -489,38 +486,9 @@ export default defineComponent({
       deckNumber: 0,
       type: "monster" as cardType,
 
-      handTrap: false,
-      seacher: false,
-      comboStarter: false,
-      comboPiece: false,
-      searchable: false,
-      oncePerTurn: false,
-      negate: false,
-      interaption: false,
-
-      handTrapCount: 0,
-      uniqueHandTrapCount: 0,
-
-      seacherCount: 0,
-      uniqueSeacherCount: 0,
-
-      comboStarterCount: 0,
-      uniqueComboStarterCount: 0,
-
-      comboPieceCount: 0,
-      uniqueComboPieceCount: 0,
-
-      searchableCount: 0,
-      uniqueSearchableCount: 0,
-
-      oncePerTurnCount: 0,
-      uniqueOncePerTurnCount: 0,
-
-      negateCount: 0,
-      uniqueNegateCount: 0,
-
-      interaptionCount: 0,
-      uniqueInteraptionCount: 0,
+      properties: [false, false, false, false, false, false, false, false],
+      counts: [0, 0, 0, 0, 0, 0, 0, 0] as number[],
+      uniqueCounts: [0, 0, 0, 0, 0, 0, 0, 0] as number[],
 
       editCardId: 0,
       deleteCardId: 0,
@@ -535,40 +503,66 @@ export default defineComponent({
   },
   methods: {
     editAddCard() {
-      if (this.editAdd == "add") {
-        this.addCard();
-      }
-      if (this.editAdd == "edit") {
-        this.editCard();
+      switch (this.editAdd) {
+        case "add":
+          this.addCard();
+          break;
+        case "edit":
+          this.editCard();
+          break;
       }
     },
-    addCard: function () {
-      this.deck.cards[this.deck.cards.length] = {
-        cardId: this.deck.cards.length,
+    openCardDeleteModal(name: string) {
+      this.deleteCardId =this.deck.cards.findIndex(c=>c.cardName==name);
+      this.cardNameInput = this.deck.cards[this.deleteCardId].cardName;
+      var modal = document.getElementById("cardDeleteModal");
+      if (modal) modal.style.display = "block";
+    },
+    closeCardDeleteModal() {
+      this.inputReset();
+      var modal = document.getElementById("cardDeleteModal");
+      if (modal) modal.style.display = "none";
+    },
+    openCardAddModal() {
+      this.editAdd = "add";
+      var modal = document.getElementById("cardAddEditModal");
+      if (modal) modal.style.display = "block";
+    },
+    openCardEditModal(name: string) {
+      this.editAdd = "edit";
+      this.editCardId = this.deck.cards.findIndex(c=>c.cardName==name);
+      this.cardNameInput = this.deck.cards[this.editCardId].cardName;
+      this.cardCountInput = JSON.stringify(this.deck.cards[this.editCardId].cardCount);
+      this.properties = this.deck.cards[this.editCardId].cardProperties;
+      this.value = this.deck.cards[this.editCardId].cardValue;
+      this.type = this.deck.cards[this.editCardId].cardType;
+      var modal = document.getElementById("cardAddEditModal");
+      if (modal) modal.style.display = "block";
+    },
+    closeCardAddEditModal() {
+      this.inputReset();
+      var modal = document.getElementById("cardAddEditModal");
+      if (modal) modal.style.display = "none";
+    },
+    addCard() {
+      this.deck.cards.push({
         cardName: this.cardNameInput,
         cardType: this.type,
         cardCount: parseInt(this.cardCountInput),
-        cardHandTrap: this.handTrap,
-        cardSeacher: this.seacher,
-        cardComboStarter: this.comboStarter,
-        cardComboPiece: this.comboPiece,
-        cardSearchable: this.searchable,
-        cardOncePerTurn: this.oncePerTurn,
-        cardNegate: this.negate,
-        cardInteraption: this.interaption,
+        cardProperties: this.properties,
         cardValue: this.value,
-      };
+      });
       this.uniqueCardDeck();
       this.inputReset();
       this.countCard();
       this.deckRatingValue();
       this.sortDeck();
       this.safeDeck();
-      this.closeCardEditModal();
+      this.closeCardAddEditModal();
     },
-    editCard: function () {
+    editCard() {
       for (let combo of this.deck.combos) {
-        let tmp = this.deck.combos.findIndex((c) => c == combo);
+        let cardIndex = this.deck.combos.findIndex((c) => c == combo);
         if (
           combo.findIndex(
             (c) => c == this.deck.cards[this.editCardId].cardName
@@ -580,7 +574,7 @@ export default defineComponent({
             )
           ] = this.cardNameInput;
         }
-        this.deck.combos[tmp] = combo;
+        this.deck.combos[cardIndex] = combo;
       }
       for (let cardGroup in this.deck.cardGroups) {
         this.deck.cardGroups[cardGroup].cards[
@@ -590,18 +584,10 @@ export default defineComponent({
         ] = this.cardNameInput;
       }
       this.deck.cards[this.editCardId] = {
-        cardId: this.deck.cards[this.editCardId].cardId,
         cardName: this.cardNameInput,
         cardType: this.type,
         cardCount: parseInt(this.cardCountInput),
-        cardHandTrap: this.handTrap,
-        cardSeacher: this.seacher,
-        cardComboStarter: this.comboStarter,
-        cardComboPiece: this.comboPiece,
-        cardSearchable: this.searchable,
-        cardOncePerTurn: this.oncePerTurn,
-        cardNegate: this.negate,
-        cardInteraption: this.interaption,
+        cardProperties: this.properties,
         cardValue: this.value,
       };
       this.uniqueCardDeck();
@@ -609,17 +595,19 @@ export default defineComponent({
       this.deckRatingValue();
       this.sortDeck();
       this.safeDeck();
-      this.closeCardEditModal();
+      this.closeCardAddEditModal();
     },
     inputReset() {
-      this.handTrap = false;
-      this.seacher = false;
-      this.comboStarter = false;
-      this.comboPiece = false;
-      this.searchable = false;
-      this.oncePerTurn = false;
-      this.negate = false;
-      this.interaption = false;
+      this.properties = [
+        false,
+        false,
+        false,
+        false,
+        false,
+        false,
+        false,
+        false,
+      ];
       this.value = 0;
       this.editCardId = 0;
       this.deleteCardId = 0;
@@ -627,14 +615,14 @@ export default defineComponent({
       this.cardNameInput = "";
       this.cardCountInput = "";
     },
-    deleteCard(cardId: number) {
+    deleteCard(cardIndex: number) {
       for (let combo of this.deck.combos) {
         let tmp = this.deck.combos.findIndex((c) => c == combo);
         if (
-          combo.findIndex((c) => c == this.deck.cards[cardId].cardName) != -1
+          combo.findIndex((c) => c == this.deck.cards[cardIndex].cardName) != -1
         ) {
           combo.splice(
-            combo.findIndex((c) => c == this.deck.cards[cardId].cardName),
+            combo.findIndex((c) => c == this.deck.cards[cardIndex].cardName),
             1
           );
         }
@@ -646,7 +634,7 @@ export default defineComponent({
       for (let cardGroup in this.deck.cardGroups) {
         this.deck.cardGroups[cardGroup].cards.splice(
           this.deck.cardGroups[cardGroup].cards.findIndex(
-            (c) => c == this.deck.cards[cardId].cardName
+            (c) => c == this.deck.cards[cardIndex].cardName
           ),
           1
         );
@@ -654,116 +642,26 @@ export default defineComponent({
           this.deck.cardGroups.splice(parseInt(cardGroup), 1);
         }
       }
-
-      this.deck.cards.splice(cardId, 1);
-      for (cardId; cardId < this.deck.cards.length; cardId++) {
-        this.deck.cards[cardId].cardId--;
-      }
+      this.deck.cards.splice(cardIndex, 1);
       this.countCard();
       this.deckRatingValue();
       this.safeDeck();
       this.closeCardDeleteModal();
     },
-    openCardDeleteModal(index: number) {
-      this.deleteCardId = index;
-      this.cardNameInput = this.deck.cards[index].cardName;
-      var modal = document.getElementById("cardDeleteModal");
-      modal!.style.display = "block";
-    },
-    closeCardDeleteModal() {
-      this.inputReset();
-      var modal = document.getElementById("cardDeleteModal");
-      modal!.style.display = "none";
-    },
-    openCardAddModal() {
-      this.editAdd = "add";
-      var modal = document.getElementById("cardEditModal");
-      modal!.style.display = "block";
-    },
-    openCardEditModal(index: number) {
-      this.editAdd = "edit";
-      this.editCardId = index;
-      this.cardNameInput = this.deck.cards[index].cardName;
-      this.cardCountInput = JSON.stringify(this.deck.cards[index].cardCount);
-      this.handTrap = this.deck.cards[index].cardHandTrap;
-      this.seacher = this.deck.cards[index].cardSeacher;
-      this.comboStarter = this.deck.cards[index].cardComboStarter;
-      this.comboPiece = this.deck.cards[index].cardComboPiece;
-      this.searchable = this.deck.cards[index].cardSearchable;
-      this.oncePerTurn = this.deck.cards[index].cardOncePerTurn;
-      this.negate = this.deck.cards[index].cardNegate;
-      this.interaption = this.deck.cards[index].cardInteraption;
-      this.value = this.deck.cards[index].cardValue;
-      this.type = this.deck.cards[index].cardType;
-      var modal = document.getElementById("cardEditModal");
-      modal!.style.display = "block";
-    },
-    closeCardEditModal() {
-      this.inputReset();
-      var modal = document.getElementById("cardEditModal");
-      modal!.style.display = "none";
-    },
-    countCard: function () {
+    countCard() {
       if (this.deck.cards) {
         this.deckNumber = 0;
-
-        this.handTrapCount = 0;
-        this.uniqueHandTrapCount = 0;
-
-        this.seacherCount = 0;
-        this.uniqueSeacherCount = 0;
-
-        this.comboStarterCount = 0;
-        this.uniqueComboStarterCount = 0;
-
-        this.comboPieceCount = 0;
-        this.uniqueComboPieceCount = 0;
-
-        this.searchableCount = 0;
-        this.uniqueSearchableCount = 0;
-
-        this.oncePerTurnCount = 0;
-        this.uniqueOncePerTurnCount = 0;
-
-        this.negateCount = 0;
-        this.uniqueNegateCount = 0;
-
-        this.interaptionCount = 0;
-        this.uniqueInteraptionCount = 0;
-
+        this.counts = [0, 0, 0, 0, 0, 0, 0, 0];
+        this.uniqueCounts = [0, 0, 0, 0, 0, 0, 0, 0];
         for (let card of this.deck.cards) {
           this.deckNumber += card.cardCount;
-          if (card.cardHandTrap) {
-            this.handTrapCount += card.cardCount;
-            this.uniqueHandTrapCount++;
+          for (let c in this.counts) {
+            if (this.properties[c]) this.counts[c] += card.cardCount;
           }
-          if (card.cardSeacher) {
-            this.seacherCount += card.cardCount;
-            this.uniqueSeacherCount++;
-          }
-          if (card.cardComboStarter) {
-            this.comboStarterCount += card.cardCount;
-            this.uniqueComboStarterCount++;
-          }
-          if (card.cardComboPiece) {
-            this.comboPieceCount += card.cardCount;
-            this.uniqueComboPieceCount++;
-          }
-          if (card.cardSearchable) {
-            this.searchableCount += card.cardCount;
-            this.uniqueSearchableCount++;
-          }
-          if (card.cardOncePerTurn) {
-            this.oncePerTurnCount += card.cardCount;
-            this.uniqueOncePerTurnCount++;
-          }
-          if (card.cardNegate) {
-            this.negateCount += card.cardCount;
-            this.uniqueNegateCount++;
-          }
-          if (card.cardInteraption) {
-            this.interaptionCount += card.cardCount;
-            this.uniqueInteraptionCount++;
+        }
+        for (let card of this.helpDeck) {
+          for (let c in this.uniqueCounts) {
+            if (this.properties[c]) this.uniqueCounts[c]++;
           }
         }
       }
@@ -772,21 +670,14 @@ export default defineComponent({
       this.allCards = [];
       for (let card of this.deck.cards) {
         let count = card.cardCount;
-        for (count; count > 0; count--) {
+        for (count; count; count--) {
           this.allCards.push(card);
         }
       }
-      this.helpDeck = [];
-      if (this.deck.cards) {
-        for (let card of this.deck.cards) {
-          if (!this.helpDeck.find((c) => c.cardName == card!.cardName)) {
-            this.helpDeck.push(card);
-          }
-        }
-      }
+      this.helpDeck = [...new Set(this.deck.cards.filter((c) => c.cardName))];
     },
     deckRatingValue() {
-      if (this.allCards.length > 0) {
+      if (this.allCards.length) {
         this.deckValue =
           Math.round(
             (this.allCards.map((c) => c.cardValue).reduce((a, b) => a + b) /
@@ -795,14 +686,13 @@ export default defineComponent({
           ) / 10;
       }
       this.deckRating = 12.5 * (1 - Math.pow(2, -0.5 * this.deckValue));
-      this.deckRating += 12.5 * (1 - Math.pow(2, -0.4 * this.handTrapCount));
-      this.deckRating += 12.5 * (1 - Math.pow(2, -0.2 * this.seacherCount));
-      this.deckRating +=
-        12.5 * (1 - Math.pow(2, -0.7 * this.comboStarterCount));
-      this.deckRating += 12.5 * (1 - Math.pow(2, -0.2 * this.comboPieceCount));
-      this.deckRating += 12.5 * (1 - Math.pow(2, -0.2 * this.searchableCount));
-      this.deckRating += 12.5 * (1 - Math.pow(2, -0.4 * this.negateCount));
-      this.deckRating += 12.5 * (1 - Math.pow(2, -0.4 * this.interaptionCount));
+      this.deckRating += 12.5 * (1 - Math.pow(2, -0.4 * this.counts[0]));
+      this.deckRating += 12.5 * (1 - Math.pow(2, -0.2 * this.counts[1]));
+      this.deckRating += 12.5 * (1 - Math.pow(2, -0.7 * this.counts[2]));
+      this.deckRating += 12.5 * (1 - Math.pow(2, -0.2 * this.counts[3]));
+      this.deckRating += 12.5 * (1 - Math.pow(2, -0.2 * this.counts[4]));
+      this.deckRating += 12.5 * (1 - Math.pow(2, -0.4 * this.counts[6]));
+      this.deckRating += 12.5 * (1 - Math.pow(2, -0.4 * this.counts[7]));
       if (this.deckNumber > 40) {
         this.deckRating = (this.deckRating / this.deckNumber) * 40;
       }
@@ -816,7 +706,6 @@ export default defineComponent({
     },
     loadDeck() {
       if (this.selectedDeck) {
-        this.allCards = [];
         if (
           this.decks[this.decks.findIndex((d) => d.name == this.selectedDeck)]
         ) {
@@ -836,12 +725,7 @@ export default defineComponent({
               this.decks.findIndex((d) => d.name == this.selectedDeck)
             ];
         }
-        for (let card of this.deck.cards) {
-          let count = card.cardCount;
-          for (count; count > 0; count--) {
-            this.allCards.push(card);
-          }
-        }
+        this.uniqueCardDeck();
         this.countCard();
         setDeck(this.deck);
       }
@@ -868,77 +752,7 @@ export default defineComponent({
           };
           return map[a.cardType] - map[b.cardType];
         });
-      let counter = 0;
-      for (let card of this.deck.cards) {
-        card.cardId = counter;
-        counter++;
-      }
     },
   },
 });
 </script>
-<style lang="css">
-#app {
-  font-family: Avenir, Helvetica, Arial, sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-  text-align: center;
-  color: #2c3e50;
-}
-ul {
-  list-style: none;
-}
-.btn-check:focus + .btn-outline-primary,
-.btn-outline-primary:focus + .btn-outline-primary {
-  box-shadow: none !important;
-}
-.btn-check:hover + .btn-outline-primary,
-.btn-outline-primary:hover + .btn-outline-primary {
-  background-color: transparent;
-  color: #000;
-}
-.modal {
-  display: none;
-  position: fixed;
-  z-index: 1;
-  left: 0;
-  top: 0;
-  width: 100%;
-  height: 100%;
-  overflow: auto;
-  background-color: rgb(0, 0, 0);
-  background-color: rgba(0, 0, 0, 0.4);
-}
-.modal-content {
-  background-color: #fefefe;
-  margin: 15% auto;
-  padding: 5px;
-  border: 1px solid #888;
-  width: 50%;
-}
-.close {
-  color: #aaa;
-  float: right;
-  font-size: 28px;
-  font-weight: bold;
-}
-.close:hover,
-.close:focus {
-  color: black;
-  text-decoration: none;
-  cursor: pointer;
-}
-
-.monster {
-  background-color: #b5542c !important;
-  border: none;
-}
-.spell {
-  background-color: #289287 !important;
-  border: none;
-}
-.trap {
-  background-color: #a91475 !important;
-  border: none;
-}
-</style>

@@ -90,12 +90,12 @@
     </table>
   </div>
   <!-- new modal -->
-  <div id="cardGroupAddModal" class="modal">
+  <div id="cardGroupAddEditModal" class="modal">
     <div class="modal-content">
       <span
         class="close"
         style="float: right; width: 42px height:42px; margin-left: 95%"
-        @click="closeCardGroupAddModal()"
+        @click="closeCardGroupAddEditModal()"
         >&times;</span
       >
 
@@ -173,7 +173,6 @@
     </div>
   </div>
 </template>
-
 <script lang="ts">
 import { Card, Deck, getData, getDeck, setData, setDeck } from "@/API";
 import { defineComponent } from "vue";
@@ -203,75 +202,62 @@ export default defineComponent({
   },
   methods: {
     editAddCard() {
-      if (this.editAdd == "add") {
-        this.addCardGroup();
-      }
-      if (this.editAdd == "edit") {
-        this.editCardGroup();
+      switch (this.editAdd) {
+        case "add":
+          this.addCardGroup();
+          break;
+        case "edit":
+          this.editCardGroup();
+          break;
       }
     },
     openCardGroupAddModal() {
       this.editAdd = "add";
-      var modal = document.getElementById("cardGroupAddModal");
-      modal!.style.display = "block";
+      var modal = document.getElementById("cardGroupAddEditModal");
+      if (modal) modal.style.display = "block";
     },
-    closeCardGroupAddModal() {
-      if (this.deck.cardGroups.length > 0) {
+    closeCardGroupAddEditModal() {
+      if (this.deck.cardGroups.length) {
         if (
-          this.deck.cardGroups[this.editCardGroupIndex].cards[
-            this.deck.cardGroups[this.editCardGroupIndex].cards.length - 1
-          ].includes(". Card")
+          this.deck.cardGroups[this.editCardGroupIndex].cards
+            .slice(-1)
+            .includes(". Card")
         ) {
           this.deck.cardGroups[this.editCardGroupIndex].cards.pop();
         }
       }
       this.inputReset();
       this.changeType();
-      var modal = document.getElementById("cardGroupAddModal");
-      modal!.style.display = "none";
+      var modal = document.getElementById("cardGroupAddEditModal");
+      if (modal) modal.style.display = "none";
     },
-    addCardGroup() {
-      let tmp = [...this.cardInputs];
-      tmp.pop();
-      if (tmp) {
-        if (this.deck.cardGroups) {
-          this.deck.cardGroups.push({
-            name: this.cardGroupNameInput,
-            cards: tmp,
-          });
-        } else {
-          this.deck = {
-            name: this.deck.name,
-            cards: this.deck.cards,
-            combos: this.deck.combos,
-            cardGroups: [
-              {
-                name: this.cardGroupNameInput,
-                cards: tmp,
-              },
-            ],
-          };
-        }
-      }
-      this.closeCardGroupAddModal();
-      this.safeDeck();
-    },
-    openCardGroupEditModal(index: number) {
-      console.log(index);
+     openCardGroupEditModal(index: number) {
       this.editAdd = "edit";
       this.editCardGroupIndex = index;
       this.cardGroupNameInput = this.deck.cardGroups[index].name;
       this.cardInputs = this.deck.cardGroups[index].cards;
       this.cardInputs.push(`${this.cardInputs.length + 1}. Card`);
       this.changeType();
-      var modal = document.getElementById("cardGroupAddModal");
-      modal!.style.display = "block";
+      var modal = document.getElementById("cardGroupAddEditModal");
+      if (modal) modal.style.display = "block";
     },
+    addCardGroup() {
+      let copieCardInputs = [...this.cardInputs];
+      copieCardInputs.pop();
+      if (copieCardInputs) {
+          this.deck.cardGroups.push({
+            name: this.cardGroupNameInput,
+            cards: copieCardInputs,
+          });  
+      }
+      this.closeCardGroupAddEditModal();
+      this.safeDeck();
+    },  
     editCardGroup() {
       let tmp = [...this.cardInputs];
       tmp.pop();
       this.deck.cardGroups[this.editCardGroupIndex].cards = tmp;
-      this.closeCardGroupAddModal();
+      this.closeCardGroupAddEditModal();
       this.inputReset();
       this.safeDeck();
     },
@@ -279,12 +265,12 @@ export default defineComponent({
       this.deleteCardGroupName = this.deck.cardGroups[index].name;
       this.deleteCardGroupIndex = index;
       var modal = document.getElementById("cardGroupDeleteModal");
-      modal!.style.display = "block";
+      if (modal) modal.style.display = "block";
     },
     closeCardGroupDeleteModal() {
       this.inputReset();
       var modal = document.getElementById("cardGroupDeleteModal");
-      modal!.style.display = "none";
+      if (modal) modal.style.display = "none";
     },
     deleteCardGroup() {
       this.deck.cardGroups.splice(this.deleteCardGroupIndex, 1);
@@ -297,14 +283,7 @@ export default defineComponent({
       this.changeType();
     },
     uniqueCardDeck() {
-      this.helpDeck = [];
-      if (this.deck.cards) {
-        for (let card of this.deck.cards) {
-          if (!this.helpDeck.find((c) => c.cardName == card!.cardName)) {
-            this.helpDeck.push(card);
-          }
-        }
-      }
+      this.helpDeck = [...new Set(this.deck.cards.filter((c) => c.cardName))];
     },
     safeDeck() {
       this.decks[this.decks.findIndex((d) => d.name == this.deck.name)] =
@@ -326,23 +305,7 @@ export default defineComponent({
           this.cardInputTypes[i] = "";
         }
       }
-      this.cardInputTypes.push("");
     },
   },
 });
 </script>
-
-<style>
-.monster {
-  background-color: #b5542c !important;
-  border: none;
-}
-.spell {
-  background-color: #289287 !important;
-  border: none;
-}
-.trap {
-  background-color: #a91475 !important;
-  border: none;
-}
-</style>
