@@ -182,9 +182,11 @@ export default defineComponent({
   },
   methods: {
     randomStartHand() {
-      let copieDeck=[...this.deck.cards]
+        if (getDeck()) {
+      this.deck = getDeck();
+    }
       this.allCards = [];
-      for (let card of copieDeck) {
+      for (let card of this.deck.cards) {
         for (card.cardCount; card.cardCount > 0; card.cardCount--) {
           this.allCards.push(card.cardName);
         }

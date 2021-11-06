@@ -248,6 +248,8 @@ export default defineComponent({
     addCardGroup() {
       let copieCardInputs = [...this.cardInputs];
       copieCardInputs.pop();
+      while (this.cardGroupNameInput.endsWith(" "))
+        this.cardGroupNameInput = this.cardGroupNameInput.slice(0, -1);
       if (copieCardInputs.length) {
         this.deck.cardGroups.push({
           name: this.cardGroupNameInput,
@@ -260,9 +262,41 @@ export default defineComponent({
     editCardGroup() {
       let tmp = [...this.cardInputs];
       tmp.pop();
+      while (this.cardGroupNameInput.endsWith(" "))
+        this.cardGroupNameInput = this.cardGroupNameInput.slice(0, -1);
+
+      for (let combo of this.deck.combos) {
+        console.log(combo)
+        let comboIndex = this.deck.combos.findIndex((c) => c == combo);
+        console.log(comboIndex)
+        
+        console.log( combo.findIndex(
+          // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+                // @ts-ignore
+            (c) => typeof c ==="object"?c.name==this.deck.cardGroups[this.editCardGroupIndex].name:null
+          ) != -1)
+        if (
+         combo.findIndex(
+          // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+                // @ts-ignore
+            (c) => typeof c ==="object"?c.name==this.deck.cardGroups[this.editCardGroupIndex].name:null
+          ) != -1
+        ) {
+          combo[
+            combo.findIndex(
+             // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+                // @ts-ignore
+            (c) => typeof c ==="object"?c.name==this.deck.cardGroups[this.editCardGroupIndex].name:null
+          )
+          ] = this.cardGroupNameInput;
+        }
+        this.deck.combos[comboIndex] = combo;
+      }
+
       if (tmp.length) this.deck.cardGroups[this.editCardGroupIndex].cards = tmp;
       this.deck.cardGroups[this.editCardGroupIndex].name =
         this.cardGroupNameInput;
+
       this.closeCardGroupAddEditModal();
       this.inputReset();
       this.safeDeck();

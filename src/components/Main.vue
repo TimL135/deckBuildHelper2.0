@@ -566,7 +566,7 @@ export default defineComponent({
     editCard() {
       while(this.cardNameInput.endsWith(" "))this.cardNameInput=this.cardNameInput.slice(0,-1)
       for (let combo of this.deck.combos) {
-        let cardIndex = this.deck.combos.findIndex((c) => c == combo);
+        let comboIndex = this.deck.combos.findIndex((c) => c == combo);
         if (
           combo.findIndex(
             (c) => c == this.deck.cards[this.editCardId].cardName
@@ -578,7 +578,7 @@ export default defineComponent({
             )
           ] = this.cardNameInput;
         }
-        this.deck.combos[cardIndex] = combo;
+        this.deck.combos[comboIndex] = combo;
       }
       for (let cardGroup in this.deck.cardGroups) {
         this.deck.cardGroups[cardGroup].cards[
