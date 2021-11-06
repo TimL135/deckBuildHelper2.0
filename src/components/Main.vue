@@ -655,12 +655,12 @@ export default defineComponent({
         this.uniqueCounts = [0, 0, 0, 0, 0, 0, 0, 0];
         for (let card of this.deck.cards) {
           this.deckNumber += card.cardCount;
-          for (let c in this.counts) {
+          for (let c in this.counts.length) {
             if (this.properties[c]) this.counts[c] += card.cardCount;
           }
         }
         for (let card of this.helpDeck) {
-          for (let c in this.uniqueCounts) {
+          for (let c in this.uniqueCounts.length) {
             if (this.properties[c]) this.uniqueCounts[c]++;
           }
         }
