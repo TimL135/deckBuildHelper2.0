@@ -263,32 +263,19 @@ export default defineComponent({
       let tmp = [...this.cardInputs];
       tmp.pop();
       while (this.cardGroupNameInput.endsWith(" "))
-        this.cardGroupNameInput = this.cardGroupNameInput.slice(0, -1);
-
+      this.cardGroupNameInput = this.cardGroupNameInput.slice(0, -1);
       for (let combo of this.deck.combos) {
-        console.log(combo)
         let comboIndex = this.deck.combos.findIndex((c) => c == combo);
-        console.log(comboIndex)
-        
-        console.log( combo.findIndex(
-          // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-                // @ts-ignore
-            (c) => typeof c ==="object"?c.name==this.deck.cardGroups[this.editCardGroupIndex].name:null
-          ) != -1)
         if (
          combo.findIndex(
-          // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-                // @ts-ignore
             (c) => typeof c ==="object"?c.name==this.deck.cardGroups[this.editCardGroupIndex].name:null
           ) != -1
         ) {
           combo[
             combo.findIndex(
-             // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-                // @ts-ignore
             (c) => typeof c ==="object"?c.name==this.deck.cardGroups[this.editCardGroupIndex].name:null
           )
-          ] = this.cardGroupNameInput;
+          ].name = this.cardGroupNameInput;
         }
         this.deck.combos[comboIndex] = combo;
       }

@@ -13,7 +13,7 @@ export interface Deck {
   combos: Combo[];
   cardGroups:Cardgroup[];
 }
-export type Combo = string[];
+export type Combo = any[];
 
 export interface Cardgroup{
   name: string;
