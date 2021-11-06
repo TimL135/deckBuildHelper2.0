@@ -457,15 +457,15 @@ import {
   Card,
   cardType,
   Deck,
-  getData,
+  getDecks,
   getDeck,
-  setData,
+  setDecks,
   setDeck,
 } from "@/API";
 export default defineComponent({
   mounted() {
-    if (getData()) {
-      this.decks = getData();
+    if (getDecks()) {
+      this.decks = getDecks();
     }
     if (getDeck()) {
       this.selectedDeck = getDeck().name;
@@ -545,6 +545,8 @@ export default defineComponent({
       if (modal) modal.style.display = "none";
     },
     addCard() {
+      while(this.cardNameInput.endsWith(" "))this.cardNameInput=this.cardNameInput.slice(0,-1)
+        if(this.deck.cards.findIndex(c=>c.cardName==this.cardNameInput)==-1){
       this.deck.cards.push({
         cardName: this.cardNameInput,
         cardType: this.type,
@@ -552,6 +554,7 @@ export default defineComponent({
         cardProperties: this.properties,
         cardValue: this.value,
       });
+      }
       this.uniqueCardDeck();
       this.inputReset();
       this.countCard();
@@ -561,6 +564,7 @@ export default defineComponent({
       this.closeCardAddEditModal();
     },
     editCard() {
+      while(this.cardNameInput.endsWith(" "))this.cardNameInput=this.cardNameInput.slice(0,-1)
       for (let combo of this.deck.combos) {
         let cardIndex = this.deck.combos.findIndex((c) => c == combo);
         if (
@@ -590,6 +594,7 @@ export default defineComponent({
         cardProperties: this.properties,
         cardValue: this.value,
       };
+      
       this.uniqueCardDeck();
       this.countCard();
       this.deckRatingValue();
@@ -702,7 +707,7 @@ export default defineComponent({
       this.decks[this.decks.findIndex((d) => d.name == this.deck.name)] =
         this.deck;
       setDeck(this.deck);
-      setData(this.decks);
+      setDecks(this.decks);
     },
     loadDeck() {
       if (this.selectedDeck) {

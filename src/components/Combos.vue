@@ -104,7 +104,7 @@
               :class="comboCardsType[0]"
               @change="changeType()"
             >
-              <option class="placeholder" selected>1. Card</option>
+              <option class="orange" selected>1. Card</option>
               <option
                 v-for="card in helpDeck"
                 :key="card.cardName"
@@ -113,7 +113,7 @@
                 {{ card.cardName }}
               </option>
               <option
-                class="placeholder"
+                class="orange"
                 v-for="cardGroup in deck.cardGroups"
                 :key="cardGroup.name"
                 :value="cardGroup"
@@ -127,7 +127,7 @@
               :class="comboCardsType[1]"
               @change="changeType()"
             >
-              <option class="placeholder" selected>2. Card</option>
+              <option class="orange" selected>2. Card</option>
               <option
                 v-for="card in helpDeck"
                 :key="card.cardName"
@@ -136,7 +136,7 @@
                 {{ card.cardName }}
               </option>
               <option
-                class="placeholder"
+                class="orange"
                 v-for="cardGroup in deck.cardGroups"
                 :key="cardGroup.name"
                 :value="cardGroup"
@@ -150,7 +150,7 @@
               :class="comboCardsType[2]"
               @change="changeType()"
             >
-              <option class="placeholder" selected>3. Card</option>
+              <option class="orange" selected>3. Card</option>
               <option
                 v-for="card in helpDeck"
                 :key="card.cardName"
@@ -159,7 +159,7 @@
                 {{ card.cardName }}
               </option>
               <option
-                class="placeholder"
+                class="orange"
                 v-for="cardGroup in deck.cardGroups"
                 :key="cardGroup.name"
                 :value="cardGroup"
@@ -173,7 +173,7 @@
               :class="comboCardsType[3]"
               @change="changeType()"
             >
-              <option class="placeholder" selected>4. Card</option>
+              <option class="orange" selected>4. Card</option>
               <option
                 v-for="card in helpDeck"
                 :key="card.cardName"
@@ -182,7 +182,7 @@
                 {{ card.cardName }}
               </option>
               <option
-                class="placeholder"
+                class="orange"
                 v-for="cardGroup in deck.cardGroups"
                 :key="cardGroup.name"
                 :value="cardGroup"
@@ -196,7 +196,7 @@
               :class="comboCardsType[4]"
               @change="changeType()"
             >
-              <option class="placeholder" selected>5. Card</option>
+              <option class="orange" selected>5. Card</option>
               <option
                 v-for="card in helpDeck"
                 :key="card.cardName"
@@ -205,7 +205,7 @@
                 {{ card.cardName }}
               </option>
               <option
-                class="placeholder"
+                class="orange"
                 v-for="cardGroup in deck.cardGroups"
                 :key="cardGroup.name"
                 :value="cardGroup"
@@ -263,11 +263,11 @@
 </template>
 <script lang="ts">
 import { defineComponent } from "vue";
-import { Card, Deck, getData, getDeck, setData, setDeck } from "@/API";
+import { Card, Deck, getDecks, getDeck, setDecks, setDeck } from "@/API";
 export default defineComponent({
   mounted() {
-    if (getData()) {
-      this.decks = getData();
+    if (getDecks()) {
+      this.decks = getDecks();
     }
     if (getDeck()) {
       this.deck = getDeck();
@@ -341,6 +341,7 @@ export default defineComponent({
           }
         }
       }
+      if(cardArray.length){
        switch (this.editAdd) {
         case "add":
           this.deck.combos.push(cardArray);
@@ -348,6 +349,7 @@ export default defineComponent({
         case "edit":
          this.deck.combos[this.editComboIndex] = cardArray;
           break;
+      }
       }
        
       this.safeDeck();
@@ -369,7 +371,7 @@ export default defineComponent({
       this.decks[this.decks.findIndex((d) => d.name == this.deck.name)] =
         this.deck;
       setDeck(this.deck);
-      setData(this.decks);
+      setDecks(this.decks);
     },
     changeType() {
       for (let i = 0; i < 5; i++) {

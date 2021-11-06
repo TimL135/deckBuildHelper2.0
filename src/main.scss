@@ -11,6 +11,9 @@ html{
   background-color: #000 ;
   font-weight: bold !important;
 }
+#nav{
+  font-size: 3.8vw !important;
+}
 ul {
   list-style: none;
 }
@@ -35,14 +38,18 @@ ul {
 }label:focus{
   box-shadow: none !important;
   }
+  div{
+    font-size: 3.8vw !important;
+  }
 label{
+  font-size: 3.8vw !important;
 padding: 0px !important;
 height: 10vh !important;
 }
 .close {
+  font-size: 10vw !important;
   color: red;
   float: right;
-  font-size: 28px;
   font-weight: bold;
 }
 .close:hover,
@@ -56,17 +63,23 @@ height: 10vh !important;
     color: #000 !important;
 }
 .btn-check+.btn-outline-primary{
-   
+  font-size: 3.8vw !important;
     color: #289287 !important;
 }
 span{
+  font-size: 3.8vw !important;
     font-weight: bold !important;  
 }
 .btn{
+  font-size: 3.8vw !important;
     border-color:#000 !important;
     font-weight: bold !important;
 }
+.form-select:focus{
+  box-shadow: none !important;
+}
 .form-control,.form-select{
+  box-shadow: none !important;
     font-weight: bold !important;
     background-color:#ffa107 !important;
     border-color:#ffa107 !important;

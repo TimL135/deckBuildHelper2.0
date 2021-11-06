@@ -112,12 +112,12 @@
         </div>
         <div v-for="cardInput in this.cardInputs.length" :key="cardInput">
           <select
-            class="form-select"
+            class="form-select mb-1"
             :class="cardInputTypes[cardInput - 1]"
             v-model="cardInputs[cardInput - 1]"
             @change="checkCardInputs()"
           >
-            <option class="placeholder" selected>{{ cardInput }}. Card</option>
+            <option class="orange" selected>{{ cardInput }}. Card</option>
             <option
               v-for="card in helpDeck"
               :key="card.cardName"
@@ -173,12 +173,12 @@
   </div>
 </template>
 <script lang="ts">
-import { Card, Deck, getData, getDeck, setData, setDeck } from "@/API";
+import { Card, Deck, getDecks, getDeck, setDecks, setDeck } from "@/API";
 import { defineComponent } from "vue";
 export default defineComponent({
   mounted() {
-    if (getData()) {
-      this.decks = getData();
+    if (getDecks()) {
+      this.decks = getDecks();
     }
     if (getDeck()) {
       this.deck = getDeck();
@@ -217,12 +217,14 @@ export default defineComponent({
     },
     closeCardGroupAddEditModal() {
       if (this.deck.cardGroups.length) {
-        if (
+        while (
           this.deck.cardGroups[this.editCardGroupIndex].cards
-            .slice(-1)
-            .includes(". Card")
+            .slice(-1).join().includes(". Card")
         ) {
           this.deck.cardGroups[this.editCardGroupIndex].cards.pop();
+        }
+        if(!this.deck.cardGroups[this.editCardGroupIndex].cards.length){
+          this.deck.cardGroups.splice(this.editCardGroupIndex,1)
         }
       }
       this.inputReset();
@@ -243,7 +245,7 @@ export default defineComponent({
     addCardGroup() {
       let copieCardInputs = [...this.cardInputs];
       copieCardInputs.pop();
-      if (copieCardInputs) {
+      if (copieCardInputs.length) {
           this.deck.cardGroups.push({
             name: this.cardGroupNameInput,
             cards: copieCardInputs,
@@ -255,7 +257,7 @@ export default defineComponent({
     editCardGroup() {
       let tmp = [...this.cardInputs];
       tmp.pop();
-      this.deck.cardGroups[this.editCardGroupIndex].cards = tmp;
+      if(tmp.length)this.deck.cardGroups[this.editCardGroupIndex].cards = tmp;
       this.closeCardGroupAddEditModal();
       this.inputReset();
       this.safeDeck();
@@ -288,7 +290,7 @@ export default defineComponent({
       this.decks[this.decks.findIndex((d) => d.name == this.deck.name)] =
         this.deck;
       setDeck(this.deck);
-      setData(this.decks);
+      setDecks(this.decks);
     },
     inputReset() {
       this.cardGroupNameInput = "";

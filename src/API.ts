@@ -20,10 +20,10 @@ export interface Cardgroup{
 cards: string[];
 }
 
-export function setData(decks: Deck[]) {
+export function setDecks(decks: Deck[]) {
   localStorage.setItem("decks", JSON.stringify(decks));
 }
-export function getData(): Deck[] {
+export function getDecks(): Deck[] {
   return JSON.parse(localStorage.getItem("decks") || "false");
 }
 export function setDeck(deck: Deck) {
