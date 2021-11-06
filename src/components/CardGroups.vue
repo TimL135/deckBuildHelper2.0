@@ -3,8 +3,7 @@
     <div>
       <button
         type="button"
-        class="w-100 btn orange "
-
+        class="w-100 btn orange"
         @click="openCardGroupAddModal()"
       >
         Add new Cardgroup
@@ -100,7 +99,9 @@
 
       <form @submit.prevent="editAddCard()">
         <div class="input-group mb-1">
-          <span class="input-group-text orange w-25" id="basic-addon1">Name</span>
+          <span class="input-group-text orange w-25" id="basic-addon1"
+            >Name</span
+          >
           <input
             type="text"
             class="form-control"
@@ -219,12 +220,14 @@ export default defineComponent({
       if (this.deck.cardGroups.length) {
         while (
           this.deck.cardGroups[this.editCardGroupIndex].cards
-            .slice(-1).join().includes(". Card")
+            .slice(-1)
+            .join()
+            .includes(". Card")
         ) {
           this.deck.cardGroups[this.editCardGroupIndex].cards.pop();
         }
-        if(!this.deck.cardGroups[this.editCardGroupIndex].cards.length){
-          this.deck.cardGroups.splice(this.editCardGroupIndex,1)
+        if (!this.deck.cardGroups[this.editCardGroupIndex].cards.length) {
+          this.deck.cardGroups.splice(this.editCardGroupIndex, 1);
         }
       }
       this.inputReset();
@@ -232,7 +235,7 @@ export default defineComponent({
       var modal = document.getElementById("cardGroupAddEditModal");
       if (modal) modal.style.display = "none";
     },
-     openCardGroupEditModal(index: number) {
+    openCardGroupEditModal(index: number) {
       this.editAdd = "edit";
       this.editCardGroupIndex = index;
       this.cardGroupNameInput = this.deck.cardGroups[index].name;
@@ -246,18 +249,20 @@ export default defineComponent({
       let copieCardInputs = [...this.cardInputs];
       copieCardInputs.pop();
       if (copieCardInputs.length) {
-          this.deck.cardGroups.push({
-            name: this.cardGroupNameInput,
-            cards: copieCardInputs,
-          });  
+        this.deck.cardGroups.push({
+          name: this.cardGroupNameInput,
+          cards: copieCardInputs,
+        });
       }
       this.closeCardGroupAddEditModal();
       this.safeDeck();
-    },  
+    },
     editCardGroup() {
       let tmp = [...this.cardInputs];
       tmp.pop();
-      if(tmp.length)this.deck.cardGroups[this.editCardGroupIndex].cards = tmp;
+      if (tmp.length) this.deck.cardGroups[this.editCardGroupIndex].cards = tmp;
+      this.deck.cardGroups[this.editCardGroupIndex].name =
+        this.cardGroupNameInput;
       this.closeCardGroupAddEditModal();
       this.inputReset();
       this.safeDeck();
@@ -300,11 +305,9 @@ export default defineComponent({
       this.cardInputTypes = [];
       for (let i = 0; i < this.cardInputs.length - 1; i++) {
         let tmp = this.deck.cards.find((c) => c.cardName == this.cardInputs[i]);
-        if (tmp) {
-          this.cardInputTypes[i] = tmp.cardType;
-        } else {
-          this.cardInputTypes[i] = "";
-        }
+        tmp
+          ? (this.cardInputTypes[i] = tmp.cardType)
+          : (this.cardInputTypes[i] = "");
       }
     },
   },

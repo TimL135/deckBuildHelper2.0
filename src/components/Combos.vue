@@ -216,11 +216,7 @@
           </div>
         </div>
 
-        <button
-          type="button"
-          class="btn orange w-100 mt-1"
-          @click="addCombo()"
-        >
+        <button type="button" class="btn orange w-100 mt-1" @click="addCombo()">
           Confirm
         </button>
       </div>
@@ -276,7 +272,7 @@ export default defineComponent({
   },
   data() {
     return {
-      editAdd:"add",
+      editAdd: "add",
       deck: {} as Deck,
       editComboIndex: 0,
       deleteComboIndex: 0,
@@ -294,7 +290,7 @@ export default defineComponent({
   },
   methods: {
     openComboAddModal() {
-      this.editAdd="add"
+      this.editAdd = "add";
       var modal = document.getElementById("comboAddEditModal");
       if (modal) modal.style.display = "block";
     },
@@ -304,12 +300,11 @@ export default defineComponent({
       if (modal) modal.style.display = "none";
     },
     openComboEditModal(index: number) {
-        this.editAdd="edit"
+      this.editAdd = "edit";
       this.editComboIndex = index;
-      let i = 0;
       for (let card of this.deck.combos[index]) {
-        this.comboCards[i] = card;
-        i++;
+        this.comboCards[this.deck.combos[index].findIndex((c) => c == card)] =
+          card;
       }
       this.changeType();
       var modal = document.getElementById("comboAddEditModal");
@@ -341,17 +336,16 @@ export default defineComponent({
           }
         }
       }
-      if(cardArray.length){
-       switch (this.editAdd) {
-        case "add":
-          this.deck.combos.push(cardArray);
-          break;
-        case "edit":
-         this.deck.combos[this.editComboIndex] = cardArray;
-          break;
+      if (cardArray.length) {
+        switch (this.editAdd) {
+          case "add":
+            this.deck.combos.push(cardArray);
+            break;
+          case "edit":
+            this.deck.combos[this.editComboIndex] = cardArray;
+            break;
+        }
       }
-      }
-       
       this.safeDeck();
       this.closeComboAddEditModal();
     },
@@ -376,11 +370,9 @@ export default defineComponent({
     changeType() {
       for (let i = 0; i < 5; i++) {
         let tmp = this.deck.cards.find((c) => c.cardName == this.comboCards[i]);
-        if (tmp) {
-          this.comboCardsType[i] = tmp.cardType;
-        } else {
-          this.comboCardsType[i] = "";
-        }
+        tmp
+          ? (this.comboCardsType[i] = tmp.cardType)
+          : (this.comboCardsType[i] = "");
       }
     },
   },
