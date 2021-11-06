@@ -487,8 +487,8 @@ export default defineComponent({
       type: "monster" as cardType,
 
       properties: [false, false, false, false, false, false, false, false],
-      counts: [0, 0, 0, 0, 0, 0, 0, 0] as number[],
-      uniqueCounts: [0, 0, 0, 0, 0, 0, 0, 0] as number[],
+      counts: [0, 0, 0, 0, 0, 0, 0, 0],
+      uniqueCounts: [0, 0, 0, 0, 0, 0, 0, 0],
 
       editCardId: 0,
       deleteCardId: 0,
@@ -655,13 +655,13 @@ export default defineComponent({
         this.uniqueCounts = [0, 0, 0, 0, 0, 0, 0, 0];
         for (let card of this.deck.cards) {
           this.deckNumber += card.cardCount;
-          for (let c in this.counts.length) {
-            if (this.properties[c]) this.counts[c] += card.cardCount;
+          for (let c in this.counts) {
+            if (card.cardProperties[c]) this.counts[c] += card.cardCount;
           }
         }
         for (let card of this.helpDeck) {
-          for (let c in this.uniqueCounts.length) {
-            if (this.properties[c]) this.uniqueCounts[c]++;
+          for (let c in this.uniqueCounts) {
+            if (card.cardProperties[c]) this.uniqueCounts[c]++;
           }
         }
       }

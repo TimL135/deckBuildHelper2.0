@@ -1,3 +1,6 @@
+html{
+  background-color: #000 ;
+}
 #app {
   font-family: Avenir, Helvetica, Arial, sans-serif;
   -webkit-font-smoothing: antialiased;
@@ -27,7 +30,11 @@ ul {
   margin: 15% auto;
   padding: 5px;
   border: 1px solid #888;
-}
+  width: 95% !important;
+
+}label:focus{
+  box-shadow: none !important;
+  }
 label{
 padding: 0px !important;
 height: 10vh !important;
@@ -67,6 +74,9 @@ span{
 
 .btn-check:focus + .btn-outline-primary,
 .btn-outline-primary:focus + .btn-outline-primary {
+  box-shadow: none !important;
+}
+.btn-check:focus+.btn{
   box-shadow: none !important;
 }
 .btn:focus {
