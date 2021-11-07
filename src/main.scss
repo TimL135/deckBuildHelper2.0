@@ -76,9 +76,11 @@ span{
     font-weight: bold !important;
 }
 .form-select:focus{
+  font-size: 3.8vw !important;
   box-shadow: none !important;
 }
 .form-control,.form-select{
+  font-size: 3.8vw !important;
   box-shadow: none !important;
     font-weight: bold !important;
     background-color:#ffa107 !important;
@@ -108,7 +110,7 @@ span{
     cursor:default;
   }
   .green{
-    background-color: #289287 !important;
+    background-color: #42b983 !important;
   }
 .monster {
     background-color: #b5542c !important;
