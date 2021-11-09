@@ -120,7 +120,7 @@
           >
             <option class="orange" selected>{{ cardInput }}. Card</option>
             <option
-              v-for="card in helpDeck"
+              v-for="card in uniqueAllCards"
               :key="card.cardName"
               :class="card.cardType"
             >
@@ -175,16 +175,11 @@
 </template>
 <script lang="ts">
 import { Card, Deck, getDecks, getDeck, setDecks, setDeck } from "@/API";
+import {selectedDeckGlobal,decks, deck,uniqueAllCards } from "@/components/global"
 import { defineComponent } from "vue";
 export default defineComponent({
-  mounted() {
-    if (getDecks()) {
-      this.decks = getDecks();
-    }
-    if (getDeck()) {
-      this.deck = getDeck();
-      this.uniqueCardDeck();
-    }
+    setup(){
+    return{selectedDeckGlobal,decks, deck,uniqueAllCards};
   },
   data() {
     return {
@@ -195,9 +190,6 @@ export default defineComponent({
       editAdd: "",
       cardInputs: ["1. Card"] as string[],
       cardInputTypes: [] as string[],
-      helpDeck: [] as Card[],
-      deck: {} as Deck,
-      decks: [] as Deck[],
     };
   },
   methods: {
@@ -308,9 +300,6 @@ export default defineComponent({
       this.cardInputs = this.cardInputs.filter((c) => !c.includes(". Card"));
       this.cardInputs.push(`${this.cardInputs.length + 1}. Card`);
       this.changeType();
-    },
-    uniqueCardDeck() {
-      this.helpDeck = [...new Set(this.deck.cards.filter((c) => c.cardName))];
     },
     safeDeck() {
       this.decks[this.decks.findIndex((d) => d.name == this.deck.name)] =

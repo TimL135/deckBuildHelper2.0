@@ -101,19 +101,19 @@
             <select
               class="form-select mb-1"
               v-model="comboCards[0]"
-              :class="comboCardsType[0]"
+              :class="typeof comboCards[0]==='object'? 'green': comboCardsType[0]"
               @change="changeType()"
             >
               <option class="orange" selected>1. Card</option>
               <option
-                v-for="card in helpDeck"
+                v-for="card in uniqueAllCards"
                 :key="card.cardName"
                 :class="card.cardType"
               >
                 {{ card.cardName }}
               </option>
               <option
-                class="orange"
+                class="green"
                 v-for="cardGroup in deck.cardGroups"
                 :key="cardGroup.name"
                 :value="cardGroup"
@@ -124,19 +124,19 @@
             <select
               class="form-select mb-1"
               v-model="comboCards[1]"
-              :class="comboCardsType[1]"
+              :class="typeof comboCards[1]==='object'? 'green': comboCardsType[1]"
               @change="changeType()"
             >
               <option class="orange" selected>2. Card</option>
               <option
-                v-for="card in helpDeck"
+                v-for="card in uniqueAllCards"
                 :key="card.cardName"
                 :class="card.cardType"
               >
                 {{ card.cardName }}
               </option>
               <option
-                class="orange"
+                class="green"
                 v-for="cardGroup in deck.cardGroups"
                 :key="cardGroup.name"
                 :value="cardGroup"
@@ -147,19 +147,19 @@
             <select
               class="form-select mb-1"
               v-model="comboCards[2]"
-              :class="comboCardsType[2]"
+              :class="typeof comboCards[2]==='object'? 'green': comboCardsType[2]"
               @change="changeType()"
             >
-              <option class="orange" selected>3. Card</option>
+              <option class="green" selected>3. Card</option>
               <option
-                v-for="card in helpDeck"
+                v-for="card in uniqueAllCards"
                 :key="card.cardName"
                 :class="card.cardType"
               >
                 {{ card.cardName }}
               </option>
               <option
-                class="orange"
+                class="green"
                 v-for="cardGroup in deck.cardGroups"
                 :key="cardGroup.name"
                 :value="cardGroup"
@@ -170,12 +170,12 @@
             <select
               class="form-select mb-1"
               v-model="comboCards[3]"
-              :class="comboCardsType[3]"
+              :class="typeof comboCards[3]==='object'? 'green': comboCardsType[3]"
               @change="changeType()"
             >
-              <option class="orange" selected>4. Card</option>
+              <option class="green" selected>4. Card</option>
               <option
-                v-for="card in helpDeck"
+                v-for="card in uniqueAllCards"
                 :key="card.cardName"
                 :class="card.cardType"
               >
@@ -193,12 +193,12 @@
             <select
               class="form-select mb-1"
               v-model="comboCards[4]"
-              :class="comboCardsType[4]"
+              :class="typeof comboCards[4]==='object'? 'green': comboCardsType[4]"
               @change="changeType()"
             >
               <option class="orange" selected>5. Card</option>
               <option
-                v-for="card in helpDeck"
+                v-for="card in uniqueAllCards"
                 :key="card.cardName"
                 :class="card.cardType"
               >
@@ -259,25 +259,17 @@
 </template>
 <script lang="ts">
 import { defineComponent } from "vue";
+import {selectedDeckGlobal,decks, deck,uniqueAllCards } from "@/components/global"
 import { Card, Deck, getDecks, getDeck, setDecks, setDeck } from "@/API";
 export default defineComponent({
-  mounted() {
-    if (getDecks()) {
-      this.decks = getDecks();
-    }
-    if (getDeck()) {
-      this.deck = getDeck();
-      this.uniqueCardDeck();
-    }
+   setup(){
+    return{selectedDeckGlobal,decks, deck,uniqueAllCards};
   },
-  data() {
+  data() { 
     return {
       editAdd: "add",
-      deck: {} as Deck,
       editComboIndex: 0,
       deleteComboIndex: 0,
-      helpDeck: [] as Card[],
-      decks: [] as Deck[],
       comboCards: [
         "1. Card",
         "2. Card",
@@ -353,9 +345,6 @@ export default defineComponent({
       this.deck.combos.splice(this.deleteComboIndex, 1);
       this.safeDeck();
       this.closeComboDeleteModal();
-    },
-    uniqueCardDeck() {
-      this.helpDeck = [...new Set(this.deck.cards.filter((c) => c.cardName))];
     },
     inputReset() {
       this.comboCards = ["1. Card", "2. Card", "3. Card", "4. Card", "5. Card"];

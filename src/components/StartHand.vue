@@ -161,16 +161,14 @@
 </template>
 <script lang="ts">
 import { Card, Combo, Deck, getDeck } from "@/API";
+import { deck } from "@/components/global"
 import { defineComponent } from "vue";
 export default defineComponent({
-  mounted() {
-    if (getDeck()) {
-      this.deck = getDeck();
-    }
+    setup(){
+    return{ deck};
   },
   data() {
     return {
-      deck: {} as Deck,
       allCards: [] as string[],
       possibleCombos: [] as Combo[],
       counts: [0, 0, 0, 0, 0, 0, 0, 0] as number[],
@@ -182,14 +180,12 @@ export default defineComponent({
   },
   methods: {
     randomStartHand() {
-        if (getDeck()) {
-      this.deck = getDeck();
-    }
       this.allCards = [];
       for (let card of this.deck.cards) {
-        for (card.cardCount; card.cardCount > 0; card.cardCount--) {
+        for (let i=card.cardCount; i; i--) {
           this.allCards.push(card.cardName);
-        }
+        
+      }
       }
       for (let i = 0; i < 5; i++) {
         let index = this.getRandomInt(this.allCards.length);
