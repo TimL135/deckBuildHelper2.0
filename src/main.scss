@@ -114,17 +114,26 @@ span{
   }
 .monster {
     background-color: #b5542c !important;
-    border: none;
   }
   .spell {
     background-color: #289287 !important;
-    border: none;
   }
   .trap {
     background-color: #a91475 !important;
-    border: none;
   }
-  
+  .fusion{
+    background-color: #823b91 !important;
+  }
+  .synchro{
+    background-color: #d8d8d7 !important;
+  }
+  .xyz{
+    background-color: #020101 !important;
+    color: #fff  !important;
+  }
+  .link{
+    background-color: #0172b9 !important;
+  }
 .table-striped>tbody>tr:nth-of-type(odd) {
     --bs-table-accent-bg: var(--bs-table-striped-bg);
     color: #ffa107 !important;  

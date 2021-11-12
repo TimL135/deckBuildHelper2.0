@@ -6,31 +6,33 @@
     crossorigin="anonymous"
   />
   <div class="container mt-2">
-      <br />
+    <br />
     <div>
       <button
         type="submit"
         class="w-100 btn orange"
+        @click="openExtraCardAddModal()"
       >
         Add new Card
       </button>
     </div>
-    <br>
+    <br />
     <div class="d-flex mb-1">
       <div class="w-25 rounded-start" style="border: 1px solid #ffa107">
-        Fusion:<br />
+        Fusion:<br />{{ counts[0] }}
       </div>
       <div class="w-25" style="border: 1px solid #ffa107">
-        Synchro:<br />
+        Synchro:<br />{{ counts[1] }}
       </div>
       <div class="w-25" style="border: 1px solid #ffa107">
-        XYZ:<br />
+        XYZ:<br />{{ counts[2] }}
       </div>
       <div class="w-25 rounded-end" style="border: 1px solid #ffa107">
-        Link:<br />
+        Link:<br />{{ counts[3] }}
       </div>
     </div>
-      <table class="table table-striped">
+    <!-- new table -->
+    <table class="table table-striped">
       <thead>
         <tr>
           <th scope="col" class="w-75" style="text-align: left">Cards</th>
@@ -46,6 +48,7 @@
             <button
               class="me-2"
               style="background-color: #ffffff00; border: none"
+              @click="openExtraCardEditModal(card.cardName)"
             >
               <svg
                 xmlns="http://www.w3.org/2000/svg"
@@ -65,6 +68,7 @@
             <button
               class="me-2"
               style="background-color: #ffffff00; border: none"
+              @click="openExtraCardDeleteModal(card.cardName)"
             >
               <svg
                 xmlns="http://www.w3.org/2000/svg"
@@ -83,31 +87,296 @@
               </svg>
             </button>
           </td>
-  
         </tr>
       </tbody>
     </table>
+    <!-- new modal -->
+    <div id="extraCardAddEditModal" class="modal">
+      <div class="modal-content">
+        <span
+          class="close"
+          style="float: right; width: 42px height:42px; margin-left: 95%"
+          @click="closeExtraCardAddEditModal()"
+          >&times;</span
+        >
+        <div class="container">
+          <form @submit.prevent="editAddExtraCard">
+            <div class="input-group mb-1">
+              <span class="input-group-text w-25 orange" id="basic-addon1"
+                >Name</span
+              >
+              <input
+                type="text"
+                class="form-control"
+                aria-label="Username"
+                aria-describedby="addon-wrapping"
+                v-model="cardNameInput"
+                required
+              />
+            </div>
+            <div class="input-group mb-1">
+              <span class="input-group-text w-25 orange" id="basic-addon1"
+                >Quantity</span
+              >
+              <input
+                type="number"
+                oninput="this.value = this.value.replace(/[^1-3.]/g, '').replace(/(\..*)\./g, '$1');"
+                class="form-control"
+                aria-label="Username"
+                aria-describedby="addon-wrapping"
+                v-model="cardCountInput"
+                min="1"
+                max="3"
+                required
+              />
+            </div>
+            <div
+              class="btn-group w-100 mb-1"
+              role="group"
+              aria-label="Basic radio toggle button group"
+            >
+              <input
+                type="radio"
+                class="btn-check"
+                name="type"
+                id="fusionRadioButton"
+                autocomplete="off"
+                @change="type = 'fusion'"
+                :checked="type == 'fusion'"
+              />
+              <label
+                class="btn orange col-4"
+                :class="{ fusion: type == 'fusion' }"
+                for="fusionRadioButton"
+              >
+                Fusion</label
+              >
+              <input
+                type="radio"
+                class="btn-check"
+                name="type"
+                id="synchroRadioButton"
+                autocomplete="off"
+                @change="type = 'synchro'"
+                :checked="type == 'synchro'"
+              />
+              <label
+                class="btn orange col-4"
+                :class="{ synchro: type == 'synchro' }"
+                for="synchroRadioButton"
+              >
+                Synchro</label
+              >
+              <input
+                type="radio"
+                class="btn-check"
+                name="type"
+                id="xyzRadioButton"
+                autocomplete="off"
+                @change="type = 'xyz'"
+                :checked="type == 'xyz'"
+              />
+              <label
+                class="btn orange col-4"
+                :class="{ xyz: type == 'xyz' }"
+                for="xyzRadioButton"
+              >
+                XYZ</label
+              >
+              <input
+                type="radio"
+                class="btn-check"
+                name="type"
+                id="linkRadioButton"
+                autocomplete="off"
+                @change="type = 'link'"
+                :checked="type == 'link'"
+              />
+              <label
+                class="btn orange col-4"
+                :class="{ link: type == 'link' }"
+                for="linkRadioButton"
+              >
+                Link</label
+              >
+            </div>
+            <br />
+            <button type="submit" class="btn w-100 mt-1 orange">Confirm</button>
+          </form>
+        </div>
+      </div>
+    </div>
+    <!-- new modal -->
+  <div id="extraCardDeleteModal" class="modal">
+    <div class="modal-content">
+      <span
+        class="close"
+        style="float: right; width: 42px height:42px; margin-left: 95%"
+        @click="closeExtraCardDeleteModal()"
+        >&times;</span
+      >
+      <div class="container">
+        <div class="d-flex justify-content: center mb-1">
+          <div class="w-100">Are you sure to delete {{ cardNameInput }}</div>
+        </div>
+        <div class="d-flex justify-content: center">
+          <button
+            type="button"
+            class="btn btn-success w-50"
+            @click="deleteExtraCard()"
+          >
+            Yes
+          </button>
+          <button
+            type="button"
+            class="btn btn-danger w-50"
+            @click="closeExtraCardDeleteModal()"
+          >
+            No
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
   </div>
 </template>
 <script lang="ts">
 import { defineComponent } from "vue";
-import {selectedDeckGlobal,decks, deck } from "@/components/global"
-import { Card, cardType, Deck, getDecks, getDeck, setDeck, setDecks } from "@/API";
+import { selectedDeckGlobal, decks, deck } from "@/components/global";
+import {
+  Card,
+  CardType,
+  Deck,
+  getDecks,
+  getDeck,
+  setDeck,
+  setDecks,
+  ExtraCardType,
+} from "@/API";
 export default defineComponent({
-
-  setup(){
-    return{selectedDeckGlobal, decks, deck};
+  setup() {
+    return { selectedDeckGlobal, decks, deck };
+  },
+  mounted(){
+this.countExtraCards()
   },
   data() {
     return {
+      type: "fusion",
       cardNameInput: "",
       cardCountInput: "",
+      editCardId: 0,
+      deleteCardId:0,
       editAdd: "",
+      counts: [0, 0, 0, 0],
     };
   },
   methods: {
-
-        safeDeck() {
+    editAddExtraCard() {
+      switch (this.editAdd) {
+        case "add":
+          this.addExtraCard();
+          break;
+        case "edit":
+          this.editExtraCard();
+          break;
+      }
+    },
+    openExtraCardAddModal() {
+      this.editAdd = "add";
+      var modal = document.getElementById("extraCardAddEditModal");
+      if (modal) modal.style.display = "block";
+    },
+    openExtraCardEditModal(cardName: string) {
+      this.editAdd = "edit";
+      this.editCardId = this.deck.extraCards.findIndex(
+        (c) => c.cardName == cardName
+      );
+      this.type = this.deck.extraCards[this.editCardId].cardType;
+      this.cardNameInput = this.deck.extraCards[this.editCardId].cardName;
+      this.cardCountInput = JSON.stringify(
+        this.deck.extraCards[this.editCardId].cardCount
+      );
+      var modal = document.getElementById("extraCardAddEditModal");
+      if (modal) modal.style.display = "block";
+    },
+    closeExtraCardAddEditModal() {
+      this.reset();
+      var modal = document.getElementById("extraCardAddEditModal");
+      if (modal) modal.style.display = "none";
+    },
+     openExtraCardDeleteModal(name: string) {
+      this.deleteCardId = this.deck.extraCards.findIndex((c) => c.cardName == name);
+      this.cardNameInput = this.deck.extraCards[this.deleteCardId].cardName;
+      var modal = document.getElementById("extraCardDeleteModal");
+      if (modal) modal.style.display = "block";
+    },
+    closeExtraCardDeleteModal() {
+      var modal = document.getElementById("extraCardDeleteModal");
+      if (modal) modal.style.display = "none";
+    },
+    addExtraCard() {
+       if (this.deck.extraCards.findIndex((c) => c.cardName == this.cardNameInput) !=-1) return this.closeExtraCardAddEditModal();
+       if(this.counts.reduce((a,b)=>a+b)+parseInt(this.cardCountInput)>15)return this.closeExtraCardAddEditModal();
+      if (this.deck.extraCards) {
+        this.deck.extraCards.push({
+          cardName: this.cardNameInput,
+          cardCount: parseInt(this.cardCountInput),
+          cardType: this.type as ExtraCardType,
+        });
+      } else {
+        this.deck = {
+          name: this.deck.name,
+          cards: this.deck.cards,
+          combos: this.deck.combos,
+          cardGroups: this.deck.cardGroups,
+          extraCards: [
+            {
+              cardName: this.cardNameInput,
+              cardCount: parseInt(this.cardCountInput),
+              cardType: this.type as ExtraCardType,
+            },
+          ],
+        };
+      }
+      this.countExtraCards()
+      this.safeDeck();
+      this.closeExtraCardAddEditModal();
+    },
+    editExtraCard() {
+      if(this.counts.reduce((a,b)=>a+b)-this.deck.extraCards[this.editCardId].cardCount+parseInt(this.cardCountInput)>15)return this.closeExtraCardAddEditModal();
+      this.deck.extraCards[this.editCardId] = {
+        cardName: this.cardNameInput,
+        cardCount: parseInt(this.cardCountInput),
+        cardType: this.type as ExtraCardType,
+      };
+      this.countExtraCards()
+      this.safeDeck()
+      this.closeExtraCardAddEditModal();
+    },
+    deleteExtraCard() {
+      this.deck.extraCards.splice(this.deleteCardId, 1);
+      this.safeDeck();
+      this.closeExtraCardDeleteModal();
+    },
+    countExtraCards(){
+      if(!this.deck)return
+      this.counts=[0,0,0,0]
+for(let card of this.deck.extraCards){
+switch(card.cardType){
+  case "fusion":this.counts[0]+=card.cardCount; break;
+  case "synchro" :this.counts[1]+=card.cardCount; break;
+  case "xyz":this.counts[2]+=card.cardCount; break;
+  case "link":this.counts[3]+=card.cardCount; break;
+}
+}
+    },
+    reset() {
+      this.type = "fusion";
+      this.cardNameInput = "";
+      this.cardCountInput = "";
+    },
+    safeDeck() {
       this.decks[this.decks.findIndex((d) => d.name == this.deck.name)] =
         this.deck;
       setDeck(this.deck);

@@ -148,7 +148,7 @@
         >&times;</span
       >
       <div class="container">
-        <form @submit.prevent="editAddCard">
+        <form @submit.prevent="editAddCard()">
           <div class="input-group mb-1">
             <span class="input-group-text w-25 orange" id="basic-addon1"
               >Name</span
@@ -228,6 +228,7 @@
               for="btnradio14"
               >Trap</label
             >
+     
           </div>
           <div
             class="btn-group rounded orange mb-1 w-100"
@@ -427,7 +428,7 @@ import {
 } from "@/components/global";
 import {
   Card,
-  cardType,
+  CardType,
   Deck,
   getDecks,
   getDeck,
@@ -449,7 +450,7 @@ export default defineComponent({
       deckValue: 0,
       value: 0,
       deckNumber: 0,
-      type: "monster" as cardType,
+      type: "monster" as CardType,
 
       properties: [false, false, false, false, false, false, false, false],
       counts: [0, 0, 0, 0, 0, 0, 0, 0],
@@ -728,7 +729,7 @@ export default defineComponent({
           this.decks.push({
             name: this.selectedDeckGlobal,
             cards: [],
-            extraCards:[],
+            extraCards: [],
             combos: [],
             cardGroups: [],
           });

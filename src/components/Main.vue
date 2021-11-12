@@ -95,7 +95,7 @@ import { defineComponent } from "vue";
 import MainDeck from "@/components/DeckKind/MainDeck.vue";
 import ExtraDeck from "@/components/DeckKind/ExtraDeck.vue";
 import {selectedDeckGlobal,decks, deck } from "@/components/global"
-import { Card, cardType, Deck, getDecks, getDeck, setDeck, setDecks } from "@/API";
+import { Card, CardType, Deck, getDecks, getDeck, setDeck, setDecks } from "@/API";
 export default defineComponent({
   components: { MainDeck,ExtraDeck },
   mounted() {
@@ -114,7 +114,20 @@ export default defineComponent({
   },
   methods: {
     loadDeck() {
+     
       if (this.selectedDeck) {
+        if(!this.decks){
+          this.decks=[]
+           this.deck =
+           {
+            name:this.selectedDeck,
+            cards:[],
+            extraCards: [],
+            combos: [],
+            cardGroups: [],
+          }
+          this.decks.push(this.deck)
+        }else{
         if (
           this.decks[this.decks.findIndex((d) => d.name == this.selectedDeck)]
         ) {
@@ -134,6 +147,7 @@ export default defineComponent({
             this.decks[
               this.decks.findIndex((d) => d.name == this.selectedDeck)
             ];
+        }
         }
         this.safeDeck()
       }
