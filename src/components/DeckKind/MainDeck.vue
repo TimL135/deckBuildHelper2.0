@@ -81,8 +81,8 @@
             >
               <svg
                 xmlns="http://www.w3.org/2000/svg"
-                width="30"
-                height="30"
+                width="5.5vw"
+                height="5.5vw"
                 class="bi bi-gear"
                 viewBox="0 0 16 16"
               >
@@ -101,8 +101,8 @@
             >
               <svg
                 xmlns="http://www.w3.org/2000/svg"
-                width="30"
-                height="30"
+                width="5.5vw"
+                height="5.5vw"
                 class="bi bi-trash"
                 viewBox="0 0 16 16"
               >
@@ -728,6 +728,7 @@ export default defineComponent({
           this.decks.push({
             name: this.selectedDeckGlobal,
             cards: [],
+            extraCards:[],
             combos: [],
             cardGroups: [],
           });

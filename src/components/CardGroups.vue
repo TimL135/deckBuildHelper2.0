@@ -174,7 +174,7 @@
   </div>
 </template>
 <script lang="ts">
-import { Card, Deck, getDecks, getDeck, setDecks, setDeck } from "@/API";
+import { Card, Deck, getDecks, getDeck, setDecks, setDeck, Cardgroup } from "@/API";
 import {selectedDeckGlobal,decks, deck,uniqueAllCards } from "@/components/global"
 import { defineComponent } from "vue";
 export default defineComponent({
@@ -265,9 +265,11 @@ export default defineComponent({
         ) {
           combo[
             combo.findIndex(
-            (c) => typeof c ==="object"?c.name==this.deck.cardGroups[this.editCardGroupIndex].name:null
+            (c) => typeof c  ==="object"?c.name==this.deck.cardGroups[this.editCardGroupIndex].name:null
           )
-          ].name = this.cardGroupNameInput;
+          // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+                // @ts-ignore
+           ].name = this.cardGroupNameInput;
         }
         this.deck.combos[comboIndex] = combo;
       }

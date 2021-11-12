@@ -1,20 +1,25 @@
 export interface Card {
-  cardType: "monster"|"spell"|"trap";
+  cardType: cardType;
   cardName: string;
   cardCount: number;
   cardProperties:boolean[];
   cardValue: number;
 }
+export interface ExtraCard{
+  cardName:string;
+  cardType:extraCardType;
+  cardCount: number;
+}
 export type cardType= "monster"|"spell"|"trap"
-
+export type extraCardType="fusion"| "synchro"|"xyz"|"link"
 export interface Deck {
   name: string;
   cards: Card[];
   combos: Combo[];
   cardGroups:Cardgroup[];
+  extraCards:ExtraCard[];
 }
-export type Combo = any[];
-
+export type Combo = [string|Cardgroup];
 export interface Cardgroup{
   name: string;
 cards: string[];

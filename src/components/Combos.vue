@@ -260,7 +260,7 @@
 <script lang="ts">
 import { defineComponent } from "vue";
 import {selectedDeckGlobal,decks, deck,uniqueAllCards } from "@/components/global"
-import { Card, Deck, getDecks, getDeck, setDecks, setDeck } from "@/API";
+import { Card, Deck, getDecks, getDeck, setDecks, setDeck, Combo } from "@/API";
 export default defineComponent({
    setup(){
     return{selectedDeckGlobal,decks, deck,uniqueAllCards};
@@ -331,10 +331,10 @@ export default defineComponent({
       if (cardArray.length) {
         switch (this.editAdd) {
           case "add":
-            this.deck.combos.push(cardArray);
+            this.deck.combos.push(cardArray as Combo);
             break;
           case "edit":
-            this.deck.combos[this.editComboIndex] = cardArray;
+            this.deck.combos[this.editComboIndex] = cardArray as Combo;
             break;
         }
       }
