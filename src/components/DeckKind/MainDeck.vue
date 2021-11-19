@@ -518,6 +518,9 @@ export default defineComponent({
       if (modal) modal.style.display = "none";
     },
     addCard() {
+       if(this.deck.cards.length>2){
+            if(this.deck.cards.map(c=>c.cardCount).reduce((a,b)=>a+b) +parseInt(this.cardCountInput)>60)return this.closeCardAddEditModal();
+        }
       while (this.cardNameInput.endsWith(" "))
         this.cardNameInput = this.cardNameInput.slice(0, -1);
       if (this.deck.cards) {
@@ -543,6 +546,7 @@ export default defineComponent({
       }
     },
     editCard() {
+       if(this.deck.cards.map(c=>c.cardCount).reduce((a,b)=>a+b)-this.deck.cards[this.editCardId].cardCount+parseInt(this.cardCountInput)>60)return this.closeCardAddEditModal();
       while (this.cardNameInput.endsWith(" "))
         this.cardNameInput = this.cardNameInput.slice(0, -1);
       for (let combo of this.deck.combos) {
