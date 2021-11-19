@@ -53,9 +53,8 @@
     <table class="table table-striped">
       <thead>
         <tr>
-          <th scope="col" class="w-50" style="text-align: left">Cards</th>
+          <th scope="col" class="w-75" style="text-align: left">Cards</th>
           <th class="w-25"></th>
-          <th scope="col" class="w-25" style="text-align: left">Probability</th>
         </tr>
       </thead>
       <tbody>
@@ -105,24 +104,6 @@
                 />
               </svg>
             </button>
-          </td>
-          <td class="m-2" :class="card.cardType" style="text-align: left">
-            {{
-              (
-                (1 -
-                  ((deckNumber - card.cardCount) / deckNumber) *
-                    ((deckNumber - (card.cardCount + 1)) / (deckNumber - 1)) *
-                    ((deckNumber - (card.cardCount + 2)) / (deckNumber - 2)) *
-                    ((deckNumber - (card.cardCount + 3)) / (deckNumber - 3)) *
-                    ((deckNumber - (card.cardCount + 4)) / (deckNumber - 4))) *
-                100
-              ).toFixed(2)
-            }}%({{
-              (
-                (1 - (deckNumber - (card.cardCount + 5)) / (deckNumber - 5)) *
-                100
-              ).toFixed(2)
-            }}%)
           </td>
         </tr>
       </tbody>
