@@ -89,15 +89,23 @@
   <div v-if="selectedDeckKind == 'extraDeck'">
 <ExtraDeck />
   </div>
+   <div v-if="selectedDeckKind == 'sideDeck'">
+<SideDeck />
+  </div>
+   <div v-if="selectedDeckKind == 'alternativeDeck'">
+<AlternativeDeck />
+  </div>
 </template>
 <script lang="ts">
 import { defineComponent } from "vue";
 import MainDeck from "@/components/DeckKind/MainDeck.vue";
 import ExtraDeck from "@/components/DeckKind/ExtraDeck.vue";
+import SideDeck from "@/components/DeckKind/SideDeck.vue";
+import AlternativeDeck from "@/components/DeckKind/AlternativeDeck.vue";
 import {selectedDeckGlobal,decks, deck } from "@/components/global"
 import { Card, CardType, Deck, getDecks, getDeck, setDeck, setDecks } from "@/API";
 export default defineComponent({
-  components: { MainDeck,ExtraDeck },
+  components: { MainDeck,ExtraDeck,SideDeck,AlternativeDeck },
   mounted() {
     if (getDeck()) {
       this.selectedDeck = getDeck().name;
@@ -125,6 +133,8 @@ export default defineComponent({
             extraCards: [],
             combos: [],
             cardGroups: [],
+            sideCards:[],
+            alternativeCards:[],
           }
           this.decks.push(this.deck)
         }else{
@@ -142,6 +152,8 @@ export default defineComponent({
             cards: [],
             combos: [],
             cardGroups: [],
+            sideCards:[],
+            alternativeCards:[],
           });
           this.deck =
             this.decks[

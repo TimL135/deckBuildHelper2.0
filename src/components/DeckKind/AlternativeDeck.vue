@@ -19,17 +19,7 @@
     </div>
 
     <br />
-    <div class="d-flex mb-1">
-      <div class="col-4 rounded-start" style="border: 1px solid #ffa107">
-        Card amount:<br />{{ deckNumber }}
-      </div>
-      <div class="col-4" style="border: 1px solid #ffa107">
-        <div>Deckrating:<br />{{ deckRating }}%</div>
-      </div>
-      <div class="col-4 rounded-end" style="border: 1px solid #ffa107">
-        <div>Deckvalue average:<br />{{ deckValue }}</div>
-      </div>
-    </div>
+    
     <div class="d-flex mb-1">
       <div class="w-25 rounded-start" style="border: 1px solid #ffa107">
         Handtraps:<br />{{ counts[0] }}({{ uniqueCounts[0] }})
@@ -69,7 +59,8 @@
         </tr>
       </thead>
       <tbody>
-        <tr v-for="card in deck.cards" :key="card.cardName">
+        <tr v-for="card in deck.alternativeCards
+" :key="card.cardName">
           <th style="text-align: left" :class="card.cardType">
             {{ card.cardName }}({{ card.cardCount }})
           </th>
@@ -470,7 +461,6 @@ export default defineComponent({
         this.deck = getDeck();
         this.uniqueCardDeck();
         this.countCard();
-        this.deckRatingValue();
       }
     },
     editAddCard() {
@@ -484,8 +474,10 @@ export default defineComponent({
       }
     },
     openCardDeleteModal(name: string) {
-      this.deleteCardId = this.deck.cards.findIndex((c) => c.cardName == name);
-      this.cardNameInput = this.deck.cards[this.deleteCardId].cardName;
+      this.deleteCardId = this.deck.alternativeCards
+.findIndex((c) => c.cardName == name);
+      this.cardNameInput = this.deck.alternativeCards
+[this.deleteCardId].cardName;
       var modal = document.getElementById("cardDeleteModal");
       if (modal) modal.style.display = "block";
     },
@@ -501,14 +493,20 @@ export default defineComponent({
     },
     openCardEditModal(name: string) {
       this.editAdd = "edit";
-      this.editCardId = this.deck.cards.findIndex((c) => c.cardName == name);
-      this.cardNameInput = this.deck.cards[this.editCardId].cardName;
+      this.editCardId = this.deck.alternativeCards
+.findIndex((c) => c.cardName == name);
+      this.cardNameInput = this.deck.alternativeCards
+[this.editCardId].cardName;
       this.cardCountInput = JSON.stringify(
-        this.deck.cards[this.editCardId].cardCount
+        this.deck.alternativeCards
+[this.editCardId].cardCount
       );
-      this.properties = this.deck.cards[this.editCardId].cardProperties;
-      this.value = this.deck.cards[this.editCardId].cardValue;
-      this.type = this.deck.cards[this.editCardId].cardType;
+      this.properties = this.deck.alternativeCards
+[this.editCardId].cardProperties;
+      this.value = this.deck.alternativeCards
+[this.editCardId].cardValue;
+      this.type = this.deck.alternativeCards
+[this.editCardId].cardType;
       var modal = document.getElementById("cardAddEditModal");
       if (modal) modal.style.display = "block";
     },
@@ -520,12 +518,15 @@ export default defineComponent({
     addCard() {
       while (this.cardNameInput.endsWith(" "))
         this.cardNameInput = this.cardNameInput.slice(0, -1);
-      if (this.deck.cards) {
+      if (this.deck.alternativeCards
+) {
         if (
-          this.deck.cards.findIndex((c) => c.cardName == this.cardNameInput) ==
+          this.deck.alternativeCards
+.findIndex((c) => c.cardName == this.cardNameInput) ==
           -1
         ) {
-          this.deck.cards.push({
+          this.deck.alternativeCards
+.push({
             cardName: this.cardNameInput,
             cardType: this.type,
             cardCount: parseInt(this.cardCountInput),
@@ -536,7 +537,6 @@ export default defineComponent({
         this.uniqueCardDeck();
         this.inputReset();
         this.countCard();
-        this.deckRatingValue();
         this.sortDeck();
         this.safeDeck();
         this.closeCardAddEditModal();
@@ -545,29 +545,8 @@ export default defineComponent({
     editCard() {
       while (this.cardNameInput.endsWith(" "))
         this.cardNameInput = this.cardNameInput.slice(0, -1);
-      for (let combo of this.deck.combos) {
-        let comboIndex = this.deck.combos.findIndex((c) => c == combo);
-        if (
-          combo.findIndex(
-            (c) => c == this.deck.cards[this.editCardId].cardName
-          ) != -1
-        ) {
-          combo[
-            combo.findIndex(
-              (c) => c == this.deck.cards[this.editCardId].cardName
-            )
-          ] = this.cardNameInput;
-        }
-        this.deck.combos[comboIndex] = combo;
-      }
-      for (let cardGroup in this.deck.cardGroups) {
-        this.deck.cardGroups[cardGroup].cards[
-          this.deck.cardGroups[cardGroup].cards.findIndex(
-            (c) => c == this.deck.cards[this.editCardId].cardName
-          )
-        ] = this.cardNameInput;
-      }
-      this.deck.cards[this.editCardId] = {
+      this.deck.alternativeCards
+[this.editCardId] = {
         cardName: this.cardNameInput,
         cardType: this.type,
         cardCount: parseInt(this.cardCountInput),
@@ -577,7 +556,6 @@ export default defineComponent({
 
       this.uniqueCardDeck();
       this.countCard();
-      this.deckRatingValue();
       this.sortDeck();
       this.safeDeck();
       this.closeCardAddEditModal();
@@ -601,44 +579,20 @@ export default defineComponent({
       this.cardCountInput = "";
     },
     deleteCard(cardIndex: number) {
-      for (let combo of this.deck.combos) {
-        let tmp = this.deck.combos.findIndex((c) => c == combo);
-        if (
-          combo.findIndex((c) => c == this.deck.cards[cardIndex].cardName) != -1
-        ) {
-          combo.splice(
-            combo.findIndex((c) => c == this.deck.cards[cardIndex].cardName),
-            1
-          );
-        }
-        this.deck.combos[tmp] = combo;
-        if (!this.deck.combos[tmp].length) {
-          this.deck.combos.splice(tmp, 1);
-        }
-      }
-      for (let cardGroup in this.deck.cardGroups) {
-        this.deck.cardGroups[cardGroup].cards.splice(
-          this.deck.cardGroups[cardGroup].cards.findIndex(
-            (c) => c == this.deck.cards[cardIndex].cardName
-          ),
-          1
-        );
-        if (!this.deck.cardGroups[cardGroup].cards.length) {
-          this.deck.cardGroups.splice(parseInt(cardGroup), 1);
-        }
-      }
-      this.deck.cards.splice(cardIndex, 1);
+      this.deck.alternativeCards
+.splice(cardIndex, 1);
       this.countCard();
-      this.deckRatingValue();
       this.safeDeck();
       this.closeCardDeleteModal();
     },
     countCard() {
-      if (this.deck.cards) {
+      if (this.deck.alternativeCards
+) {
         this.deckNumber = 0;
         this.counts = [0, 0, 0, 0, 0, 0, 0, 0];
         this.uniqueCounts = [0, 0, 0, 0, 0, 0, 0, 0];
-        for (let card of this.deck.cards) {
+        for (let card of this.deck.alternativeCards
+) {
           this.deckNumber += card.cardCount;
           for (let c in this.counts) {
             if (card.cardProperties[c]) this.counts[c] += card.cardCount;
@@ -653,37 +607,17 @@ export default defineComponent({
     },
     uniqueCardDeck() {
       this.allCards = [];
-      for (let card of this.deck.cards) {
+      for (let card of this.deck.alternativeCards
+) {
         let count = card.cardCount;
         for (count; count; count--) {
           this.allCards.push(card);
         }
       }
       this.uniqueAllCards = [
-        ...new Set(this.deck.cards.filter((c) => c.cardName)),
+        ...new Set(this.deck.alternativeCards
+.filter((c) => c.cardName)),
       ];
-    },
-    deckRatingValue() {
-      if (this.allCards.length) {
-        this.deckValue =
-          Math.round(
-            (this.allCards.map((c) => c.cardValue).reduce((a, b) => a + b) /
-              this.allCards.length) *
-              10
-          ) / 10;
-      }
-      this.deckRating = 12.5 * (1 - Math.pow(2, -0.5 * this.deckValue));
-      this.deckRating += 12.5 * (1 - Math.pow(2, -0.4 * this.counts[0]));
-      this.deckRating += 12.5 * (1 - Math.pow(2, -0.2 * this.counts[1]));
-      this.deckRating += 12.5 * (1 - Math.pow(2, -0.7 * this.counts[2]));
-      this.deckRating += 12.5 * (1 - Math.pow(2, -0.2 * this.counts[3]));
-      this.deckRating += 12.5 * (1 - Math.pow(2, -0.2 * this.counts[4]));
-      this.deckRating += 12.5 * (1 - Math.pow(2, -0.4 * this.counts[6]));
-      this.deckRating += 12.5 * (1 - Math.pow(2, -0.4 * this.counts[7]));
-      if (this.deckNumber > 40) {
-        this.deckRating = (this.deckRating / this.deckNumber) * 40;
-      }
-      this.deckRating = Math.round(this.deckRating * 10) / 10;
     },
     safeDeck() {
       this.decks[this.decks.findIndex((d) => d.name == this.deck.name)] =
@@ -692,7 +626,8 @@ export default defineComponent({
       setDecks(this.decks);
     },
     sortDeck() {
-      this.deck.cards
+      this.deck.alternativeCards
+
         .sort(function (a, b) {
           if (a.cardName < b.cardName) {
             return -1;

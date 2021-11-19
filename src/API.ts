@@ -19,6 +19,8 @@ export interface Deck {
   combos: Combo[];
   cardGroups:Cardgroup[];
   extraCards:ExtraCard[];
+  sideCards:Card[];
+  alternativeCards:Card[];
 }
 export type Combo = [string|Cardgroup];
 

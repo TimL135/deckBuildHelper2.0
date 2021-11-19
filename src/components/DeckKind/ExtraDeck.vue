@@ -318,27 +318,12 @@ this.countExtraCards()
     addExtraCard() {
        if (this.deck.extraCards.findIndex((c) => c.cardName == this.cardNameInput) !=-1) return this.closeExtraCardAddEditModal();
        if(this.counts.reduce((a,b)=>a+b)+parseInt(this.cardCountInput)>15)return this.closeExtraCardAddEditModal();
-      if (this.deck.extraCards) {
+
         this.deck.extraCards.push({
           cardName: this.cardNameInput,
           cardCount: parseInt(this.cardCountInput),
           cardType: this.type as ExtraCardType,
         });
-      } else {
-        this.deck = {
-          name: this.deck.name,
-          cards: this.deck.cards,
-          combos: this.deck.combos,
-          cardGroups: this.deck.cardGroups,
-          extraCards: [
-            {
-              cardName: this.cardNameInput,
-              cardCount: parseInt(this.cardCountInput),
-              cardType: this.type as ExtraCardType,
-            },
-          ],
-        };
-      }
       this.countExtraCards()
       this.safeDeck();
       this.closeExtraCardAddEditModal();
