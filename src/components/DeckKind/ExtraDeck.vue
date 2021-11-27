@@ -259,6 +259,14 @@ export default defineComponent({
   },
   mounted(){
 this.countExtraCards()
+ window.addEventListener('click', event => {
+      if (event.target == document.getElementById('extraCardAddEditModal')) {
+        this.closeExtraCardAddEditModal();
+      }
+      if (event.target == document.getElementById('extraCardDeleteModal')) {
+        this.closeExtraCardDeleteModal();
+      }
+    });
   },
   data() {
     return {

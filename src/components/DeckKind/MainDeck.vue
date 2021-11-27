@@ -101,8 +101,7 @@
             >
               <svg
                 xmlns="http://www.w3.org/2000/svg"
-                width="5.5vw"
-                height="5.5vw"
+               
                 class="bi bi-trash"
                 viewBox="0 0 16 16"
               >
@@ -442,6 +441,14 @@ export default defineComponent({
   },
   mounted() {
     this.updateDeck();
+     window.addEventListener('click', event => {
+      if (event.target == document.getElementById('cardAddEditModal')) {
+        this.closeCardAddEditModal();
+      }
+      if (event.target == document.getElementById('cardDeleteModal')) {
+        this.closeCardDeleteModal();
+      }
+    });
   },
   data() {
     return {

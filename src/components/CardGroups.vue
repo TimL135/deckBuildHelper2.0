@@ -181,6 +181,16 @@ export default defineComponent({
     setup(){
     return{selectedDeckGlobal,decks, deck,uniqueAllCards};
   },
+  mounted(){
+ window.addEventListener('click', event => {
+      if (event.target == document.getElementById('cardGroupAddEditModal')) {
+        this.closeCardGroupAddEditModal();
+      }
+      if (event.target == document.getElementById('cardGroupDeleteModal')) {
+        this.closeCardGroupDeleteModal();
+      }
+    });
+  },
   data() {
     return {
       deleteCardGroupIndex: 0,

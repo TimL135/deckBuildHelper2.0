@@ -265,6 +265,16 @@ export default defineComponent({
    setup(){
     return{selectedDeckGlobal,decks, deck,uniqueAllCards};
   },
+    mounted(){
+ window.addEventListener('click', event => {
+      if (event.target == document.getElementById('comboAddEditModal')) {
+        this.closeComboAddEditModal();
+      }
+      if (event.target == document.getElementById('comboDeleteModal')) {
+        this.closeComboDeleteModal();
+      }
+    });
+  },
   data() { 
     return {
       editAdd: "add",

@@ -414,6 +414,14 @@ export default defineComponent({
   },
   mounted() {
     this.updateDeck();
+     window.addEventListener('click', event => {
+      if (event.target == document.getElementById('cardAddEditModal')) {
+        this.closeCardAddEditModal();
+      }
+      if (event.target == document.getElementById('cardDeleteModal')) {
+        this.closeCardDeleteModal();
+      }
+    });
   },
   data() {
     return {
