@@ -17,7 +17,7 @@
             @change="countCard()"
         >
             <option class="orange" selected>{{ cardNumber }}. Card</option>
-            <option v-for="card in deck.cards" :key="card.name" :class="card.cardType">
+            <option v-for="card in deck.cards" :key="card.name" :value="card.id" :class="card.type">
                 {{ card.name }}
             </option>
         </select>
@@ -89,8 +89,8 @@
                         {{ possibleCombos.findIndex(name => name == combo) + 1 }}
                     </td>
                     <td>
-                        <div v-for="card in combo" :key="card" class="mb-1 green" :class="deck.cards.find(c => c.name == card)?.cardType">
-                            {{ typeof card === 'object' ? card.name : card }}
+                        <div v-for="card in combo.cards" :key="card" class="mb-1 green" :class="findCard(card)?.type">
+                            {{ typeof card === 'object' ? card.name : findCard(card).name }}
                         </div>
                     </td>
                 </tr>
@@ -123,7 +123,7 @@ export default defineComponent({
             this.allCards = []
             for (let card of this.deck.cards) {
                 for (let i = card.count; i; i--) {
-                    this.allCards.push(card.name)
+                    this.allCards.push(card.id)
                 }
             }
             for (let i = 0; i < 5; i++) {
@@ -139,7 +139,7 @@ export default defineComponent({
             let handValueCards = [] as type.Card[]
             let uniqueCards = [] as type.Card[]
             for (let i = 0; i < 5; i++) {
-                let tmp = this.deck.cards.find(c => c.name == this.handCards[i])
+                let tmp = this.deck.cards.find(c => c.id == this.handCards[i])
                 if (tmp) {
                     this.handCardsType[i] = tmp.type
                 } else {
@@ -188,14 +188,14 @@ export default defineComponent({
                             ? name.cards.some(cardInCardGroup =>
                                   comboHandCards.includes(cardInCardGroup)
                                       ? comboHandCards.splice(
-                                            comboHandCards.findIndex(card => findCard(card)?.name == cardInCardGroup),
+                                            comboHandCards.findIndex(card => findCard(card)?.id == cardInCardGroup),
                                             1
                                         )
                                       : null
                               )
                             : comboHandCards.includes(name)
                             ? comboHandCards.splice(
-                                  comboHandCards.findIndex(card => findCard(card)?.name == name),
+                                  comboHandCards.findIndex(card => findCard(card)?.id == name),
                                   1
                               )
                             : null
