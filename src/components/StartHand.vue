@@ -145,7 +145,7 @@ export default defineComponent({
                 } else {
                     this.handCardsType[i] = ''
                 }
-                let card = this.deck.cards.find(x => x.name == this.handCards[i])
+                let card = this.deck.cards.find(x => x.id == this.handCards[i])
                 if (card) {
                     for (let c in this.counts) {
                         if (card.properties[c]) {
@@ -156,12 +156,12 @@ export default defineComponent({
                         handValueCards.push(card)
                     } else {
                         if (card.value > 0) {
-                            if (!handValueCards.find(c => c.name == card!.name)) {
+                            if (!handValueCards.find(c => c.id == card!.id)) {
                                 handValueCards.push(card)
                             }
                         }
                     }
-                    if (!uniqueCards.find(c => c.name == card!.name)) {
+                    if (!uniqueCards.find(c => c.id == card!.id)) {
                         uniqueCards.push(card)
                     }
                 }
