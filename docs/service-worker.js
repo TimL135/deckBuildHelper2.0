@@ -14,7 +14,7 @@
 importScripts("https://storage.googleapis.com/workbox-cdn/releases/4.3.1/workbox-sw.js");
 
 importScripts(
-  "/deckBuildHelper2.0/precache-manifest.b1c5fde4e2f4ba5a927a4ead6ff3af00.js"
+  "/deckBuildHelper2.0/precache-manifest.3dd8aabe8a89369a5c4f249b988e5e56.js"
 );
 
 workbox.core.setCacheNameDetails({prefix: "deckbuildhelper2.0"});
