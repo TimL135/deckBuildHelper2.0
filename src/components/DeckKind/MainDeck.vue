@@ -381,7 +381,7 @@ export default defineComponent({
             if (modal) modal.style.display = 'none'
         },
         alternativeCheck() {
-            this.deck.alternativeCards.every(card => {
+            this.deck.alternativeCards.forEach(card => {
                 if (card.name == this.nameInput) {
                     this.type = card.type
                     this.countInput = card.count + ''
