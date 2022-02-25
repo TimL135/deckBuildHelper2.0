@@ -383,7 +383,6 @@ export default defineComponent({
         alternativeCheck() {
             this.deck.alternativeCards.every(card => {
                 if (card.name == this.nameInput) {
-                    this.nameInput = card.name
                     this.type = card.type
                     this.countInput = card.count + ''
                     this.properties = card.properties
