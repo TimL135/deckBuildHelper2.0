@@ -270,6 +270,7 @@ export default defineComponent({
                 this.closeCardDeleteModal()
             }
         })
+        this.sortDeck()
     },
     data() {
         return {
