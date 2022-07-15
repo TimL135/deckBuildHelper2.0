@@ -48,7 +48,7 @@
                         </button>
                     </td>
                     <td>
-                        <div v-for="card in cardGroup.cards" :key="card" class="mb-1" :class="deck.cards.find(c => c.id == card)?.type">
+                        <div v-for="card in cardGroup.cards" :key="card" class="mb-1" :class="findCard(card)?.type">
                             {{ findCard(card)?.name }}
                         </div>
                     </td>
@@ -98,7 +98,7 @@
                         </button>
                     </td>
                     <td>
-                        <div v-for="card in cardGroup.cards" :key="card" class="mb-1" :class="deck.cards.find(c => c.id == card)?.type">
+                        <div v-for="card in cardGroup.cards" :key="card" class="mb-1" :class="findCard(card)?.type">
                             {{ findCard(card)?.name }}
                         </div>
                     </td>
