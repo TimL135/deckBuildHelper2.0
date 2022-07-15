@@ -52,7 +52,7 @@
                     </td>
                     <td>
                         <div v-for="card in combo.cards" :key="card" class="mb-1 green" :class="findCard(card)?.type">
-                            {{ findCard(card).name }}
+                            {{ typeof card === 'object' ? card.name : findCard(card).name }}
                         </div>
                     </td>
                 </tr>
@@ -104,7 +104,7 @@
                     </td>
                     <td>
                         <div v-for="card in combo.cards" :key="card" class="mb-1 green" :class="findCard(card)?.type">
-                            {{ findCard(card).name }}
+                            {{ typeof card === 'object' ? card.name : findCard(card).name }}
                         </div>
                     </td>
                 </tr>
