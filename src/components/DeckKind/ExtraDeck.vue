@@ -78,30 +78,31 @@
                 </span>
                 <div class="container">
                     <form @submit.prevent="editAddExtraCard">
-                        <div class="input-group mb-1">
-                            <span class="input-group-text w-25 orange" id="basic-addon1">Name</span>
-                            <input
+                        <div>
+                            <SexyInput
                                 type="text"
-                                class="form-control"
-                                aria-label="Username"
-                                aria-describedby="addon-wrapping"
+                                placeholder="name"
                                 v-model="nameInput"
-                                required
+                                :labelBorder="true"
+                                class="orange"
+                                labelClass="orange"
+                                :required="true"
                             />
                         </div>
-                        <div class="input-group mb-1">
-                            <span class="input-group-text w-25 orange" id="basic-addon1">Quantity</span>
-                            <input
+                        <div class="mb-3">
+                            <SexyInput
                                 type="number"
-                                oninput="this.value = this.value.replace(/[^1-3.]/g, '').replace(/(\..*)\./g, '$1');"
-                                class="form-control"
-                                aria-label="Username"
-                                aria-describedby="addon-wrapping"
+                                placeholder="Quantity"
                                 v-model="countInput"
+                                oninput="this.value = this.value.replace(/[^1-3.]/g, '').replace(/(\..*)\./g, '$1');"
                                 min="1"
                                 max="3"
                                 maxlength="1"
-                                required
+                                class="orange"
+                                labelClass="orange"
+                                listClass="orange text-dark"
+                                :labelBorder="true"
+                                :required="true"
                             />
                         </div>
                         <div class="btn-group w-100 mb-1" role="group" aria-label="Basic radio toggle button group">
@@ -175,8 +176,10 @@
 import { defineComponent } from 'vue'
 import { selectedDeckGlobal, decks, deck } from '@/global'
 import * as type from '@/types'
+import SexyInput from '../SexyInput.vue'
 import { getDecks, getDeck, setDeck, setDecks } from '@/API'
 export default defineComponent({
+    components: { SexyInput },
     setup() {
         return { selectedDeckGlobal, decks, deck }
     },

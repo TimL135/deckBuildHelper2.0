@@ -137,35 +137,38 @@
             <span class="close" style="float: right; width: 42px height:42px; margin-left: 95%" @click="closeCardAddEditModal()">&times;</span>
             <div class="container">
                 <form @submit.prevent="editAddCard()">
-                    <div class="input-group mb-1">
-                        <span class="input-group-text w-25 orange" id="basic-addon1">Name</span>
-                        <input
-                            @change="alternativeCheck()"
-                            type="text"
-                            class="form-control"
-                            aria-label="Username"
-                            aria-describedby="addon-wrapping"
+                    <div>
+                        <SexyInput
+                            @change="alternativeCheck"
+                            type="select"
+                            placeholder="name"
                             v-model="nameInput"
-                            list="alternative"
-                            required
+                            :options="deck.alternativeCards"
+                            :optionProjection="a => a.name"
+                            :labelBorder="true"
+                            :selectOnBlur="true"
+                            :controlInput="false"
+                            :noElementMessage="deck.alternativeCards.length ? nameInput : nameInput ? nameInput : 'no alternative cards'"
+                            class="orange"
+                            labelClass="orange"
+                            listClass="orange text-dark"
+                            :required="true"
                         />
                     </div>
-                    <datalist id="alternative">
-                        <option v-for="alternativeCard in deck.alternativeCards" :key="alternativeCard.id" :value="alternativeCard.name"></option>
-                    </datalist>
-                    <div class="input-group mb-1">
-                        <span class="input-group-text w-25 orange" id="basic-addon1">Quantity</span>
-                        <input
+                    <div class="mb-3">
+                        <SexyInput
                             type="number"
-                            oninput="this.value = this.value.replace(/[^1-3.]/g, '').replace(/(\..*)\./g, '$1');"
-                            class="form-control"
-                            aria-label="Username"
-                            aria-describedby="addon-wrapping"
+                            placeholder="Quantity"
                             v-model="countInput"
+                            oninput="this.value = this.value.replace(/[^1-3.]/g, '').replace(/(\..*)\./g, '$1');"
                             min="1"
                             max="3"
                             maxlength="1"
-                            required
+                            class="orange"
+                            labelClass="orange"
+                            listClass="orange text-dark"
+                            :labelBorder="true"
+                            :required="true"
                         />
                     </div>
                     <div class="btn-group w-100 mb-1" role="group" aria-label="Basic radio toggle button group">
@@ -216,11 +219,19 @@
                         <input type="checkbox" class="btn-check" id="btncheck13" autocomplete="off" v-model="properties[5]" />
                         <label class="btn btn-outline-primary w-25" for="btncheck13">Once per Turn</label>
                         <input type="checkbox" class="btn-check" id="btncheck14" autocomplete="off" v-model="properties[4]" />
-                        <label class="btn btn-outline-primary w-25" for="btncheck14">Searchable</label>
+                        <label class="btn btn-outline-primary w-25" for="btncheck14">
+                            Search
+                            <wbr />
+                            able
+                        </label>
                         <input type="checkbox" class="btn-check" id="btncheck15" autocomplete="off" v-model="properties[3]" />
                         <label class="btn btn-outline-primary w-25" for="btncheck15">Combo Piece</label>
                         <input type="checkbox" class="btn-check" id="btncheck16" autocomplete="off" v-model="properties[7]" />
-                        <label class="btn btn-outline-primary w-25" for="btncheck16">Interaption</label>
+                        <label class="btn btn-outline-primary w-25" for="btncheck16">
+                            Inte
+                            <wbr />
+                            raption
+                        </label>
                     </div>
                     <br />
                     <div class="btn-group rounded w-100 orange" role="group" aria-label="Basic radio toggle button group">
@@ -291,8 +302,10 @@
 import { defineComponent } from 'vue'
 import { selectedDeckGlobal, decks, deck, uniqueAllCards } from '@/global'
 import * as type from '@/types'
+import SexyInput from '../SexyInput.vue'
 import { getDecks, getDeck, setDecks, setDeck } from '@/API'
 export default defineComponent({
+    components: { SexyInput },
     watch: { selectedDeckGlobal: 'updateDeck' },
     setup() {
         return { selectedDeckGlobal, decks, deck, uniqueAllCards }

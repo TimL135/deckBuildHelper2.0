@@ -6,15 +6,24 @@
     crossorigin="anonymous"
   />
  <div id="nav">
-    <router-link to=/>Main</router-link> |
-    <router-link to=/StartHand>Starthand</router-link> |
-    <router-link to=/Combos>Combos</router-link> |
-    <router-link to=/CardGroups>Cardgroups</router-link>
+    <router-link to=/>Main</router-link> <template v-if="deck">|</template>
+    <template v-if="deck"><router-link to=/StartHand>Starthand</router-link> |</template>
+    <template v-if="deck"><router-link to=/Combos>Combos</router-link> |</template>
+    <template v-if="deck"><router-link to=/CardGroups>Cardgroups</router-link></template>
   </div>
   
   <router-view />
 </template>
+<script>
+import { defineComponent } from 'vue'
+import {  deck } from '@/global'
+export default defineComponent({
+  setup(){
+    return{deck}
+  }
 
+})
+</script>
 <style lang="scss">
 #app {
   font-family: Avenir, Helvetica, Arial, sans-serif;

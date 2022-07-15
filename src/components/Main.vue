@@ -7,22 +7,22 @@
     />
 
     <div class="container" style="margin-top: 3vh">
-        <div class="input-group">
-            <input
-                style="border: 1px solid #ffa107"
-                autocomplete="off"
-                type="text"
-                class="form-control orange"
-                aria-label="Recipient's username"
-                aria-describedby="button-addon2"
-                name="plan"
-                list="plans"
+        <div>
+            <SexyInput
+                placeholder="deck"
                 v-model="selectedDeck"
+                type="select"
+                :options="decks"
+                :selectOnBlur="true"
+                :controlInput="false"
+                :optionProjection="a => a.name"
+                btnText="Confirm"
+                :btnAction="loadDeck"
+                class="orange"
+                btnClass="orange"
+                labelClass="orange text-dark"
+                listClass="orange text-dark"
             />
-            <datalist id="plans">
-                <option v-for="deck in decks" :key="deck.name" :value="deck.name"></option>
-            </datalist>
-            <button type="button" class="btn orange w-25" id="button-addon2" @click="loadDeck()">Confirm</button>
         </div>
 
         <div class="btn-group rounded w-100 orange mt-2" role="group" aria-label="Basic radio toggle button group">
@@ -87,10 +87,11 @@ import MainDeck from '@/components/DeckKind/MainDeck.vue'
 import ExtraDeck from '@/components/DeckKind/ExtraDeck.vue'
 import SideDeck from '@/components/DeckKind/SideDeck.vue'
 import AlternativeDeck from '@/components/DeckKind/AlternativeDeck.vue'
+import SexyInput from '../components/SexyInput.vue'
 import { selectedDeckGlobal, decks, deck } from '@/global'
 import { getDecks, getDeck, setDeck, setDecks } from '@/API'
 export default defineComponent({
-    components: { MainDeck, ExtraDeck, SideDeck, AlternativeDeck },
+    components: { MainDeck, ExtraDeck, SideDeck, AlternativeDeck, SexyInput },
     mounted() {
         if (getDeck()) {
             this.selectedDeck = getDeck().name

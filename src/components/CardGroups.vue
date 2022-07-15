@@ -112,15 +112,15 @@
             <span class="close" style="float: right; width: 42px height:42px; margin-left: 95%" @click="closeCardGroupAddEditModal()">&times;</span>
 
             <form @submit.prevent="editAddCard()">
-                <div class="input-group mb-1">
-                    <span class="input-group-text orange w-25" id="basic-addon1">Name</span>
-                    <input
+                <div class="mb-1">
+                    <SexyInput
                         type="text"
-                        class="form-control"
-                        aria-label="Username"
-                        aria-describedby="addon-wrapping"
+                        placeholder="name"
                         v-model="cardGroupNameInput"
-                        required
+                        :labelBorder="true"
+                        class="orange"
+                        labelClass="orange"
+                        :required="true"
                     />
                 </div>
                 <div v-for="cardInput in this.cardInputs.length" :key="cardInput">
@@ -161,7 +161,9 @@ import { setDecks, setDeck } from '@/API'
 import * as type from '@/types'
 import { selectedDeckGlobal, decks, deck, uniqueAllCards, findCard } from '@/global'
 import { defineComponent } from 'vue'
+import SexyInput from '../components/SexyInput.vue'
 export default defineComponent({
+    components: { SexyInput },
     setup() {
         return { selectedDeckGlobal, decks, deck, uniqueAllCards, findCard }
     },

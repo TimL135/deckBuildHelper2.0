@@ -37,7 +37,8 @@ ul {
   border: 1px solid #888;
   width: 95% !important;
 
-}label:focus{
+}
+label:focus{
   box-shadow: none !important;
   }
   div{
@@ -50,8 +51,7 @@ label{
     font-size: 3.8vw !important;
   }
 
-padding: 0px !important;
-height: 10vh !important;
+
 }
 .close {
   @media (max-width: 768px) {
@@ -111,8 +111,6 @@ svg{
   }
   box-shadow: none !important;
     font-weight: bold !important;
-    background-color:#ffa107 !important;
-    border-color:#ffa107 !important;
 }
 
 .btn-check:focus + .btn-outline-primary,
@@ -132,8 +130,8 @@ svg{
 }
 .orange {
     background-color: #ffa107 !important;
-    border: none;
-    border-color:#ffa107 !important;
+    // border: none;
+    // border-color:#ffa107 !important;
     opacity: 1 !important;
     cursor:default;
   }

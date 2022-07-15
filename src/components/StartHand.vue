@@ -103,7 +103,9 @@ import { getDeck } from '@/API'
 import { deck, findCard } from '@/global'
 import * as type from '@/types'
 import { defineComponent } from 'vue'
+// import SexyInput from '../components/SexyInput.vue'
 export default defineComponent({
+    // components: { SexyInput },
     setup() {
         return { deck, findCard }
     },
