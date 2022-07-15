@@ -51,8 +51,8 @@
                         </button>
                     </td>
                     <td>
-                        <div v-for="card in combo.cards" :key="card" class="mb-1 green" :class="deck.cards.find(c => c.id == card)?.type">
-                            {{ typeof card === 'object' ? card.name : findCard(card).name }}
+                        <div v-for="card in combo.cards" :key="card" class="mb-1 green" :class="findCard(card)?.type">
+                            {{ findCard(card).name }}
                         </div>
                     </td>
                 </tr>
@@ -103,8 +103,8 @@
                         </button>
                     </td>
                     <td>
-                        <div v-for="card in combo.cards" :key="card" class="mb-1 green" :class="deck.cards.find(c => c.id == card)?.type">
-                            {{ typeof card === 'object' ? card.name : findCard(card).name }}
+                        <div v-for="card in combo.cards" :key="card" class="mb-1 green" :class="findCard(card)?.type">
+                            {{ findCard(card).name }}
                         </div>
                     </td>
                 </tr>

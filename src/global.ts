@@ -26,5 +26,5 @@ export const deck = ref(
 export const uniqueAllCards = ref([...new Set(deck.value.cards?.filter(c => c.name))])
 
 export function findCard(id: string) {
-    return deck.value.cards.find(c => c.id == id)
+    return deck.value.cards.find(c => c.id == id) || deck.value.alternativeCards.find(c => c.id == id)
 }
