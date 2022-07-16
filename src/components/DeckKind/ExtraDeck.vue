@@ -253,6 +253,7 @@ export default defineComponent({
                 name: this.nameInput,
                 count: parseInt(this.countInput),
                 type: this.type as type.ExtraCardType,
+                id: Math.random().toString(36).slice(-15),
             })
             this.countExtraCards()
             this.safeDeck()
@@ -265,6 +266,7 @@ export default defineComponent({
                 name: this.nameInput,
                 count: parseInt(this.countInput),
                 type: this.type as type.ExtraCardType,
+                id: this.deck.extraCards.find(c => c.name == this.nameInput)?.id || Math.random().toString(36).slice(-15),
             }
             this.countExtraCards()
             this.safeDeck()

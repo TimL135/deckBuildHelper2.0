@@ -6,7 +6,8 @@
         crossorigin="anonymous"
     />
 
-    <div class="container" style="margin-top: 3vh">
+    <div class="container" style="margin-top: 1vh">
+        <div class="sticky">{{ selectedCard ? `selected card: ${findCard(selectedCard)?.name}(${selectedFrom})` : 'no card selected' }}</div>
         <div class="mb-3">
             <button @click="reset()" type="button" class="btn orange w-100 mt-1">Reset</button>
         </div>
@@ -32,14 +33,14 @@
                 }}
             </div>
         </div>
-        <div>handcards</div>
+        <div @click="addHandCard" @dblclick="draw">handcards</div>
         <div class="startHand mb-3">
             <div
                 v-for="(card, index) of handCards"
                 :key="card + index"
                 style="background-color: red; border: 2px solid black"
                 :class="findCard(card)?.type"
-                @click="selectCard(card)"
+                @click="selectCard(card, 'hand')"
             >
                 {{ findCard(card)?.name }}
             </div>
@@ -47,7 +48,13 @@
         <div v-if="view == 'deck'">
             <div>deck</div>
             <div class="deck">
-                <div v-for="card of allCards" :key="card" :class="findCard(card)?.type" style="border: 2px solid black">
+                <div
+                    v-for="card of allCards"
+                    :key="card"
+                    :class="findCard(card)?.type"
+                    style="border: 2px solid black"
+                    @click="selectCard(card, 'deck')"
+                >
                     {{ findCard(card)?.name }}
                 </div>
             </div>
@@ -55,15 +62,27 @@
         <div v-if="view == 'extradeck'">
             <div>extradeck</div>
             <div class="deck">
-                <div v-for="card of allExtraCards" :key="card" :class="card.type" style="border: 2px solid black">
-                    {{ card.name }}
+                <div
+                    v-for="card of allExtraCards"
+                    :key="card"
+                    :class="findCard(card)?.type"
+                    style="border: 2px solid black"
+                    @click="selectCard(card, 'extradeck')"
+                >
+                    {{ findCard(card)?.name }}
                 </div>
             </div>
         </div>
         <div v-if="view == 'graveyard'">
             <div>graveyard</div>
             <div class="deck">
-                <div v-for="card of graveYard" :key="card" :class="findCard(card)?.type" style="border: 2px solid black">
+                <div
+                    v-for="card of graveYard"
+                    :key="card"
+                    :class="findCard(card)?.type"
+                    style="border: 2px solid black"
+                    @click="selectCard(card, 'graveyard')"
+                >
                     {{ findCard(card)?.name }}
                 </div>
             </div>
@@ -71,7 +90,13 @@
         <div v-if="view == 'banish'">
             <div>banish</div>
             <div class="deck">
-                <div v-for="card of banish" :key="card" :class="findCard(card)?.type" style="border: 2px solid black">
+                <div
+                    v-for="card of banish"
+                    :key="card"
+                    :class="findCard(card)?.type"
+                    style="border: 2px solid black"
+                    @click="selectCard(card, 'banish')"
+                >
                     {{ findCard(card)?.name }}
                 </div>
             </div>
@@ -95,10 +120,11 @@ export default defineComponent({
             field: [] as type.Slot[],
             handCards: [] as string[],
             selectedCard: '',
+            selectedFrom: '',
             graveYard: [] as string[],
             banish: [] as string[],
             view: '',
-            allExtraCards: [] as type.ExtraCard[],
+            allExtraCards: [] as string[],
         }
     },
     mounted() {
@@ -130,7 +156,7 @@ export default defineComponent({
             this.allExtraCards = []
             for (let card of this.deck.extraCards) {
                 for (let i = card.count; i; i--) {
-                    this.allExtraCards.push(card)
+                    this.allExtraCards.push(card.id)
                 }
             }
 
@@ -145,8 +171,9 @@ export default defineComponent({
                 this.handCards[i] = this.allCards.splice(index, 1).toString()
             }
         },
-        selectCard(card: string) {
+        selectCard(card: string, from: string) {
             this.selectedCard = card
+            this.selectedFrom = from
         },
         selectSlot(slotIndex: number, slot: type.Slot) {
             if (slot.name == 'deck') {
@@ -160,8 +187,7 @@ export default defineComponent({
             if (slot.name == 'graveyard') {
                 if (this.selectedCard) {
                     this.graveYard.push(this.selectedCard)
-                    this.removeHandCard(this.selectedCard)
-                    this.selectedCard = ''
+                    this.removeCard(this.selectedCard)
                     return
                 } else {
                     if (this.view == 'graveyard') {
@@ -174,8 +200,7 @@ export default defineComponent({
             if (slot.name == 'banish') {
                 if (this.selectedCard) {
                     this.banish.push(this.selectedCard)
-                    this.removeHandCard(this.selectedCard)
-                    this.selectedCard = ''
+                    this.removeCard(this.selectedCard)
                     return
                 } else {
                     if (this.view == 'banish') {
@@ -191,15 +216,42 @@ export default defineComponent({
                 } else {
                     this.view = 'extradeck'
                 }
-
                 return
             }
             if (!this.selectedCard) return
             this.field[slotIndex].value = findCard(this.selectedCard)!.name
-            this.removeHandCard(this.selectedCard)
+            this.removeCard(this.selectedCard)
         },
-        removeHandCard(card: string) {
-            this.handCards.splice(this.handCards.indexOf(card), 1)
+        addHandCard() {
+            if (!this.selectedCard) return
+            this.handCards.push(this.selectedCard)
+            this.removeCard(this.selectedCard)
+            this.selectedCard = ''
+        },
+        removeCard(card: string) {
+            this.selectedCard = ''
+            switch (this.selectedFrom) {
+                case 'hand':
+                    this.handCards.splice(this.handCards.indexOf(card), 1)
+                    break
+                case 'deck':
+                    this.allCards.splice(this.allCards.indexOf(this.selectedCard), 1)
+                    break
+                case 'extradeck':
+                    this.allExtraCards.splice(this.allExtraCards.indexOf(this.selectedCard), 1)
+                    break
+                case 'banish':
+                    this.banish.splice(this.banish.indexOf(this.selectedCard), 1)
+                    break
+                case 'graveyard':
+                    this.graveYard.splice(this.graveYard.indexOf(this.selectedCard), 1)
+                    break
+            }
+            this.selectedCard = ''
+        },
+        draw() {
+            let index = this.getRandomInt(this.allCards.length)
+            this.handCards.push(this.allCards.splice(index, 1).toString())
         },
         getRandomInt(max: number) {
             return Math.floor(Math.random() * max)
@@ -208,6 +260,19 @@ export default defineComponent({
 })
 </script>
 <style>
+body {
+    user-select: none;
+    -moz-user-select: none;
+    -khtml-user-select: none;
+    -webkit-user-select: none;
+    -o-user-select: none;
+}
+.sticky {
+    background-color: black;
+    position: -webkit-sticky; /* Safari */
+    position: sticky;
+    top: 0;
+}
 .startHand {
     display: grid;
     grid-template-columns: repeat(5, 1fr);

@@ -11,6 +11,7 @@ export interface ExtraCard {
     name: string
     type: ExtraCardType
     count: number
+    id: string
 }
 export type CardType = 'monster' | 'spell' | 'trap'
 export type ExtraCardType = 'fusion' | 'synchro' | 'xyz' | 'link'
