@@ -133,6 +133,7 @@ export default defineComponent({
     },
     methods: {
         reset() {
+            this.view = ''
             this.graveYard = []
             this.field = [
                 { name: 'extra1', value: 'extra1' },
@@ -166,6 +167,7 @@ export default defineComponent({
                     this.allCards.push(card.id)
                 }
             }
+            this.handCards = []
             for (let i = 0; i < 5; i++) {
                 let index = this.getRandomInt(this.allCards.length)
                 this.handCards[i] = this.allCards.splice(index, 1).toString()
@@ -177,12 +179,17 @@ export default defineComponent({
         },
         selectSlot(slotIndex: number, slot: type.Slot) {
             if (slot.name == 'deck') {
-                if (this.view == 'deck') {
-                    this.view = ''
+                if (this.selectedCard) {
+                    this.allCards.push(this.selectedCard)
+                    this.removeCard(this.selectedCard)
+                    return
                 } else {
-                    this.view = 'deck'
+                    if (this.view == 'deck') {
+                        this.view = ''
+                    } else {
+                        this.view = 'deck'
+                    }
                 }
-                return
             }
             if (slot.name == 'graveyard') {
                 if (this.selectedCard) {
@@ -211,14 +218,25 @@ export default defineComponent({
                 }
             }
             if (slot.name == 'extradeck') {
-                if (this.view == 'extradeck') {
-                    this.view = ''
+                if (this.selectedCard) {
+                    this.allExtraCards.push(this.selectedCard)
+                    this.removeCard(this.selectedCard)
+                    return
                 } else {
-                    this.view = 'extradeck'
+                    if (this.view == 'extradeck') {
+                        this.view = ''
+                    } else {
+                        this.view = 'extradeck'
+                    }
                 }
+            }
+            if (!this.selectedCard) {
+                if (slot.name == slot.value) return
+                console.log(slot.value, findCardByName(slot.value)?.id)
+                this.selectedCard = findCardByName(slot.value)?.id || ''
+                this.selectedFrom = slot.name
                 return
             }
-            if (!this.selectedCard) return
             this.field[slotIndex].value = findCard(this.selectedCard)!.name
             this.removeCard(this.selectedCard)
         },
@@ -229,7 +247,6 @@ export default defineComponent({
             this.selectedCard = ''
         },
         removeCard(card: string) {
-            this.selectedCard = ''
             switch (this.selectedFrom) {
                 case 'hand':
                     this.handCards.splice(this.handCards.indexOf(card), 1)
@@ -246,6 +263,8 @@ export default defineComponent({
                 case 'graveyard':
                     this.graveYard.splice(this.graveYard.indexOf(this.selectedCard), 1)
                     break
+                default:
+                    this.field.find(e => e.name == this.selectedFrom)!.value = this.field.find(e => e.name == this.selectedFrom)!.name
             }
             this.selectedCard = ''
         },
