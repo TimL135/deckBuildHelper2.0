@@ -37,7 +37,7 @@
             <div
                 v-for="(card, index) of handCards"
                 :key="card + index"
-                style="height: 5vh; background-color: red; border: 2px solid black"
+                style="background-color: red; border: 2px solid black"
                 :class="findCard(card)?.type"
                 @click="selectCard(card)"
             >
@@ -47,7 +47,7 @@
         <div v-if="view == 'deck'">
             <div>deck</div>
             <div class="deck">
-                <div v-for="card of allCards" :key="card" :class="findCard(card)?.type" style="height: 5vh; border: 2px solid black">
+                <div v-for="card of allCards" :key="card" :class="findCard(card)?.type" style="border: 2px solid black">
                     {{ findCard(card)?.name }}
                 </div>
             </div>
@@ -55,7 +55,7 @@
         <div v-if="view == 'extradeck'">
             <div>extradeck</div>
             <div class="deck">
-                <div v-for="card of allExtraCards" :key="card" :class="card.type" style="height: 5vh; border: 2px solid black">
+                <div v-for="card of allExtraCards" :key="card" :class="card.type" style="border: 2px solid black">
                     {{ card.name }}
                 </div>
             </div>
@@ -63,7 +63,7 @@
         <div v-if="view == 'graveyard'">
             <div>graveyard</div>
             <div class="deck">
-                <div v-for="card of graveYard" :key="card" :class="findCard(card)?.type" style="height: 5vh; border: 2px solid black">
+                <div v-for="card of graveYard" :key="card" :class="findCard(card)?.type" style="border: 2px solid black">
                     {{ findCard(card)?.name }}
                 </div>
             </div>
@@ -71,7 +71,7 @@
         <div v-if="view == 'banish'">
             <div>banish</div>
             <div class="deck">
-                <div v-for="card of banish" :key="card" :class="findCard(card)?.type" style="height: 5vh; border: 2px solid black">
+                <div v-for="card of banish" :key="card" :class="findCard(card)?.type" style="border: 2px solid black">
                     {{ findCard(card)?.name }}
                 </div>
             </div>
@@ -211,11 +211,12 @@ export default defineComponent({
 .startHand {
     display: grid;
     grid-template-columns: repeat(5, 1fr);
+    grid-auto-rows: minmax(50px, auto);
 }
 .field {
     display: grid;
     grid-template-columns: repeat(7, 1fr);
-    grid-auto-rows: minmax(100px, auto);
+    grid-auto-rows: minmax(50px, auto);
     grid-template-areas:
         '. . slot1 . slot2 . slot3'
         'slot4 slot5 slot6 slot7 slot8 slot9 slot10'
@@ -223,6 +224,7 @@ export default defineComponent({
 }
 .deck {
     display: grid;
+    grid-auto-rows: minmax(50px, auto);
     grid-template-columns: repeat(5, 1fr);
 }
 </style>
