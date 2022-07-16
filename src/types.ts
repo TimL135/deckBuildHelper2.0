@@ -1,3 +1,4 @@
+export const debug = 'debug TypeScript'
 export interface Card {
     type: CardType
     name: string
@@ -22,6 +23,10 @@ export interface Deck {
     extraCards: ExtraCard[]
     sideCards: Card[]
     alternativeCards: Card[]
+}
+export interface Slot {
+    name: string
+    value: string
 }
 export interface Combo {
     cards: [string | Cardgroup]
