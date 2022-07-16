@@ -7,7 +7,9 @@
     />
 
     <div class="container" style="margin-top: 1vh">
-        <div class="sticky">{{ selectedCard ? `selected card: ${findCard(selectedCard)?.name}(${selectedFrom})` : 'no card selected' }}</div>
+        <div class="sticky" @click="resetSelect()">
+            {{ selectedCard ? `selected card: ${findCard(selectedCard)?.name}(${selectedFrom})` : 'no card selected' }}
+        </div>
         <div class="mb-3">
             <button @click="reset()" type="button" class="btn orange w-100 mt-1">Reset</button>
         </div>
@@ -237,6 +239,7 @@ export default defineComponent({
                 this.selectedFrom = slot.name
                 return
             }
+            if (this.field[slotIndex].value != this.field[slotIndex].name) return
             this.field[slotIndex].value = findCard(this.selectedCard)!.name
             this.removeCard(this.selectedCard)
         },
@@ -267,6 +270,10 @@ export default defineComponent({
                     this.field.find(e => e.name == this.selectedFrom)!.value = this.field.find(e => e.name == this.selectedFrom)!.name
             }
             this.selectedCard = ''
+        },
+        resetSelect() {
+            this.selectedCard = ''
+            this.selectedFrom = ''
         },
         draw() {
             let index = this.getRandomInt(this.allCards.length)
