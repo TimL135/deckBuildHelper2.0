@@ -312,14 +312,14 @@ export default defineComponent({
     },
     mounted() {
         this.updateDeck()
-        window.addEventListener('click', event => {
+        window.onclick = event => {
             if (event.target == document.getElementById('cardAddEditModal')) {
                 this.closeCardAddEditModal()
             }
             if (event.target == document.getElementById('cardDeleteModal')) {
                 this.closeCardDeleteModal()
             }
-        })
+        }
     },
     data() {
         return {
@@ -364,17 +364,17 @@ export default defineComponent({
         openCardDeleteModal(name: string) {
             this.deleteCardId = this.deck.cards.findIndex(c => c.name == name)
             this.nameInput = this.deck.cards[this.deleteCardId].name
-            var modal = document.getElementById('cardDeleteModal')
+            let modal = document.getElementById('cardDeleteModal')
             if (modal) modal.style.display = 'block'
         },
         closeCardDeleteModal() {
             this.inputReset()
-            var modal = document.getElementById('cardDeleteModal')
+            let modal = document.getElementById('cardDeleteModal')
             if (modal) modal.style.display = 'none'
         },
         openCardAddModal() {
             this.editAdd = 'add'
-            var modal = document.getElementById('cardAddEditModal')
+            let modal = document.getElementById('cardAddEditModal')
             if (modal) modal.style.display = 'block'
         },
         openCardEditModal(id: string) {
@@ -385,7 +385,7 @@ export default defineComponent({
             this.properties = this.deck.cards[this.editCardIndex].properties
             this.value = this.deck.cards[this.editCardIndex].value
             this.type = this.deck.cards[this.editCardIndex].type
-            var modal = document.getElementById('cardAddEditModal')
+            let modal = document.getElementById('cardAddEditModal')
             if (modal) modal.style.display = 'block'
         },
         closeCardAddEditModal() {

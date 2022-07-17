@@ -168,14 +168,14 @@ export default defineComponent({
         return { selectedDeckGlobal, decks, deck, uniqueAllCards, findCard }
     },
     mounted() {
-        window.addEventListener('click', event => {
+        window.onclick = event => {
             if (event.target == document.getElementById('cardGroupAddEditModal')) {
                 this.closeCardGroupAddEditModal()
             }
             if (event.target == document.getElementById('cardGroupDeleteModal')) {
                 this.closeCardGroupDeleteModal()
             }
-        })
+        }
     },
     data() {
         return {

@@ -167,14 +167,14 @@ export default defineComponent({
         return { selectedDeckGlobal, decks, deck, uniqueAllCards, findCard }
     },
     mounted() {
-        window.addEventListener('click', event => {
+        window.onclick = event => {
             if (event.target == document.getElementById('comboAddEditModal')) {
                 this.closeComboAddEditModal()
             }
             if (event.target == document.getElementById('comboDeleteModal')) {
                 this.closeComboDeleteModal()
             }
-        })
+        }
     },
     data() {
         return {

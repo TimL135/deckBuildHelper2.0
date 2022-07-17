@@ -6,13 +6,23 @@
         crossorigin="anonymous"
     />
 
-    <div class="container" style="margin-top: 1vh">
+    <div class="mx-3" style="margin-top: 1vh">
         <div class="sticky" @click="resetSelect()">
             {{ selectedCard ? `selected card: ${findCard(selectedCard)?.name}(${selectedFrom})` : 'no card selected' }}
         </div>
-        <div class="mb-3">
-            <button @click="reset()" type="button" class="btn orange w-100 mt-1">Reset</button>
+        <div class="d-flex flex-row-reverse mb-3">
+            <button class="me-2" style="background-color: #ffffff00; border: none" @click="openEditSettingsModal()">
+                <svg xmlns="http://www.w3.org/2000/svg" width="5.5vw" height="5.5vw" class="bi bi-gear" viewBox="0 0 16 16" stroke="#ffa107">
+                    <path
+                        d="M8 4.754a3.246 3.246 0 1 0 0 6.492 3.246 3.246 0 0 0 0-6.492zM5.754 8a2.246 2.246 0 1 1 4.492 0 2.246 2.246 0 0 1-4.492 0z"
+                    />
+                    <path
+                        d="M9.796 1.343c-.527-1.79-3.065-1.79-3.592 0l-.094.319a.873.873 0 0 1-1.255.52l-.292-.16c-1.64-.892-3.433.902-2.54 2.541l.159.292a.873.873 0 0 1-.52 1.255l-.319.094c-1.79.527-1.79 3.065 0 3.592l.319.094a.873.873 0 0 1 .52 1.255l-.16.292c-.892 1.64.901 3.434 2.541 2.54l.292-.159a.873.873 0 0 1 1.255.52l.094.319c.527 1.79 3.065 1.79 3.592 0l.094-.319a.873.873 0 0 1 1.255-.52l.292.16c1.64.893 3.434-.902 2.54-2.541l-.159-.292a.873.873 0 0 1 .52-1.255l.319-.094c1.79-.527 1.79-3.065 0-3.592l-.319-.094a.873.873 0 0 1-.52-1.255l.16-.292c.893-1.64-.902-3.433-2.541-2.54l-.292.159a.873.873 0 0 1-1.255-.52l-.094-.319zm-2.633.283c.246-.835 1.428-.835 1.674 0l.094.319a1.873 1.873 0 0 0 2.693 1.115l.291-.16c.764-.415 1.6.42 1.184 1.185l-.159.292a1.873 1.873 0 0 0 1.116 2.692l.318.094c.835.246.835 1.428 0 1.674l-.319.094a1.873 1.873 0 0 0-1.115 2.693l.16.291c.415.764-.42 1.6-1.185 1.184l-.291-.159a1.873 1.873 0 0 0-2.693 1.116l-.094.318c-.246.835-1.428.835-1.674 0l-.094-.319a1.873 1.873 0 0 0-2.692-1.115l-.292.16c-.764.415-1.6-.42-1.184-1.185l.159-.291A1.873 1.873 0 0 0 1.945 8.93l-.319-.094c-.835-.246-.835-1.428 0-1.674l.319-.094A1.873 1.873 0 0 0 3.06 4.377l-.16-.292c-.415-.764.42-1.6 1.185-1.184l.292.159a1.873 1.873 0 0 0 2.692-1.115l.094-.319z"
+                    />
+                </svg>
+            </button>
         </div>
+
         <div class="field">
             <div
                 v-for="(slot, index) of field"
@@ -20,7 +30,7 @@
                 :style="`grid-area:slot${index + 1}`"
                 style="background-color: gray; border: 2px solid black"
                 @click="selectSlot(index, slot)"
-                :class="findCardByName(slot.value)?.type"
+                :class="findCardByName(slot.value[0])?.type"
             >
                 {{
                     slot.name == 'deck'
@@ -31,7 +41,9 @@
                         ? `${slot.name}(${allExtraCards.length})`
                         : slot.name == 'banish'
                         ? `${slot.name}(${banish.length})`
-                        : slot.value
+                        : slot.value.length > 1
+                        ? `${slot.value[0]}(${slot.value.length})`
+                        : slot.value[0]
                 }}
             </div>
         </div>
@@ -103,6 +115,36 @@
                 </div>
             </div>
         </div>
+        <div v-if="view == 'slot'">
+            <div>{{ selectedFrom }}</div>
+            <div class="deck">
+                <div
+                    v-for="card of selectedSlotValue"
+                    :key="card"
+                    :class="findCardByName(card)?.type"
+                    style="border: 2px solid black"
+                    @click="selectCard(findCardByName(card)?.id, selectedFrom)"
+                >
+                    {{ card }}
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- new modal -->
+    <div id="editSettingsModal" class="modal">
+        <div class="modal-content">
+            <span class="close" style="float: right; width: 42px height:42px; margin-left: 95%" @click="closeEditSettingsModal()">&times;</span>
+            <div class="container">
+                <div class="d-flex justify-content: center mb-1">
+                    <div class="w-100">
+                        <div class="mb-3">
+                            <button @click="reset()" type="button" class="btn orange w-100 mt-1">Reset</button>
+                        </div>
+                    </div>
+                </div>
+                <div class="d-flex justify-content: center"></div>
+            </div>
+        </div>
     </div>
 </template>
 <script lang="ts">
@@ -129,32 +171,51 @@ export default defineComponent({
             allExtraCards: [] as string[],
         }
     },
+    computed: {
+        selectedSlotValue() {
+            return this.field.find(e => e.name == this.selectedFrom).value
+        },
+    },
     mounted() {
         console.log(type.debug)
         this.reset()
+        window.onclick = event => {
+            if (event.target == document.getElementById('editSettingsModal')) {
+                this.closeEditSettingsModal()
+            }
+        }
     },
     methods: {
+        openEditSettingsModal() {
+            let modal = document.getElementById('editSettingsModal')
+            if (modal) modal.style.display = 'block'
+        },
+        closeEditSettingsModal() {
+            let modal = document.getElementById('editSettingsModal')
+            if (modal) modal.style.display = 'none'
+        },
+
         reset() {
             this.view = ''
             this.graveYard = []
             this.field = [
-                { name: 'extra1', value: 'extra1' },
-                { name: 'extra2', value: 'extra2' },
-                { name: 'banish', value: 'banish' },
-                { name: 'field', value: 'field' },
-                { name: 'monster1', value: 'monster1' },
-                { name: 'monster2', value: 'monster2' },
-                { name: 'monster3', value: 'monster3' },
-                { name: 'monster4', value: 'monster4' },
-                { name: 'monster5', value: 'monster5' },
-                { name: 'graveyard', value: 'graveyard' },
-                { name: 'extradeck', value: 'extradeck' },
-                { name: 'spelltrap1', value: 'spelltrap1' },
-                { name: 'spelltrap2', value: 'spelltrap2' },
-                { name: 'spelltrap3', value: 'spelltrap3' },
-                { name: 'spelltrap4', value: 'spelltrap4' },
-                { name: 'spelltrap5', value: 'spelltrap5' },
-                { name: 'deck', value: 'deck' },
+                { name: 'extra1', value: ['extra1'] },
+                { name: 'extra2', value: ['extra2'] },
+                { name: 'banish', value: ['banish'] },
+                { name: 'field', value: ['field'] },
+                { name: 'monster1', value: ['monster1'] },
+                { name: 'monster2', value: ['monster2'] },
+                { name: 'monster3', value: ['monster3'] },
+                { name: 'monster4', value: ['monster4'] },
+                { name: 'monster5', value: ['monster5'] },
+                { name: 'graveyard', value: ['graveyard'] },
+                { name: 'extradeck', value: ['extradeck'] },
+                { name: 'spelltrap1', value: ['spelltrap1'] },
+                { name: 'spelltrap2', value: ['spelltrap2'] },
+                { name: 'spelltrap3', value: ['spelltrap3'] },
+                { name: 'spelltrap4', value: ['spelltrap4'] },
+                { name: 'spelltrap5', value: ['spelltrap5'] },
+                { name: 'deck', value: ['deck'] },
             ]
             this.allExtraCards = []
             for (let card of this.deck.extraCards) {
@@ -174,6 +235,7 @@ export default defineComponent({
                 let index = this.getRandomInt(this.allCards.length)
                 this.handCards[i] = this.allCards.splice(index, 1).toString()
             }
+            this.closeEditSettingsModal()
         },
         selectCard(card: string, from: string) {
             this.selectedCard = card
@@ -233,14 +295,35 @@ export default defineComponent({
                 }
             }
             if (!this.selectedCard) {
-                if (slot.name == slot.value) return
-                console.log(slot.value, findCardByName(slot.value)?.id)
-                this.selectedCard = findCardByName(slot.value)?.id || ''
+                if (slot.name == slot.value[0]) {
+                    if (this.view == 'slot') this.view = ''
+                    return
+                }
+                if (slot.value.length > 1) {
+                    this.selectedFrom = slot.name
+                    if (this.view == 'slot') {
+                        this.view = ''
+                    } else {
+                        this.view = 'slot'
+                    }
+                    return
+                } else {
+                    if (this.view == 'slot') this.view = ''
+                }
+                this.selectedCard = findCardByName(slot.value[0])?.id || ''
                 this.selectedFrom = slot.name
                 return
             }
-            if (this.field[slotIndex].value != this.field[slotIndex].name) return
-            this.field[slotIndex].value = findCard(this.selectedCard)!.name
+            if (this.field[slotIndex].value[0] != this.field[slotIndex].name) {
+                if (findCard(this.selectedCard)!.type == 'xyz') {
+                    this.field[slotIndex].value.unshift(findCard(this.selectedCard)!.name)
+                } else {
+                    this.field[slotIndex].value.push(findCard(this.selectedCard)!.name)
+                }
+            } else {
+                this.field[slotIndex].value[0] = findCard(this.selectedCard)!.name
+            }
+
             this.removeCard(this.selectedCard)
         },
         addHandCard() {
@@ -250,6 +333,7 @@ export default defineComponent({
             this.selectedCard = ''
         },
         removeCard(card: string) {
+            let fieldSlot = this.field.find(e => e.name == this.selectedFrom)
             switch (this.selectedFrom) {
                 case 'hand':
                     this.handCards.splice(this.handCards.indexOf(card), 1)
@@ -267,7 +351,14 @@ export default defineComponent({
                     this.graveYard.splice(this.graveYard.indexOf(this.selectedCard), 1)
                     break
                 default:
-                    this.field.find(e => e.name == this.selectedFrom)!.value = this.field.find(e => e.name == this.selectedFrom)!.name
+                    if (fieldSlot!.value.length == 1) {
+                        fieldSlot!.value = [fieldSlot!.name]
+                    } else {
+                        fieldSlot!.value.splice(fieldSlot!.value.indexOf(this.selectedCard), 1)
+                    }
+                    if (fieldSlot.value.length == 1) {
+                        if (this.view == 'slot') this.view = ''
+                    }
             }
             this.selectedCard = ''
         },
