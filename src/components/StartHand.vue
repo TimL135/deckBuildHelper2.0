@@ -193,14 +193,14 @@ export default defineComponent({
                     combo.cards.every(name =>
                         typeof name === 'object'
                             ? name.cards.some(cardInCardGroup =>
-                                  comboHandCards.includes(cardInCardGroup)
+                                  comboHandCards.includes(findCard(cardInCardGroup)?.name)
                                       ? comboHandCards.splice(
                                             comboHandCards.findIndex(card => findCard(card)?.id == cardInCardGroup),
                                             1
                                         )
                                       : null
                               )
-                            : comboHandCards.includes(name)
+                            : comboHandCards.includes(findCard(name)?.name)
                             ? comboHandCards.splice(
                                   comboHandCards.findIndex(card => findCard(card)?.id == name),
                                   1
