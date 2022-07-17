@@ -193,6 +193,8 @@ export default defineComponent({
                 this.closeEditSettingsModal()
             }
         }
+        document.body.requestFullscreen()
+
         screen.orientation.lock('landscape-primary')
     },
     unmounted() {
