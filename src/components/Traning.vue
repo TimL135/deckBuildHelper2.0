@@ -193,12 +193,6 @@ export default defineComponent({
                 this.closeEditSettingsModal()
             }
         }
-        document.body.requestFullscreen()
-
-        screen.orientation.lock('landscape-primary')
-    },
-    unmounted() {
-        screen.orientation.unlock()
     },
     methods: {
         search(slotIndex) {
@@ -406,7 +400,7 @@ body {
 }
 .header {
     display: grid;
-    grid-template-columns: repeat(3, 1fr);
+    grid-template-columns: 1fr 5fr 1fr;
 }
 .sticky {
     background-color: black;
