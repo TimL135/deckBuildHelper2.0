@@ -73,9 +73,6 @@
         <!-- new modal -->
         <div id="extraCardAddEditModal" class="modal">
             <div class="modal-content">
-                <span class="close" style="float: right; width: 42px height:42px; margin-left: 95%" @click="closeExtraCardAddEditModal()">
-                    &times;
-                </span>
                 <div class="container">
                     <form @submit.prevent="editAddExtraCard">
                         <div>
@@ -156,9 +153,6 @@
         <!-- new modal -->
         <div id="extraCardDeleteModal" class="modal">
             <div class="modal-content">
-                <span class="close" style="float: right; width: 42px height:42px; margin-left: 95%" @click="closeExtraCardDeleteModal()">
-                    &times;
-                </span>
                 <div class="container">
                     <div class="d-flex justify-content: center mb-1">
                         <div class="w-100">Are you sure to delete {{ nameInput }}</div>

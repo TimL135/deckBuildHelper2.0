@@ -34,7 +34,7 @@
                 :style="[
                     btnText || sideInputType ? `border-radius: 0.5rem 0 0 0.5rem; width:${inputWidth}` : '',
                     isListVisible
-                        ? btnText || sideInputType
+                        ? sideInputType
                             ? 'border-radius: 0.5rem 0 0 0;border: 2px solid'
                             : 'border-radius: 0.5rem 0.5rem 0 0;border: 2px solid'
                         : '',
@@ -67,9 +67,12 @@
                 </div>
                 <div
                     class="simple-typeahead-list-item"
-                    :class="{
-                        'simple-typeahead-list-item-active': currentSelectionIndex == index,
-                    }"
+                    :class="[
+                        {
+                            'simple-typeahead-list-item-active': currentSelectionIndex == index,
+                        },
+                        listItemClass(optionProjection(item)),
+                    ]"
                     v-for="(item, index) in filteredItems"
                     :key="index"
                     @mousedown.prevent
@@ -94,7 +97,12 @@
         </div>
         <!-- /options for datalist -->
         <!-- multiSelect list -->
-        <div v-for="(multi, index) of multiSelect" :key="JSON.stringify(multi)" class="mb-1 d-flex justify-content-between px-2">
+        <div
+            v-for="(multi, index) of multiSelect"
+            :key="JSON.stringify(multi)"
+            class="mt-1 d-flex justify-content-between px-2"
+            :class="multiSelectClass(multi)"
+        >
             {{ multi }}
             <span @click="$emit('deleteItem', index)">
                 <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-trash" viewBox="0 0 16 16">
@@ -261,6 +269,9 @@ export default defineComponent({
                 return item
             },
         },
+        optionClass: {
+            type: String,
+        },
         selectedProjection: {
             type: Function,
             default: (item: any) => {
@@ -289,6 +300,12 @@ export default defineComponent({
         listClass: {
             type: String,
         },
+        listItemClass: {
+            type: Function,
+            default: (item: any) => {
+                return ''
+            },
+        },
         error: {
             type: String,
         },
@@ -302,6 +319,12 @@ export default defineComponent({
         },
         multiSelect: {
             type: Array,
+        },
+        multiSelectClass: {
+            type: Function,
+            default: (item: any) => {
+                return ''
+            },
         },
         required: {
             type: Boolean,
@@ -328,7 +351,7 @@ export default defineComponent({
             const regexp = new RegExp(this.escapeRegExp(this.modelValue), 'i')
             let array = [] as any[]
             try {
-                array = this.options?.filter(item => this.optionProjection(item).match(regexp))
+                array = this.options!.filter(item => this.optionProjection(item).match(regexp))
                 if (!array.length) array = array.concat(this.options!.filter((item: any) => item.match(regexp)))
             } catch {
                 array = []
@@ -534,7 +557,7 @@ export default defineComponent({
     padding-right: 0.1rem;
     background-color: transparent;
     color: v-bind(errorColor);
-    z-index: 9999;
+    z-index: 1;
     text-align: start;
     font-size: 0.8rem;
 }
@@ -545,7 +568,7 @@ export default defineComponent({
         content: '';
         background-color: white;
         position: absolute;
-        z-index: 9999;
+        z-index: 1;
         top: 0.5rem;
         left: 0.2rem;
     }
@@ -784,14 +807,16 @@ export default defineComponent({
         border: 2px solid;
         border-color: v-bind(borderColorComputed);
         border-top: none;
-        z-index: 9999;
+        z-index: 1;
         cursor: pointer;
         .simple-typeahead-list-item {
             border-bottom: 1px solid;
             border-color: v-bind(borderColorComputed);
-            border-right: 1px solid;
+            // border-right: 1px solid;
             padding: 0.6rem 1rem;
-
+            &.simple-typeahead-list-item-active {
+                background-color: #e1e1e1;
+            }
             &:last-child {
                 border-bottom: none;
             }

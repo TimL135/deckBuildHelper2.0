@@ -12,12 +12,13 @@
                 :placeholder="`${cardNumber}.Card`"
                 v-model="handCards[cardNumber - 1]"
                 type="select"
-                :class="handCardsType[cardNumber - 1]"
-                :label-class="handCardsType[cardNumber - 1]"
+                :class="handCardsType[cardNumber - 1] || 'orange'"
+                :label-class="handCardsType[cardNumber - 1] || 'orange'"
                 @change="countCard()"
                 :options="deck.cards.map(a => a.name)"
                 @dblclick="searchOnline(handCards[cardNumber - 1])"
                 @selectItem="countCard()"
+                :listItemClass="item => findCardByName(item).type"
             />
         </div>
         <div>
@@ -105,14 +106,14 @@
 </template>
 <script lang="ts">
 import { getDeck } from '@/API'
-import { deck, findCard, searchOnline } from '@/global'
+import { deck, findCard, findCardByName, searchOnline } from '@/global'
 import * as type from '@/types'
 import { defineComponent } from 'vue'
 import SexyInput from '../components/SexyInput.vue'
 export default defineComponent({
     components: { SexyInput },
     setup() {
-        return { deck, findCard, searchOnline }
+        return { deck, findCard, findCardByName, searchOnline }
     },
     data() {
         return {

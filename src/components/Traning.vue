@@ -143,7 +143,6 @@
     <!-- new modal -->
     <div id="editSettingsModal" class="modal">
         <div class="modal-content">
-            <span class="close" style="float: right; width: 42px height:42px; margin-left: 95%" @click="closeEditSettingsModal()">&times;</span>
             <div class="container">
                 <div class="d-flex justify-content: center mb-1">
                     <div class="w-100">
@@ -194,6 +193,10 @@ export default defineComponent({
                 this.closeEditSettingsModal()
             }
         }
+        screen.orientation.lock('landscape')
+    },
+    unmounted() {
+        screen.orientation.unlock()
     },
     methods: {
         search(slotIndex) {

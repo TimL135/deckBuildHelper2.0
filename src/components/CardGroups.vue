@@ -121,8 +121,6 @@
     <!-- new modal -->
     <div id="cardGroupAddEditModal" class="modal">
         <div class="modal-content">
-            <span class="close" style="float: right; width: 42px height:42px; margin-left: 95%" @click="closeCardGroupAddEditModal()">&times;</span>
-
             <form @submit.prevent="editAddCard()">
                 <div class="mb-1">
                     <SexyInput
@@ -135,18 +133,29 @@
                         :required="true"
                     />
                 </div>
-                <div v-for="cardInput in this.cardInputs.length" :key="cardInput">
-                    <select
-                        class="form-select mb-1"
-                        :class="cardInputTypes[cardInput - 1]"
-                        v-model="cardInputs[cardInput - 1]"
-                        @change="checkCardInputs()"
-                    >
-                        <option class="orange" selected>{{ cardInput }}. Card</option>
-                        <option v-for="card in uniqueAllCards" :key="card.name" :class="card.type" :value="card.id">
-                            {{ card.name }}
-                        </option>
-                    </select>
+                <div>
+                    <SexyInput
+                        type="multiSelect"
+                        v-model="cardInput"
+                        placeholder="cards"
+                        :options="deck.cards.map(a => a.name)"
+                        class="orange"
+                        labelClass="orange"
+                        :listItemClass="item => findCardByName(item).type"
+                        :multiSelect="cardInputs"
+                        :multiSelectClass="e => findCardByName(e).type"
+                        @selectItem="
+                            a => {
+                                cardInputs.push(a)
+                                cardInput = ''
+                            }
+                        "
+                        @deleteItem="
+                            index => {
+                                cardInputs = cardInputs.filter((v, i) => i != index)
+                            }
+                        "
+                    />
                 </div>
                 <button type="submit" class="btn orange w-100 mt-1" style="float: right">Confirm</button>
             </form>
@@ -155,7 +164,6 @@
     <!-- new modal -->
     <div id="cardGroupDeleteModal" class="modal">
         <div class="modal-content">
-            <span class="close" style="float: right; width: 42px height:42px; margin-left: 95%" @click="closeCardGroupDeleteModal()">&times;</span>
             <div class="container">
                 <div class="d-flex justify-content: center">
                     <div class="w-100 mb-1">Are you sure to delete Cardgroup {{ deleteCardGroupName }}</div>
@@ -171,13 +179,13 @@
 <script lang="ts">
 import { setDecks, setDeck } from '@/API'
 import * as type from '@/types'
-import { selectedDeckGlobal, decks, deck, uniqueAllCards, findCard, searchOnline } from '@/global'
+import { selectedDeckGlobal, decks, deck, uniqueAllCards, findCard, findCardByName, searchOnline } from '@/global'
 import { defineComponent } from 'vue'
 import SexyInput from '../components/SexyInput.vue'
 export default defineComponent({
     components: { SexyInput },
     setup() {
-        return { selectedDeckGlobal, decks, deck, uniqueAllCards, findCard, searchOnline }
+        return { selectedDeckGlobal, decks, deck, uniqueAllCards, findCard, findCardByName, searchOnline }
     },
     mounted() {
         window.onclick = event => {
@@ -196,7 +204,8 @@ export default defineComponent({
             deleteCardGroupName: '',
             cardGroupNameInput: '',
             editAdd: '',
-            cardInputs: ['1. Card'] as string[],
+            cardInputs: [] as string[],
+            cardInput: '',
             cardInputTypes: [] as string[],
         }
     },
@@ -234,16 +243,14 @@ export default defineComponent({
             this.editAdd = 'edit'
             this.editCardGroupIndex = index
             this.cardGroupNameInput = this.deck.cardGroups[index].name
-            this.cardInputs = this.deck.cardGroups[index].cards
-            this.cardInputs.push(`${this.cardInputs.length + 1}. Card`)
+            this.cardInputs = [...this.deck.cardGroups[index].cards.map(e => findCard(e)?.name)]
             this.changeType()
             var modal = document.getElementById('cardGroupAddEditModal')
             if (modal) modal.style.display = 'block'
         },
         addCardGroup() {
-            let copieCardInputs = [...this.cardInputs]
-            copieCardInputs.pop()
-            while (this.cardGroupNameInput.endsWith(' ')) this.cardGroupNameInput = this.cardGroupNameInput.slice(0, -1)
+            let copieCardInputs = [...this.cardInputs.map(e => findCardByName(e).id)]
+            this.cardGroupNameInput.trim()
             if (copieCardInputs.length) {
                 this.deck.cardGroups.push({
                     name: this.cardGroupNameInput,
@@ -256,9 +263,8 @@ export default defineComponent({
             this.safeDeck()
         },
         editCardGroup() {
-            let tmp = [...this.cardInputs]
-            tmp.pop()
-            while (this.cardGroupNameInput.endsWith(' ')) this.cardGroupNameInput = this.cardGroupNameInput.slice(0, -1)
+            let copieCardInputs = [...this.cardInputs.map(e => findCardByName(e).id)]
+            this.cardGroupNameInput.trim()
             for (let combo of this.deck.combos) {
                 let comboIndex = this.deck.combos.findIndex(c => c == combo)
                 if (combo.cards.findIndex(c => (typeof c === 'object' ? c.name == this.deck.cardGroups[this.editCardGroupIndex].name : null)) != -1) {
@@ -270,10 +276,8 @@ export default defineComponent({
                 }
                 this.deck.combos[comboIndex] = combo
             }
-
-            if (tmp.length) this.deck.cardGroups[this.editCardGroupIndex].cards = tmp
+            if (copieCardInputs.length) this.deck.cardGroups[this.editCardGroupIndex].cards = copieCardInputs
             this.deck.cardGroups[this.editCardGroupIndex].name = this.cardGroupNameInput
-
             this.closeCardGroupAddEditModal()
             this.checkComboCardGroups()
             this.inputReset()
@@ -308,7 +312,7 @@ export default defineComponent({
         },
         inputReset() {
             this.cardGroupNameInput = ''
-            this.cardInputs = ['1. Card']
+            this.cardInputs = []
         },
         changeType() {
             this.cardInputTypes = []

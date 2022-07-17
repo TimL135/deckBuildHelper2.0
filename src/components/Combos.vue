@@ -126,26 +126,22 @@
     <!-- new modal -->
     <div id="comboAddEditModal" class="modal">
         <div class="modal-content">
-            <span class="close" style="float: right; width: 42px height:42px; margin-left: 95%" @click="closeComboAddEditModal()">&times;</span>
             <div class="container">
                 <div class="d-flex justify-content: center">
                     <div class="w-100">
-                        <select
-                            class="form-select mb-1"
-                            v-for="combo of 5"
-                            :key="combo - 1"
-                            v-model="comboCards[combo - 1]"
-                            :class="typeof comboCards[combo - 1] === 'object' ? 'green' : comboCardsType[combo - 1]"
-                            @change="changeType()"
-                        >
-                            <option class="orange" selected>{{ combo }}. Card</option>
-                            <option v-for="card in uniqueAllCards" :key="card.name" :class="card.type" :value="card.id">
-                                {{ card.name }}
-                            </option>
-                            <option class="green" v-for="cardGroup in deck.cardGroups" :key="cardGroup.name" :value="cardGroup">
-                                {{ cardGroup.name }}
-                            </option>
-                        </select>
+                        <div v-for="cardNumber of 5" :key="cardNumber">
+                            <SexyInput
+                                :placeholder="`${cardNumber}.Card`"
+                                v-model="comboCards[cardNumber - 1]"
+                                type="select"
+                                :class="comboCardsType[cardNumber - 1] || 'orange'"
+                                :label-class="comboCardsType[cardNumber - 1] || 'orange'"
+                                @change="changeType()"
+                                :options="deck.cards.map(a => a.name)"
+                                @selectItem="changeType()"
+                                :listItemClass="item => findCardByName(item).type"
+                            />
+                        </div>
                     </div>
                 </div>
 
@@ -156,7 +152,6 @@
     <!-- new modal -->
     <div id="comboDeleteModal" class="modal">
         <div class="modal-content">
-            <span class="close" style="float: right; width: 42px height:42px; margin-left: 95%" @click="closeComboDeleteModal()">&times;</span>
             <div class="container">
                 <div class="d-flex justify-content: center">
                     <div class="w-100 mb-1">Are you sure to delete Combo{{ deleteComboIndex + 1 }}</div>
@@ -171,12 +166,14 @@
 </template>
 <script lang="ts">
 import { defineComponent } from 'vue'
-import { selectedDeckGlobal, decks, deck, uniqueAllCards, findCard, searchOnline } from '@/global'
+import { selectedDeckGlobal, decks, deck, uniqueAllCards, findCard, findCardByName, searchOnline } from '@/global'
 import * as type from '@/types'
 import { getDecks, getDeck, setDecks, setDeck } from '@/API'
+import SexyInput from '../components/SexyInput.vue'
 export default defineComponent({
+    components: { SexyInput },
     setup() {
-        return { selectedDeckGlobal, decks, deck, uniqueAllCards, findCard, searchOnline }
+        return { selectedDeckGlobal, decks, deck, uniqueAllCards, findCard, findCardByName, searchOnline }
     },
     mounted() {
         window.onclick = event => {
@@ -193,7 +190,7 @@ export default defineComponent({
             editAdd: 'add',
             editComboIndex: 0,
             deleteComboIndex: 0,
-            comboCards: ['1. Card', '2. Card', '3. Card', '4. Card', '5. Card'] as any[],
+            comboCards: ['', '', '', '', ''] as any[],
             comboCardsType: [] as string[],
         }
     },
@@ -234,8 +231,8 @@ export default defineComponent({
                 if (typeof this.comboCards[i] === 'object') {
                     cardArray.push(this.comboCards[i])
                 } else {
-                    if (!this.comboCards[i].includes('. Card')) {
-                        let card = this.deck.cards.find(c => c.id == this.comboCards[i])
+                    if (this.comboCards[i]) {
+                        let card = this.deck.cards.find(c => c.name == this.comboCards[i])
                         if (card) {
                             cardArray.push(card.id)
                         }
@@ -265,7 +262,7 @@ export default defineComponent({
             this.closeComboDeleteModal()
         },
         inputReset() {
-            this.comboCards = ['1. Card', '2. Card', '3. Card', '4. Card', '5. Card']
+            this.comboCards = ['', '', '', '', '']
             this.changeType()
         },
         safeDeck() {
@@ -275,7 +272,7 @@ export default defineComponent({
         },
         changeType() {
             for (let i = 0; i < 5; i++) {
-                let card = this.deck.cards.find(c => c.id == this.comboCards[i])
+                let card = this.deck.cards.find(c => c.name == this.comboCards[i])
                 card ? (this.comboCardsType[i] = card.type) : (this.comboCardsType[i] = '')
             }
         },
