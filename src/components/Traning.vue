@@ -197,6 +197,8 @@ export default defineComponent({
 
         reset() {
             this.view = ''
+            this.selectedCard = ''
+            this.selectedFrom = ''
             this.graveYard = []
             this.field = [
                 { name: 'extra1', value: ['extra1'] },

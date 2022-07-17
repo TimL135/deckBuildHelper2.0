@@ -35,3 +35,6 @@ export function findCardByName(name: string) {
         deck.value.extraCards.find(c => c.name == name)
     )
 }
+export function searchOnline(search) {
+    window.open(`http://www.google.com/search?q=cardcluster ${search}`, '_newtab')
+}
