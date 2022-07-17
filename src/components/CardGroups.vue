@@ -48,7 +48,13 @@
                         </button>
                     </td>
                     <td>
-                        <div v-for="card in cardGroup.cards" :key="card" class="mb-1" :class="findCard(card)?.type">
+                        <div
+                            v-for="card in cardGroup.cards"
+                            :key="card"
+                            class="mb-1"
+                            :class="findCard(card)?.type"
+                            @dblclick="searchOnline(findCard(card)?.name)"
+                        >
                             {{ findCard(card)?.name }}
                         </div>
                     </td>
@@ -98,7 +104,13 @@
                         </button>
                     </td>
                     <td>
-                        <div v-for="card in cardGroup.cards" :key="card" class="mb-1" :class="findCard(card)?.type">
+                        <div
+                            v-for="card in cardGroup.cards"
+                            :key="card"
+                            class="mb-1"
+                            :class="findCard(card)?.type"
+                            @dblclick="searchOnline(findCard(card)?.name)"
+                        >
                             {{ findCard(card)?.name }}
                         </div>
                     </td>
@@ -159,13 +171,13 @@
 <script lang="ts">
 import { setDecks, setDeck } from '@/API'
 import * as type from '@/types'
-import { selectedDeckGlobal, decks, deck, uniqueAllCards, findCard } from '@/global'
+import { selectedDeckGlobal, decks, deck, uniqueAllCards, findCard, searchOnline } from '@/global'
 import { defineComponent } from 'vue'
 import SexyInput from '../components/SexyInput.vue'
 export default defineComponent({
     components: { SexyInput },
     setup() {
-        return { selectedDeckGlobal, decks, deck, uniqueAllCards, findCard }
+        return { selectedDeckGlobal, decks, deck, uniqueAllCards, findCard, searchOnline }
     },
     mounted() {
         window.onclick = event => {

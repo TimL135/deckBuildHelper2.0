@@ -43,7 +43,7 @@
             </thead>
             <tbody>
                 <tr v-for="card in deck.extraCards" :key="card.name">
-                    <th style="text-align: left" :class="card.type">{{ card.name }}({{ card.count }})</th>
+                    <th style="text-align: left" :class="card.type" @dblclick="searchOnline(card.name)">{{ card.name }}({{ card.count }})</th>
                     <td :class="card.type">
                         <button class="me-2" style="background-color: #ffffff00; border: none" @click="openExtraCardEditModal(card.name)">
                             <svg xmlns="http://www.w3.org/2000/svg" width="5.5vw" height="5.5vw" class="bi bi-gear" viewBox="0 0 16 16">
@@ -174,14 +174,14 @@
 </template>
 <script lang="ts">
 import { defineComponent } from 'vue'
-import { selectedDeckGlobal, decks, deck } from '@/global'
+import { selectedDeckGlobal, decks, deck, searchOnline } from '@/global'
 import * as type from '@/types'
 import SexyInput from '../SexyInput.vue'
 import { getDecks, getDeck, setDeck, setDecks } from '@/API'
 export default defineComponent({
     components: { SexyInput },
     setup() {
-        return { selectedDeckGlobal, decks, deck }
+        return { selectedDeckGlobal, decks, deck, searchOnline }
     },
     mounted() {
         this.countExtraCards()

@@ -30,6 +30,7 @@
                 :style="`grid-area:slot${index + 1}`"
                 style="background-color: gray; border: 2px solid black"
                 @click="selectSlot(index, slot)"
+                @dblclick="slot.value.length == 1 && slot.value != slot.name ? searchOnline(slot.value[0]) : null"
                 :class="findCardByName(slot.value[0])?.type"
             >
                 {{
@@ -55,6 +56,7 @@
                 style="background-color: red; border: 2px solid black"
                 :class="findCard(card)?.type"
                 @click="selectCard(card, 'hand')"
+                @dblclick="searchOnline(findCard(card)?.name)"
             >
                 {{ findCard(card)?.name }}
             </div>
@@ -68,6 +70,7 @@
                     :class="findCard(card)?.type"
                     style="border: 2px solid black"
                     @click="selectCard(card, 'deck')"
+                    @dblclick="searchOnline(findCard(card)?.name)"
                 >
                     {{ findCard(card)?.name }}
                 </div>
@@ -82,6 +85,7 @@
                     :class="findCard(card)?.type"
                     style="border: 2px solid black"
                     @click="selectCard(card, 'extradeck')"
+                    @dblclick="searchOnline(findCard(card)?.name)"
                 >
                     {{ findCard(card)?.name }}
                 </div>
@@ -96,6 +100,7 @@
                     :class="findCard(card)?.type"
                     style="border: 2px solid black"
                     @click="selectCard(card, 'graveyard')"
+                    @dblclick="searchOnline(findCard(card)?.name)"
                 >
                     {{ findCard(card)?.name }}
                 </div>
@@ -110,6 +115,7 @@
                     :class="findCard(card)?.type"
                     style="border: 2px solid black"
                     @click="selectCard(card, 'banish')"
+                    @dblclick="searchOnline(findCard(card)?.name)"
                 >
                     {{ findCard(card)?.name }}
                 </div>
@@ -124,6 +130,7 @@
                     :class="findCardByName(card)?.type"
                     style="border: 2px solid black"
                     @click="selectCard(findCardByName(card)?.id, selectedFrom)"
+                    @dblclick="searchOnline(card)"
                 >
                     {{ card }}
                 </div>
@@ -149,14 +156,14 @@
 </template>
 <script lang="ts">
 import { getDeck } from '@/API'
-import { deck, findCard, findCardByName } from '@/global'
+import { deck, findCard, findCardByName, searchOnline } from '@/global'
 import * as type from '@/types'
 import { defineComponent } from 'vue'
 // import SexyInput from '../components/SexyInput.vue'
 export default defineComponent({
     // components: { SexyInput },
     setup() {
-        return { deck, findCard, findCardByName }
+        return { deck, findCard, findCardByName, searchOnline }
     },
     data() {
         return {
@@ -186,6 +193,9 @@ export default defineComponent({
         }
     },
     methods: {
+        search(slotIndex) {
+            return slotIndex
+        },
         openEditSettingsModal() {
             let modal = document.getElementById('editSettingsModal')
             if (modal) modal.style.display = 'block'

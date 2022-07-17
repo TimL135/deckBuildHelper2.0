@@ -7,20 +7,19 @@
     />
 
     <div class="container" style="margin-top: 3vh">
-        <select
-            v-for="cardNumber of 5"
-            :key="cardNumber"
-            style="border: 1px solid #ffa107"
-            class="form-select orange mb-1"
-            v-model="handCards[cardNumber - 1]"
-            :class="handCardsType[cardNumber - 1]"
-            @change="countCard()"
-        >
-            <option class="orange" selected>{{ cardNumber }}. Card</option>
-            <option v-for="card in deck.cards" :key="card.name" :value="card.id" :class="card.type">
-                {{ card.name }}
-            </option>
-        </select>
+        <div v-for="cardNumber of 5" :key="cardNumber">
+            <SexyInput
+                :placeholder="`${cardNumber}.Card`"
+                v-model="handCards[cardNumber - 1]"
+                type="select"
+                :class="handCardsType[cardNumber - 1]"
+                :label-class="handCardsType[cardNumber - 1]"
+                @change="countCard()"
+                :options="deck.cards.map(a => a.name)"
+                @dblclick="searchOnline(handCards[cardNumber - 1])"
+                @selectItem="countCard()"
+            />
+        </div>
         <div>
             <button @click="randomStartHand()" type="button" class="btn orange w-100 mt-1">Random</button>
         </div>
@@ -89,7 +88,13 @@
                         {{ possibleCombos.findIndex(name => name == combo) + 1 }}
                     </td>
                     <td>
-                        <div v-for="card in combo.cards" :key="card" class="mb-1 green" :class="findCard(card)?.type">
+                        <div
+                            v-for="card in combo.cards"
+                            :key="card"
+                            class="mb-1 green"
+                            :class="findCard(card)?.type"
+                            @dblclick="typeof card !== 'object' ? searchOnline(findCard(card)?.name) : null"
+                        >
                             {{ typeof card === 'object' ? card.name : findCard(card).name }}
                         </div>
                     </td>
@@ -100,14 +105,14 @@
 </template>
 <script lang="ts">
 import { getDeck } from '@/API'
-import { deck, findCard } from '@/global'
+import { deck, findCard, searchOnline } from '@/global'
 import * as type from '@/types'
 import { defineComponent } from 'vue'
-// import SexyInput from '../components/SexyInput.vue'
+import SexyInput from '../components/SexyInput.vue'
 export default defineComponent({
-    // components: { SexyInput },
+    components: { SexyInput },
     setup() {
-        return { deck, findCard }
+        return { deck, findCard, searchOnline }
     },
     data() {
         return {
@@ -116,7 +121,7 @@ export default defineComponent({
             counts: [0, 0, 0, 0, 0, 0, 0, 0] as number[],
             uniqueCounts: [0, 0, 0, 0, 0, 0, 0, 0] as number[],
             value: 0,
-            handCards: ['1. Card', '2. Card', '3. Card', '4. Card', '5. Card'],
+            handCards: ['', '', '', '', ''],
             handCardsType: [] as string[],
         }
     },
@@ -130,7 +135,7 @@ export default defineComponent({
             }
             for (let i = 0; i < 5; i++) {
                 let index = this.getRandomInt(this.allCards.length)
-                this.handCards[i] = this.allCards.splice(index, 1).toString()
+                this.handCards[i] = findCard(this.allCards.splice(index, 1).toString())?.name
             }
             this.countCard()
         },
@@ -141,7 +146,7 @@ export default defineComponent({
             let handValueCards = [] as type.Card[]
             let uniqueCards = [] as type.Card[]
             for (let i = 0; i < 5; i++) {
-                let tmp = this.deck.cards.find(c => c.id == this.handCards[i])
+                let tmp = this.deck.cards.find(c => c.name == this.handCards[i])
                 if (tmp) {
                     this.handCardsType[i] = tmp.type
                 } else {

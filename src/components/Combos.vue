@@ -51,7 +51,13 @@
                         </button>
                     </td>
                     <td>
-                        <div v-for="card in combo.cards" :key="card" class="mb-1 green" :class="findCard(card)?.type">
+                        <div
+                            v-for="card in combo.cards"
+                            :key="card"
+                            class="mb-1 green"
+                            :class="findCard(card)?.type"
+                            @dblclick="typeof card !== 'object' ? searchOnline(findCard(card)?.name) : null"
+                        >
                             {{ typeof card === 'object' ? card.name : findCard(card).name }}
                         </div>
                     </td>
@@ -103,7 +109,13 @@
                         </button>
                     </td>
                     <td>
-                        <div v-for="card in combo.cards" :key="card" class="mb-1 green" :class="findCard(card)?.type">
+                        <div
+                            v-for="card in combo.cards"
+                            :key="card"
+                            class="mb-1 green"
+                            :class="findCard(card)?.type"
+                            @dblclick="typeof card !== 'object' ? searchOnline(findCard(card)?.name) : null"
+                        >
                             {{ typeof card === 'object' ? card.name : findCard(card).name }}
                         </div>
                     </td>
@@ -159,12 +171,12 @@
 </template>
 <script lang="ts">
 import { defineComponent } from 'vue'
-import { selectedDeckGlobal, decks, deck, uniqueAllCards, findCard } from '@/global'
+import { selectedDeckGlobal, decks, deck, uniqueAllCards, findCard, searchOnline } from '@/global'
 import * as type from '@/types'
 import { getDecks, getDeck, setDecks, setDeck } from '@/API'
 export default defineComponent({
     setup() {
-        return { selectedDeckGlobal, decks, deck, uniqueAllCards, findCard }
+        return { selectedDeckGlobal, decks, deck, uniqueAllCards, findCard, searchOnline }
     },
     mounted() {
         window.onclick = event => {

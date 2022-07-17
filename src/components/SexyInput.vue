@@ -328,12 +328,11 @@ export default defineComponent({
             const regexp = new RegExp(this.escapeRegExp(this.modelValue), 'i')
             let array = [] as any[]
             try {
-                array = this.options!.filter(item => this.optionProjection(item).match(regexp))
+                array = this.options?.filter(item => this.optionProjection(item).match(regexp))
                 if (!array.length) array = array.concat(this.options!.filter((item: any) => item.match(regexp)))
             } catch {
                 array = []
             }
-
             return array.filter(e => !this.multiSelect?.includes(e))
         },
         currentSelection() {

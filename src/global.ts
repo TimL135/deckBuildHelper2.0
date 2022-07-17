@@ -36,5 +36,6 @@ export function findCardByName(name: string) {
     )
 }
 export function searchOnline(search) {
+    if (!search) return
     window.open(`http://www.google.com/search?q=cardcluster ${search}`, '_newtab')
 }

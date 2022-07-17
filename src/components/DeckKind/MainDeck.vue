@@ -90,7 +90,7 @@
             </thead>
             <tbody>
                 <tr v-for="card in deck.cards" :key="card.name">
-                    <th style="text-align: left" :class="card.type" @Click="searchOnline(card.name)">{{ card.name }}({{ card.count }})</th>
+                    <th style="text-align: left" :class="card.type" @dblclick="searchOnline(card.name)">{{ card.name }}({{ card.count }})</th>
                     <td :class="card.type">
                         <button @click="openCardEditModal(card.id)" class="me-2" style="background-color: #ffffff00; border: none">
                             <svg xmlns="http://www.w3.org/2000/svg" width="5.5vw" height="5.5vw" class="bi bi-gear" viewBox="0 0 16 16">

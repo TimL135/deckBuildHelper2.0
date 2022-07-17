@@ -69,7 +69,7 @@
             </thead>
             <tbody>
                 <tr v-for="card in deck.alternativeCards" :key="card.name">
-                    <th style="text-align: left" :class="card.type">{{ card.name }}({{ card.count }})</th>
+                    <th style="text-align: left" :class="card.type" @dblclick="searchOnline(card.name)">{{ card.name }}({{ card.count }})</th>
                     <td :class="card.type">
                         <button @click="openCardEditModal(card.name)" class="me-2" style="background-color: #ffffff00; border: none">
                             <svg xmlns="http://www.w3.org/2000/svg" width="5.5vw" height="5.5vw" class="bi bi-gear" viewBox="0 0 16 16">
@@ -250,7 +250,7 @@
 </template>
 <script lang="ts">
 import { defineComponent } from 'vue'
-import { selectedDeckGlobal, decks, deck, uniqueAllCards } from '@/global'
+import { selectedDeckGlobal, decks, deck, uniqueAllCards, searchOnline } from '@/global'
 import * as type from '@/types'
 import SexyInput from '../SexyInput.vue'
 import { getDecks, getDeck, setDecks, setDeck } from '@/API'
@@ -258,7 +258,7 @@ export default defineComponent({
     components: { SexyInput },
     watch: { selectedDeckGlobal: 'updateDeck' },
     setup() {
-        return { selectedDeckGlobal, decks, deck, uniqueAllCards }
+        return { selectedDeckGlobal, decks, deck, uniqueAllCards, searchOnline }
     },
     mounted() {
         this.updateDeck()
