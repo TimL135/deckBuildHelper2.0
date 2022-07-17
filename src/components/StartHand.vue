@@ -152,7 +152,7 @@ export default defineComponent({
                 } else {
                     this.handCardsType[i] = ''
                 }
-                let card = this.deck.cards.find(x => x.id == this.handCards[i])
+                let card = this.deck.cards.find(x => x.name == this.handCards[i])
                 if (card) {
                     for (let c in this.counts) {
                         if (card.properties[c]) {
