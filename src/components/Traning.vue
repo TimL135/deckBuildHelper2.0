@@ -193,7 +193,7 @@ export default defineComponent({
                 this.closeEditSettingsModal()
             }
         }
-        screen.orientation.lock('landscape')
+        screen.orientation.lock('landscape-primary')
     },
     unmounted() {
         screen.orientation.unlock()
