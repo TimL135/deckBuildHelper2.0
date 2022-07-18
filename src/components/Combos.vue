@@ -58,7 +58,7 @@
                             :class="findCard(card)?.type"
                             @dblclick="typeof card !== 'object' ? searchOnline(findCard(card)?.name) : null"
                         >
-                            {{ typeof card === 'object' ? card.name : findCard(card).name }}
+                            {{ findCard(card)?.name || findCardGroup(card)?.name }}
                         </div>
                     </td>
                 </tr>
@@ -116,7 +116,7 @@
                             :class="findCard(card)?.type"
                             @dblclick="typeof card !== 'object' ? searchOnline(findCard(card)?.name) : null"
                         >
-                            {{ typeof card === 'object' ? card.name : findCard(card).name }}
+                            {{ findCard(card)?.name || findCardGroup(card)?.name }}
                         </div>
                     </td>
                 </tr>
@@ -136,10 +136,12 @@
                                 type="select"
                                 :class="comboCardsType[cardNumber - 1] || 'orange'"
                                 :label-class="comboCardsType[cardNumber - 1] || 'orange'"
+                                :label-border="true"
                                 @change="changeType()"
-                                :options="deck.cards.map(a => a.name)"
+                                :options="deck.cards.concat(deck.cardGroups)"
+                                :option-projection="a => a.name"
                                 @selectItem="changeType()"
-                                :listItemClass="item => findCardByName(item).type"
+                                :listItemClass="item => (findCardGroupByName(item) ? 'green' : findCardByName(item)?.type || 'orange text-dark')"
                             />
                         </div>
                     </div>
@@ -166,23 +168,19 @@
 </template>
 <script lang="ts">
 import { defineComponent } from 'vue'
-import { selectedDeckGlobal, decks, deck, uniqueAllCards, findCard, findCardByName, searchOnline } from '@/global'
+import { selectedDeckGlobal, decks, deck, uniqueAllCards, findCard, findCardByName, findCardGroup, findCardGroupByName, searchOnline } from '@/global'
 import * as type from '@/types'
 import { getDecks, getDeck, setDecks, setDeck } from '@/API'
 import SexyInput from '../components/SexyInput.vue'
 export default defineComponent({
     components: { SexyInput },
     setup() {
-        return { selectedDeckGlobal, decks, deck, uniqueAllCards, findCard, findCardByName, searchOnline }
+        return { selectedDeckGlobal, decks, deck, uniqueAllCards, findCard, findCardByName, findCardGroup, findCardGroupByName, searchOnline }
     },
     mounted() {
         window.onclick = event => {
-            if (event.target == document.getElementById('comboAddEditModal')) {
-                this.closeComboAddEditModal()
-            }
-            if (event.target == document.getElementById('comboDeleteModal')) {
-                this.closeComboDeleteModal()
-            }
+            if (event.target == document.getElementById('comboAddEditModal')) this.closeComboAddEditModal()
+            if (event.target == document.getElementById('comboDeleteModal')) this.closeComboDeleteModal()
         }
     },
     data() {
@@ -209,7 +207,7 @@ export default defineComponent({
             this.editAdd = 'edit'
             this.editComboIndex = index
             for (let card of this.deck.combos[index].cards) {
-                this.comboCards[this.deck.combos[index].cards.findIndex(c => c == card)] = card
+                this.comboCards[this.deck.combos[index].cards.findIndex(c => c == card)] = this.findCard(card)?.name || this.findCardGroup(card)?.name
             }
             this.changeType()
             var modal = document.getElementById('comboAddEditModal')
@@ -228,8 +226,8 @@ export default defineComponent({
         addCombo() {
             let cardArray = [] as string[]
             for (let i = 0; i < 5; i++) {
-                if (typeof this.comboCards[i] === 'object') {
-                    cardArray.push(this.comboCards[i])
+                if (this.deck.cardGroups.map(e => e.name).includes(this.comboCards[i])) {
+                    cardArray.push(this.findCardGroupByName(this.comboCards[i]).id)
                 } else {
                     if (this.comboCards[i]) {
                         let card = this.deck.cards.find(c => c.name == this.comboCards[i])
@@ -282,7 +280,9 @@ export default defineComponent({
             }
             for (let combo of this.deck.combos) {
                 combo.active = combo.cards.every(card =>
-                    typeof card === 'object' ? this.deck.cardGroups.find(c => c.id == card.id)?.active : this.deck.cards.map(c => c.id).includes(card)
+                    this.deck.cardGroups.map(e => e.id).includes(card)
+                        ? this.deck.cardGroups.find(c => c.id == card)?.active
+                        : this.deck.cards.map(c => c.id).includes(card)
                 )
             }
         },

@@ -151,6 +151,7 @@
                             class="orange"
                             labelClass="orange"
                             listClass="orange text-dark"
+                            :listItemClass="item => findCardByName(item)?.type || 'orange text-dark'"
                             :required="true"
                         />
                     </div>
@@ -298,7 +299,7 @@
 </template>
 <script lang="ts">
 import { defineComponent } from 'vue'
-import { selectedDeckGlobal, decks, deck, uniqueAllCards, searchOnline } from '@/global'
+import { selectedDeckGlobal, decks, deck, uniqueAllCards, searchOnline, findCardByName } from '@/global'
 import * as type from '@/types'
 import SexyInput from '../SexyInput.vue'
 import { getDecks, getDeck, setDecks, setDeck } from '@/API'
@@ -306,17 +307,13 @@ export default defineComponent({
     components: { SexyInput },
     watch: { selectedDeckGlobal: 'updateDeck' },
     setup() {
-        return { selectedDeckGlobal, decks, deck, uniqueAllCards, searchOnline }
+        return { selectedDeckGlobal, decks, deck, uniqueAllCards, searchOnline, findCardByName }
     },
     mounted() {
         this.updateDeck()
         window.onclick = event => {
-            if (event.target == document.getElementById('cardAddEditModal')) {
-                this.closeCardAddEditModal()
-            }
-            if (event.target == document.getElementById('cardDeleteModal')) {
-                this.closeCardDeleteModal()
-            }
+            if (event.target == document.getElementById('cardAddEditModal')) this.closeCardAddEditModal()
+            if (event.target == document.getElementById('cardDeleteModal')) this.closeCardDeleteModal()
         }
     },
     data() {
@@ -534,13 +531,7 @@ export default defineComponent({
         sortDeck() {
             this.deck.cards
                 .sort(function (a, b) {
-                    if (a.name < b.name) {
-                        return -1
-                    }
-                    if (a.name > b.name) {
-                        return 1
-                    }
-                    return 0
+                    a.name.localeCompare(b.name)
                 })
                 .sort(function (a, b) {
                     return b.count - a.count

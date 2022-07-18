@@ -261,12 +261,8 @@ export default defineComponent({
     mounted() {
         this.updateDeck()
         window.onclick = event => {
-            if (event.target == document.getElementById('cardAddEditModal')) {
-                this.closeCardAddEditModal()
-            }
-            if (event.target == document.getElementById('cardDeleteModal')) {
-                this.closeCardDeleteModal()
-            }
+            if (event.target == document.getElementById('cardAddEditModal')) this.closeCardAddEditModal()
+            if (event.target == document.getElementById('cardDeleteModal')) this.closeCardDeleteModal()
         }
         this.sortDeck()
     },

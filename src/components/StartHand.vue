@@ -96,7 +96,7 @@
                             :class="findCard(card)?.type"
                             @dblclick="typeof card !== 'object' ? searchOnline(findCard(card)?.name) : null"
                         >
-                            {{ typeof card === 'object' ? card.name : findCard(card).name }}
+                            {{ findCard(card)?.name || findCardGroup(card)?.name }}
                         </div>
                     </td>
                 </tr>
@@ -106,14 +106,14 @@
 </template>
 <script lang="ts">
 import { getDeck } from '@/API'
-import { deck, findCard, findCardByName, searchOnline } from '@/global'
+import { deck, findCard, findCardByName, findCardGroup, findCardGroupByName, searchOnline } from '@/global'
 import * as type from '@/types'
 import { defineComponent } from 'vue'
 import SexyInput from '../components/SexyInput.vue'
 export default defineComponent({
     components: { SexyInput },
     setup() {
-        return { deck, findCard, findCardByName, searchOnline }
+        return { deck, findCard, findCardByName, findCardGroup, findCardGroupByName, searchOnline }
     },
     data() {
         return {
@@ -192,8 +192,8 @@ export default defineComponent({
                 let comboHandCards = [...this.handCards]
                 if (
                     combo.cards.every(name =>
-                        typeof name === 'object'
-                            ? name.cards.some(cardInCardGroup =>
+                        findCardGroup(name)
+                            ? findCardGroup(name).cards.some(cardInCardGroup =>
                                   comboHandCards.includes(findCard(cardInCardGroup)?.name)
                                       ? comboHandCards.splice(
                                             comboHandCards.findIndex(card => findCard(card)?.id == cardInCardGroup),

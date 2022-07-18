@@ -141,7 +141,8 @@
                         :options="deck.cards.map(a => a.name)"
                         class="orange"
                         labelClass="orange"
-                        :listItemClass="item => findCardByName(item).type"
+                        :label-border="true"
+                        :listItemClass="item => findCardByName(item)?.type || 'orange text-dark'"
                         :multiSelect="cardInputs"
                         :multiSelectClass="e => findCardByName(e).type"
                         @selectItem="
@@ -189,12 +190,8 @@ export default defineComponent({
     },
     mounted() {
         window.onclick = event => {
-            if (event.target == document.getElementById('cardGroupAddEditModal')) {
-                this.closeCardGroupAddEditModal()
-            }
-            if (event.target == document.getElementById('cardGroupDeleteModal')) {
-                this.closeCardGroupDeleteModal()
-            }
+            if (event.target == document.getElementById('cardGroupAddEditModal')) this.closeCardGroupAddEditModal()
+            if (event.target == document.getElementById('cardGroupDeleteModal')) this.closeCardGroupDeleteModal()
         }
     },
     data() {

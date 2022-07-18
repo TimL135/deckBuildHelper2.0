@@ -89,7 +89,7 @@
                         v-else
                     ></span>
                 </div>
-                <div v-if="!filteredItems.length">{{ noElementMessage }}</div>
+                <div v-if="!filteredItems.length" :class="listItemClass(noElementMessage)">{{ noElementMessage }}</div>
                 <div v-if="$slots['list-footer']">
                     <slot name="list-footer"></slot>
                 </div>
@@ -557,7 +557,7 @@ export default defineComponent({
     padding-right: 0.1rem;
     background-color: transparent;
     color: v-bind(errorColor);
-    z-index: 1;
+    z-index: 9999;
     text-align: start;
     font-size: 0.8rem;
 }
@@ -568,7 +568,7 @@ export default defineComponent({
         content: '';
         background-color: white;
         position: absolute;
-        z-index: 1;
+        z-index: 9999;
         top: 0.5rem;
         left: 0.2rem;
     }
@@ -807,7 +807,7 @@ export default defineComponent({
         border: 2px solid;
         border-color: v-bind(borderColorComputed);
         border-top: none;
-        z-index: 1;
+        z-index: 9999;
         cursor: pointer;
         .simple-typeahead-list-item {
             border-bottom: 1px solid;

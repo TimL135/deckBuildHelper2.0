@@ -189,9 +189,7 @@ export default defineComponent({
         console.log(type.debug)
         this.reset()
         window.onclick = event => {
-            if (event.target == document.getElementById('editSettingsModal')) {
-                this.closeEditSettingsModal()
-            }
+            if (event.target == document.getElementById('editSettingsModal')) this.closeEditSettingsModal()
         }
     },
     methods: {
@@ -244,6 +242,16 @@ export default defineComponent({
                     this.allCards.push(card.id)
                 }
             }
+            this.allCards
+                .sort((a, b) => findCard(a)?.name.localeCompare(findCard(b)?.name))
+                .sort(function (a, b) {
+                    let map = {
+                        monster: 1,
+                        spell: 2,
+                        trap: 3,
+                    }
+                    return map[findCard(a)?.type] - map[findCard(b)?.type]
+                })
             this.handCards = []
             for (let i = 0; i < 5; i++) {
                 let index = this.getRandomInt(this.allCards.length)
