@@ -6,11 +6,12 @@
     crossorigin="anonymous"
   />
  <div id="nav">
-    <router-link to=/>Main</router-link> <template v-if="deck">|</template>
+    <router-link to=/>Main</router-link><template v-if="deck">|</template>
     <template v-if="deck"><router-link to=/StartHand>Starthand</router-link> |</template>
     <template v-if="deck"><router-link to=/Combos>Combos</router-link> |</template>
     <template v-if="deck"><router-link to=/CardGroups>Cardgroups</router-link>|</template>
-    <template v-if="deck"><router-link to=/Traning>Traning</router-link></template>
+    <template v-if="deck"><router-link to=/Traning>Traning</router-link>|</template>
+    <template v-if="deck"><router-link to=/Logs>Logs</router-link></template>
   </div>
   
   <router-view />

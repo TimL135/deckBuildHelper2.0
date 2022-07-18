@@ -239,6 +239,7 @@ export default defineComponent({
                         cardGroups: [],
                         sideCards: [],
                         alternativeCards: [],
+                        logs: [],
                     }
                     this.decks.push(this.deck)
                 } else {
@@ -253,6 +254,7 @@ export default defineComponent({
                             cardGroups: [],
                             sideCards: [],
                             alternativeCards: [],
+                            logs: [],
                         })
                         this.deck = this.decks[this.decks.findIndex(d => d.name == this.selectedDeck)]
                     }

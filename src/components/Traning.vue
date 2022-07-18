@@ -8,12 +8,14 @@
 
     <div class="mx-3">
         <div class="header sticky">
-            <div></div>
-            <div @click="resetSelect()">
+            <div @click="resetSelect()" style="grid-area: text1">
                 {{ selectedCard ? `selected card: ${findCard(selectedCard)?.name}(${selectedFrom})` : 'no card selected' }}
-                <p>{{ view ? `view: ${view == 'slot' ? selectedFrom : view}` : 'no view' }}</p>
             </div>
-            <div class="d-flex flex-row-reverse mb-3">
+            <div style="grid-area: text2">
+                {{ view ? `view: ${view == 'slot' ? selectedFrom : view}` : 'no view' }}
+            </div>
+            <div style="grid-area: effect" v-if="selectedCard" class="orange text-dark text-center" @click="activeEffect()">effect</div>
+            <div class="d-flex flex-row-reverse mb-3" style="grid-area: settings">
                 <button class="me-2" style="background-color: #ffffff00; border: none" @click="openEditSettingsModal()">
                     <svg xmlns="http://www.w3.org/2000/svg" width="5.5vw" height="5.5vw" class="bi bi-gear" viewBox="0 0 16 16" stroke="#ffa107">
                         <path
@@ -177,6 +179,28 @@
                                 "
                             />
                         </div>
+                        <div v-if="log.length">
+                            <div>log</div>
+                            <form @submit.prevent="saveLog()">
+                                <div>
+                                    <SexyInput
+                                        type="text"
+                                        placeholder="name"
+                                        v-model="logName"
+                                        class="orange"
+                                        label-class="orange"
+                                        :label-border="true"
+                                        btn-text="save"
+                                        btn-class="orange"
+                                        btn-type="submit"
+                                        :required="true"
+                                    />
+                                </div>
+                            </form>
+                            <div v-for="(action, index) of log" :key="action + index">
+                                {{ actionToText(action) }}
+                            </div>
+                        </div>
                     </div>
                 </div>
                 <div class="d-flex justify-content: center"></div>
@@ -185,15 +209,15 @@
     </div>
 </template>
 <script lang="ts">
-import { getDeck } from '@/API'
-import { deck, findCard, findCardByName, searchOnline } from '@/global'
+import { setDecks, setDeck, getDeck } from '@/API'
+import { deck, decks, findCard, findCardByName, searchOnline, actionToText } from '@/global'
 import * as type from '@/types'
 import { defineComponent } from 'vue'
 import SexyInput from './SexyInput.vue'
 export default defineComponent({
     components: { SexyInput },
     setup() {
-        return { deck, findCard, findCardByName, searchOnline }
+        return { deck, decks, findCard, findCardByName, searchOnline, actionToText }
     },
     data() {
         return {
@@ -209,6 +233,9 @@ export default defineComponent({
             startHand: 'random',
             cardInput: '',
             cardInputs: [],
+            log: [] as string[],
+            logName: '',
+            logStartHand: [] as string[],
         }
     },
     computed: {
@@ -241,6 +268,8 @@ export default defineComponent({
             this.selectedCard = ''
             this.selectedFrom = ''
             this.graveYard = []
+            this.log = []
+            this.logName = ''
             this.field = [
                 { name: 'extra1', value: ['extra1'] },
                 { name: 'extra2', value: ['extra2'] },
@@ -276,7 +305,7 @@ export default defineComponent({
                     )
                 }
             }
-
+            this.logStartHand = [...this.handCards]
             this.closeEditSettingsModal()
         },
         generateAllCards() {
@@ -308,6 +337,7 @@ export default defineComponent({
             this.selectedFrom = from
         },
         selectSlot(slotIndex: number, slot: type.Slot) {
+            if (this.selectedCard) this.log.push(`${this.selectedCard} from ${this.selectedFrom} to ${slot.name}`)
             if (slot.name == 'deck') {
                 if (this.selectedCard) {
                     this.allCards.push(this.selectedCard)
@@ -435,6 +465,21 @@ export default defineComponent({
             let index = this.getRandomInt(this.allCards.length)
             this.handCards.push(this.allCards.splice(index, 1).toString())
         },
+        activeEffect() {
+            this.log.push(`${this.selectedCard} effect`)
+            this.selectedCard = ''
+            this.selectedFrom = ''
+        },
+        saveLog() {
+            if (this.deck.logs) {
+                this.deck.logs.push({ name: this.logName, log: this.log, startHand: this.logStartHand })
+            } else {
+                this.deck.logs = [{ name: this.logName, log: this.log, startHand: this.logStartHand }]
+            }
+            this.safeDeck()
+            this.reset()
+        },
+
         changeStartHand() {
             if (this.startHand == 'random') {
                 this.startHand = 'custom'
@@ -442,6 +487,11 @@ export default defineComponent({
                 this.startHand = 'random'
                 this.cardInputs = []
             }
+        },
+        safeDeck() {
+            this.decks[this.decks.findIndex(d => d.name == this.deck.name)] = this.deck
+            setDeck(this.deck)
+            setDecks(this.decks)
         },
         getRandomInt(max: number) {
             return Math.floor(Math.random() * max)
@@ -459,7 +509,10 @@ body {
 }
 .header {
     display: grid;
-    grid-template-columns: 1fr 5fr 1fr;
+    grid-template-columns: 2fr 10fr 1fr 1fr;
+    grid-template-areas:
+        '. text1 effect settings'
+        '. text2 . .';
 }
 .sticky {
     background-color: black;

@@ -4,6 +4,7 @@ import StartHand from '@/components/StartHand.vue'
 import Combos from '@/components/Combos.vue'
 import CardGroups from '@/components/CardGroups.vue'
 import Traning from '@/components/Traning.vue'
+import Logs from '@/components/Logs.vue'
 const routes: Array<RouteRecordRaw> = [
     {
         path: '/',
@@ -29,6 +30,11 @@ const routes: Array<RouteRecordRaw> = [
         path: '/Traning',
         name: 'Traning',
         component: Traning,
+    },
+    {
+        path: '/Logs',
+        name: 'Logs',
+        component: Logs,
     },
 ]
 

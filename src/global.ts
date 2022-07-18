@@ -25,3 +25,12 @@ export function searchOnline(search) {
     if (!search) return
     window.open(`http://www.google.com/search?q=cardcluster ${search}`, '_newtab')
 }
+export function actionToText(action: string) {
+    while (action.match('0')) {
+        let id = action.slice(action.indexOf('0'), 13)
+        if (id != id.trim()) id = action.slice(action.indexOf('0'), 12)
+        action = action.replace(id, findCard(id)?.name)
+    }
+
+    return action
+}

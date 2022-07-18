@@ -24,6 +24,12 @@ export interface Deck {
     extraCards: ExtraCard[]
     sideCards: Card[]
     alternativeCards: Card[]
+    logs: Log[]
+}
+export interface Log {
+    name: string
+    startHand: string[]
+    log: string[]
 }
 export interface Slot {
     name: string
