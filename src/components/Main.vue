@@ -7,25 +7,36 @@
     />
 
     <div class="container" style="margin-top: 3vh">
-        <div>
-            <SexyInput
-                placeholder="deck"
-                v-model="selectedDeck"
-                type="select"
-                :options="decks"
-                :selectOnBlur="true"
-                :controlInput="false"
-                :optionProjection="a => a.name"
-                btnText="Confirm"
-                :btnAction="loadDeck"
-                class="orange"
-                btnClass="orange"
-                labelClass="orange text-dark"
-                listClass="orange text-dark"
-                :list-item-class="item => 'orange text-dark'"
-            />
+        <div class="header">
+            <div>
+                <SexyInput
+                    placeholder="deck"
+                    v-model="selectedDeck"
+                    type="select"
+                    :options="decks"
+                    :selectOnBlur="true"
+                    :controlInput="false"
+                    :optionProjection="a => a.name"
+                    btnText="Confirm"
+                    :btnAction="loadDeck"
+                    class="orange"
+                    btnClass="orange"
+                    labelClass="orange text-dark"
+                    listClass="orange text-dark"
+                    :list-item-class="item => 'orange text-dark'"
+                />
+            </div>
+            <button style="background-color: black" @click="openDeckSettingsModal()">
+                <svg xmlns="http://www.w3.org/2000/svg" width="5.5vw" height="5.5vw" class="bi bi-gear" viewBox="0 0 16 16" stroke="#ffa107">
+                    <path
+                        d="M8 4.754a3.246 3.246 0 1 0 0 6.492 3.246 3.246 0 0 0 0-6.492zM5.754 8a2.246 2.246 0 1 1 4.492 0 2.246 2.246 0 0 1-4.492 0z"
+                    />
+                    <path
+                        d="M9.796 1.343c-.527-1.79-3.065-1.79-3.592 0l-.094.319a.873.873 0 0 1-1.255.52l-.292-.16c-1.64-.892-3.433.902-2.54 2.541l.159.292a.873.873 0 0 1-.52 1.255l-.319.094c-1.79.527-1.79 3.065 0 3.592l.319.094a.873.873 0 0 1 .52 1.255l-.16.292c-.892 1.64.901 3.434 2.541 2.54l.292-.159a.873.873 0 0 1 1.255.52l.094.319c.527 1.79 3.065 1.79 3.592 0l.094-.319a.873.873 0 0 1 1.255-.52l.292.16c1.64.893 3.434-.902 2.54-2.541l-.159-.292a.873.873 0 0 1 .52-1.255l.319-.094c1.79-.527 1.79-3.065 0-3.592l-.319-.094a.873.873 0 0 1-.52-1.255l.16-.292c.893-1.64-.902-3.433-2.541-2.54l-.292.159a.873.873 0 0 1-1.255-.52l-.094-.319zm-2.633.283c.246-.835 1.428-.835 1.674 0l.094.319a1.873 1.873 0 0 0 2.693 1.115l.291-.16c.764-.415 1.6.42 1.184 1.185l-.159.292a1.873 1.873 0 0 0 1.116 2.692l.318.094c.835.246.835 1.428 0 1.674l-.319.094a1.873 1.873 0 0 0-1.115 2.693l.16.291c.415.764-.42 1.6-1.185 1.184l-.291-.159a1.873 1.873 0 0 0-2.693 1.116l-.094.318c-.246.835-1.428.835-1.674 0l-.094-.319a1.873 1.873 0 0 0-2.692-1.115l-.292.16c-.764.415-1.6-.42-1.184-1.185l.159-.291A1.873 1.873 0 0 0 1.945 8.93l-.319-.094c-.835-.246-.835-1.428 0-1.674l.319-.094A1.873 1.873 0 0 0 3.06 4.377l-.16-.292c-.415-.764.42-1.6 1.185-1.184l.292.159a1.873 1.873 0 0 0 2.692-1.115l.094-.319z"
+                    />
+                </svg>
+            </button>
         </div>
-
         <div class="btn-group rounded w-100 orange mt-2" role="group" aria-label="Basic radio toggle button group">
             <input
                 type="radio"
@@ -81,6 +92,61 @@
     <div v-if="selectedDeckKind == 'alternativeDeck'">
         <AlternativeDeck />
     </div>
+    <!-- new modal -->
+    <div id="deckSettingsModal" class="modal">
+        <div class="modal-content">
+            <div class="container">
+                <div class="d-flex justify-content: center mb-1">
+                    <div class="w-100">
+                        <div v-for="deck of decks" :key="JSON.stringify(deck)" class="decklist mb-2 orange">
+                            <div></div>
+                            <div class="text-dark">
+                                {{ deck.name }}
+                            </div>
+                            <div class="orange" @click="shareDeck(deck)">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" class="bi bi-share-fill" viewBox="0 0 16 16">
+                                    <path
+                                        d="M11 2.5a2.5 2.5 0 1 1 .603 1.628l-6.718 3.12a2.499 2.499 0 0 1 0 1.504l6.718 3.12a2.5 2.5 0 1 1-.488.876l-6.718-3.12a2.5 2.5 0 1 1 0-3.256l6.718-3.12A2.5 2.5 0 0 1 11 2.5z"
+                                    />
+                                </svg>
+                            </div>
+                            <div class="orange" @click="deleteDeckCheck(deck.name)">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="30" height="30" class="bi bi-trash" viewBox="0 0 16 16">
+                                    <path
+                                        d="M5.5 5.5A.5.5 0 0 1 6 6v6a.5.5 0 0 1-1 0V6a.5.5 0 0 1 .5-.5zm2.5 0a.5.5 0 0 1 .5.5v6a.5.5 0 0 1-1 0V6a.5.5 0 0 1 .5-.5zm3 .5a.5.5 0 0 0-1 0v6a.5.5 0 0 0 1 0V6z"
+                                    />
+                                    <path
+                                        fill-rule="evenodd"
+                                        d="M14.5 3a1 1 0 0 1-1 1H13v9a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V4h-.5a1 1 0 0 1-1-1V2a1 1 0 0 1 1-1H6a1 1 0 0 1 1-1h2a1 1 0 0 1 1 1h3.5a1 1 0 0 1 1 1v1zM4.118 4 4 4.059V13a1 1 0 0 0 1 1h6a1 1 0 0 0 1-1V4.059L11.882 4H4.118zM2.5 3V2h11v1h-11z"
+                                    />
+                                </svg>
+                            </div>
+                        </div>
+                        <SexyInput
+                            type="text"
+                            placeholder="new deck"
+                            v-model="newDeck"
+                            class="orange"
+                            label-class="orange"
+                            btn-class="orange"
+                            btn-text="&#10004;"
+                            :btn-action="addNewDeck"
+                        />
+                    </div>
+                </div>
+                <div v-if="deckInfo" class="text-dark">
+                    {{ deckInfo }}
+                </div>
+                <div v-if="deckInput">
+                    <div class="w-100">Are you sure to delete {{ deckInput }}</div>
+                    <div class="d-flex justify-content: center">
+                        <button type="button" class="btn btn-success w-50" @click="deleteDeck()">Yes</button>
+                        <button type="button" class="btn btn-danger w-50" @click="deleteDeckCancel()">No</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
 </template>
 <script lang="ts">
 import { defineComponent } from 'vue'
@@ -91,6 +157,7 @@ import AlternativeDeck from '@/components/DeckKind/AlternativeDeck.vue'
 import SexyInput from '../components/SexyInput.vue'
 import { selectedDeckGlobal, decks, deck } from '@/global'
 import { getDecks, getDeck, setDeck, setDecks } from '@/API'
+import * as type from '@/types'
 export default defineComponent({
     components: { MainDeck, ExtraDeck, SideDeck, AlternativeDeck, SexyInput },
     mounted() {
@@ -105,10 +172,61 @@ export default defineComponent({
         return {
             selectedDeckKind: 'mainDeck',
             selectedDeck: '',
+            deckInput: '',
+            deckInfo: '',
+            newDeck: '',
         }
     },
     methods: {
+        closeDeckSettingsModal() {
+            this.deckInput = ''
+            let modal = document.getElementById('deckSettingsModal')
+            if (modal) modal.style.display = 'none'
+        },
+        openDeckSettingsModal() {
+            window.onclick = event => {
+                if (event.target == document.getElementById('deckSettingsModal')) this.closeDeckSettingsModal()
+            }
+            let modal = document.getElementById('deckSettingsModal')
+            if (modal) modal.style.display = 'block'
+        },
+        deleteDeckCheck(deck: string) {
+            this.deckInput = deck
+        },
+        deleteDeck() {
+            this.decks = this.decks.filter(deck => deck.name != this.deckInput)
+            this.safeDeck()
+        },
+        deleteDeckCancel() {
+            this.deckInput = ''
+        },
+        shareDeck(deck: type.Deck) {
+            navigator.clipboard.writeText(JSON.stringify(deck))
+            this.deckInfo = `deck ${deck.name} was copied`
+            setTimeout(() => {
+                this.deckInfo = ''
+            }, 3000)
+        },
+        addNewDeck() {
+            let deck = JSON.parse(this.newDeck.trim()) as type.Deck
+            if (!deck.alternativeCards) return
+            if (!deck.cardGroups) return
+            if (!deck.cards) return
+            if (!deck.combos) return
+            if (!deck.extraCards) return
+            if (!deck.name) return
+            if (!deck.sideCards) return
+            let counter = NaN
+            while (this.decks.some(e => e.name == deck.name + (counter ? counter : ''))) {
+                if (!counter) counter = 1
+                else counter++
+            }
+            deck.name = deck.name + (counter ? counter : '')
+            this.decks.push(deck)
+            this.newDeck = ''
+        },
         loadDeck() {
+            this.selectedDeck.trim()
             if (this.selectedDeck) {
                 if (!this.decks) {
                     this.decks = []
@@ -150,3 +268,13 @@ export default defineComponent({
     },
 })
 </script>
+<style scoped>
+.header {
+    display: grid;
+    grid-template-columns: 15fr 1fr;
+}
+.decklist {
+    display: grid;
+    grid-template-columns: 2fr 15fr 1fr 1fr;
+}
+</style>

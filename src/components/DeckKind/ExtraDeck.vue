@@ -179,10 +179,6 @@ export default defineComponent({
     },
     mounted() {
         this.countExtraCards()
-        window.onclick = event => {
-            if (event.target == document.getElementById('extraCardAddEditModal')) this.closeExtraCardAddEditModal()
-            if (event.target == document.getElementById('extraCardDeleteModal')) this.closeExtraCardDeleteModal()
-        }
     },
     data() {
         return {
@@ -197,6 +193,9 @@ export default defineComponent({
     },
     methods: {
         editAddExtraCard() {
+            window.onclick = event => {
+                if (event.target == document.getElementById('extraCardAddEditModal')) this.closeExtraCardAddEditModal()
+            }
             switch (this.editAdd) {
                 case 'add':
                     this.addExtraCard()
@@ -226,6 +225,9 @@ export default defineComponent({
             if (modal) modal.style.display = 'none'
         },
         openExtraCardDeleteModal(name: string) {
+            window.onclick = event => {
+                if (event.target == document.getElementById('extraCardDeleteModal')) this.closeExtraCardDeleteModal()
+            }
             this.deleteCardId = this.deck.extraCards.findIndex(c => c.name == name)
             this.nameInput = this.deck.extraCards[this.deleteCardId].name
             var modal = document.getElementById('extraCardDeleteModal')

@@ -260,10 +260,6 @@ export default defineComponent({
     },
     mounted() {
         this.updateDeck()
-        window.onclick = event => {
-            if (event.target == document.getElementById('cardAddEditModal')) this.closeCardAddEditModal()
-            if (event.target == document.getElementById('cardDeleteModal')) this.closeCardDeleteModal()
-        }
         this.sortDeck()
     },
     data() {
@@ -296,6 +292,9 @@ export default defineComponent({
             }
         },
         editAddCard() {
+            window.onclick = event => {
+                if (event.target == document.getElementById('cardAddEditModal')) this.closeCardAddEditModal()
+            }
             switch (this.editAdd) {
                 case 'add':
                     this.addCard()
@@ -306,6 +305,9 @@ export default defineComponent({
             }
         },
         openCardDeleteModal(name: string) {
+            window.onclick = event => {
+                if (event.target == document.getElementById('cardDeleteModal')) this.closeCardDeleteModal()
+            }
             this.deleteCardId = this.deck.alternativeCards.findIndex(c => c.name == name)
             this.nameInput = this.deck.alternativeCards[this.deleteCardId].name
             var modal = document.getElementById('cardDeleteModal')

@@ -219,15 +219,15 @@ export default defineComponent({
     mounted() {
         console.log(type.debug)
         this.reset()
-        window.onclick = event => {
-            if (event.target == document.getElementById('editSettingsModal')) this.closeEditSettingsModal()
-        }
     },
     methods: {
         search(slotIndex) {
             return slotIndex
         },
         openEditSettingsModal() {
+            window.onclick = event => {
+                if (event.target == document.getElementById('editSettingsModal')) this.closeEditSettingsModal()
+            }
             let modal = document.getElementById('editSettingsModal')
             if (modal) modal.style.display = 'block'
             this.generateAllCards()
@@ -449,7 +449,7 @@ export default defineComponent({
     },
 })
 </script>
-<style>
+<style scoped>
 body {
     user-select: none;
     -moz-user-select: none;

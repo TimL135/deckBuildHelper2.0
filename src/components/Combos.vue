@@ -177,12 +177,7 @@ export default defineComponent({
     setup() {
         return { selectedDeckGlobal, decks, deck, uniqueAllCards, findCard, findCardByName, findCardGroup, findCardGroupByName, searchOnline }
     },
-    mounted() {
-        window.onclick = event => {
-            if (event.target == document.getElementById('comboAddEditModal')) this.closeComboAddEditModal()
-            if (event.target == document.getElementById('comboDeleteModal')) this.closeComboDeleteModal()
-        }
-    },
+
     data() {
         return {
             editAdd: 'add',
@@ -194,6 +189,9 @@ export default defineComponent({
     },
     methods: {
         openComboAddModal() {
+            window.onclick = event => {
+                if (event.target == document.getElementById('comboAddEditModal')) this.closeComboAddEditModal()
+            }
             this.editAdd = 'add'
             var modal = document.getElementById('comboAddEditModal')
             if (modal) modal.style.display = 'block'
@@ -204,6 +202,9 @@ export default defineComponent({
             if (modal) modal.style.display = 'none'
         },
         openComboEditModal(index: number) {
+            window.onclick = event => {
+                if (event.target == document.getElementById('comboAddEditModal')) this.closeComboAddEditModal()
+            }
             this.editAdd = 'edit'
             this.editComboIndex = index
             for (let card of this.deck.combos[index].cards) {
@@ -214,6 +215,9 @@ export default defineComponent({
             if (modal) modal.style.display = 'block'
         },
         openComboDeleteModal(index: number) {
+            window.onclick = event => {
+                if (event.target == document.getElementById('comboDeleteModal')) this.closeComboDeleteModal()
+            }
             this.deleteComboIndex = index
             var modal = document.getElementById('comboDeleteModal')
             if (modal) modal.style.display = 'block'

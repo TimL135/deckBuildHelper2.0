@@ -188,12 +188,7 @@ export default defineComponent({
     setup() {
         return { selectedDeckGlobal, decks, deck, uniqueAllCards, findCard, findCardByName, searchOnline }
     },
-    mounted() {
-        window.onclick = event => {
-            if (event.target == document.getElementById('cardGroupAddEditModal')) this.closeCardGroupAddEditModal()
-            if (event.target == document.getElementById('cardGroupDeleteModal')) this.closeCardGroupDeleteModal()
-        }
-    },
+
     data() {
         return {
             deleteCardGroupIndex: 0,
@@ -208,6 +203,9 @@ export default defineComponent({
     },
     methods: {
         editAddCard() {
+            window.onclick = event => {
+                if (event.target == document.getElementById('cardGroupAddEditModal')) this.closeCardGroupAddEditModal()
+            }
             switch (this.editAdd) {
                 case 'add':
                     this.addCardGroup()
@@ -282,6 +280,9 @@ export default defineComponent({
             this.safeDeck()
         },
         openCardGroupDeleteModal(index: number) {
+            window.onclick = event => {
+                if (event.target == document.getElementById('cardGroupDeleteModal')) this.closeCardGroupDeleteModal()
+            }
             this.deleteCardGroupName = this.deck.cardGroups[index].name
             this.deleteCardGroupIndex = index
             var modal = document.getElementById('cardGroupDeleteModal')
