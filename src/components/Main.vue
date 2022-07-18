@@ -22,6 +22,7 @@
                 btnClass="orange"
                 labelClass="orange text-dark"
                 listClass="orange text-dark"
+                :list-item-class="item => 'orange text-dark'"
             />
         </div>
 
