@@ -271,7 +271,11 @@ export default defineComponent({
         changeType() {
             for (let i = 0; i < 5; i++) {
                 let card = this.deck.cards.find(c => c.name == this.comboCards[i])
-                card ? (this.comboCardsType[i] = card.type) : (this.comboCardsType[i] = '')
+                card
+                    ? (this.comboCardsType[i] = card.type)
+                    : findCardGroupByName(this.comboCards[i])
+                    ? (this.comboCardsType[i] = 'green')
+                    : (this.comboCardsType[i] = '')
             }
         },
         checkComboCardGroups() {
