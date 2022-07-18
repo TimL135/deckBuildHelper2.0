@@ -149,6 +149,34 @@
                         <div class="mb-3">
                             <button @click="reset()" type="button" class="btn orange w-100 mt-1">Reset</button>
                         </div>
+                        <div class="mb-3">
+                            <button @click="changeStartHand()" type="button" class="btn orange w-100 mt-1">{{ startHand }}</button>
+                        </div>
+                        <div v-if="startHand == 'custom'">
+                            <SexyInput
+                                type="multiSelect"
+                                placeholder="cards"
+                                v-model="cardInput"
+                                :options="allCards.map(e => findCard(e)?.name)"
+                                class="orange"
+                                labelClass="orange"
+                                :label-border="true"
+                                :listItemClass="item => findCardByName(item)?.type || 'orange text-dark'"
+                                :multiSelect="cardInputs"
+                                :multiSelectClass="e => findCardByName(e).type"
+                                @selectItem="
+                                    a => {
+                                        cardInputs.push(a)
+                                        cardInput = ''
+                                    }
+                                "
+                                @deleteItem="
+                                    index => {
+                                        cardInputs = cardInputs.filter((v, i) => i != index)
+                                    }
+                                "
+                            />
+                        </div>
                     </div>
                 </div>
                 <div class="d-flex justify-content: center"></div>
@@ -161,9 +189,9 @@ import { getDeck } from '@/API'
 import { deck, findCard, findCardByName, searchOnline } from '@/global'
 import * as type from '@/types'
 import { defineComponent } from 'vue'
-// import SexyInput from '../components/SexyInput.vue'
+import SexyInput from './SexyInput.vue'
 export default defineComponent({
-    // components: { SexyInput },
+    components: { SexyInput },
     setup() {
         return { deck, findCard, findCardByName, searchOnline }
     },
@@ -178,6 +206,9 @@ export default defineComponent({
             banish: [] as string[],
             view: '',
             allExtraCards: [] as string[],
+            startHand: 'random',
+            cardInput: '',
+            cardInputs: [],
         }
     },
     computed: {
@@ -199,12 +230,12 @@ export default defineComponent({
         openEditSettingsModal() {
             let modal = document.getElementById('editSettingsModal')
             if (modal) modal.style.display = 'block'
+            this.generateAllCards()
         },
         closeEditSettingsModal() {
             let modal = document.getElementById('editSettingsModal')
             if (modal) modal.style.display = 'none'
         },
-
         reset() {
             this.view = ''
             this.selectedCard = ''
@@ -229,13 +260,32 @@ export default defineComponent({
                 { name: 'spelltrap5', value: ['spelltrap5'] },
                 { name: 'deck', value: ['deck'] },
             ]
+            this.generateAllCards()
+            this.handCards = []
+            if (this.startHand == 'random') {
+                for (let i = 0; i < 5; i++) {
+                    let index = this.getRandomInt(this.allCards.length)
+                    this.handCards[i] = this.allCards.splice(index, 1).toString()
+                }
+            } else {
+                for (let card of this.cardInputs) {
+                    this.handCards.push(findCardByName(card)?.id)
+                    this.allCards.splice(
+                        this.allCards.findIndex(e => findCardByName(card)?.id),
+                        1
+                    )
+                }
+            }
+
+            this.closeEditSettingsModal()
+        },
+        generateAllCards() {
             this.allExtraCards = []
             for (let card of this.deck.extraCards) {
                 for (let i = card.count; i; i--) {
                     this.allExtraCards.push(card.id)
                 }
             }
-
             this.allCards = []
             for (let card of this.deck.cards) {
                 for (let i = card.count; i; i--) {
@@ -252,12 +302,6 @@ export default defineComponent({
                     }
                     return map[findCard(a)?.type] - map[findCard(b)?.type]
                 })
-            this.handCards = []
-            for (let i = 0; i < 5; i++) {
-                let index = this.getRandomInt(this.allCards.length)
-                this.handCards[i] = this.allCards.splice(index, 1).toString()
-            }
-            this.closeEditSettingsModal()
         },
         selectCard(card: string, from: string) {
             this.selectedCard = card
@@ -345,7 +389,6 @@ export default defineComponent({
             } else {
                 this.field[slotIndex].value[0] = findCard(this.selectedCard)!.name
             }
-
             this.removeCard(this.selectedCard)
         },
         addHandCard() {
@@ -391,6 +434,14 @@ export default defineComponent({
         draw() {
             let index = this.getRandomInt(this.allCards.length)
             this.handCards.push(this.allCards.splice(index, 1).toString())
+        },
+        changeStartHand() {
+            if (this.startHand == 'random') {
+                this.startHand = 'custom'
+            } else {
+                this.startHand = 'random'
+                this.cardInputs = []
+            }
         },
         getRandomInt(max: number) {
             return Math.floor(Math.random() * max)
