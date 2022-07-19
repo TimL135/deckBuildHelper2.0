@@ -1,4 +1,4 @@
-importScripts("/deckBuildHelper2.0/precache-manifest.5eefb9f61eb2e593a17b05824cf864eb.js", "https://storage.googleapis.com/workbox-cdn/releases/4.3.1/workbox-sw.js");
+importScripts("/deckBuildHelper2.0/precache-manifest.119213605e51122bed27c2c6ba23a3eb.js", "https://storage.googleapis.com/workbox-cdn/releases/4.3.1/workbox-sw.js");
 
 /* eslint-disable no-console */
 

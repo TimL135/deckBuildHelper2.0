@@ -10,8 +10,11 @@ module.exports = {
     appleMobileWebAppCapable: true,
     themeColor: "black",
     msTileColor: "black",
+    appleMobileWebAppCapable: 'yes',
+    appleMobileWebAppStatusBarStyle: 'black',
     manifestOptions: {
       background_color: "black"
+      // display: 'landscape',
     }
   }
 };

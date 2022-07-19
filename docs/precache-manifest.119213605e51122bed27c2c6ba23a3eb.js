@@ -4,7 +4,7 @@ self.__precacheManifest = (self.__precacheManifest || []).concat([
     "url": "/deckBuildHelper2.0/css/app.f6e5514f.css"
   },
   {
-    "revision": "3eb348743879b509d64845d808e7416a",
+    "revision": "200c4fb3b7567227cfe2850aef12c09a",
     "url": "/deckBuildHelper2.0/index.html"
   },
   {
