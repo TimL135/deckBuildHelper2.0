@@ -67,6 +67,13 @@ export default defineComponent({
 })
 </script>
 <style lang="scss">
+@media only screen and (orientation:portrait) {
+  body {
+    transform: rotate(90deg);
+    height: 100vw !important;
+    margin: none;
+  }
+}
 #app {
   font-family: Avenir, Helvetica, Arial, sans-serif;
   -webkit-font-smoothing: antialiased;

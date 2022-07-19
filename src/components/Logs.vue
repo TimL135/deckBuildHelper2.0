@@ -30,7 +30,9 @@
                         {{ findCard(card)?.name }}
                     </div>
                 </div>
-                <div v-for="(action, index) of selectedLog.log" :key="action + index" class="orange text-dark mb-1">{{ actionToText(action) }}</div>
+                <div v-for="(action, index) of selectedLog.log" :key="action + index" class="orange text-dark round mb-1">
+                    {{ actionToText(action) }}
+                </div>
             </div>
         </div>
     </div>
