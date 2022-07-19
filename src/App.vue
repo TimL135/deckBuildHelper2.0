@@ -67,33 +67,6 @@ export default defineComponent({
 })
 </script>
 <style lang="scss">
-.landscape {
-  @media screen and (min-width: 320px) and (max-width: 900px) and (orientation: portrait) {
-    transform: rotate(90deg);
-    transform-origin: right top;
-    width: 100vh;
-    height: 100vw;
-    overflow-x: hidden;
-    position: absolute;
-    top: 100%;
-    right: 0;
-  }
-}
-
-.portrait {
-  @media screen and (min-width: 320px) and (max-width: 900px) and (orientation: landscape) {
-    transform: rotate(-90deg);
-    transform-origin: left top;
-    width: 100vh;
-    height: 100vw;
-    overflow-y: hidden;
-    position: absolute;
-    top: 100%;
-    left: 0;
-  }
-}
-
-
 
 #app {
   font-family: Avenir, Helvetica, Arial, sans-serif;

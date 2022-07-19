@@ -11,6 +11,7 @@
             {{ log.name }}
         </div>
     </div>
+
     <!-- new modal -->
     <div id="logModal" class="modal">
         <div class="modal-content">
