@@ -35,8 +35,8 @@
             width: 100vh;
             overflow-x: scroll;
             div#app {
-                min-height: 100vw;
-                min-width: 100vh;
+                min-height: 100vw !important;
+                min-width: 100vh !important;
             }
         }
     }
