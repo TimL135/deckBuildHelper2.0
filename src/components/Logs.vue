@@ -7,7 +7,7 @@
     />
 
     <div class="container" style="margin-top: 3vh">
-        <div v-for="log of deck.logs" :key="JSON.stringify(log)" @click="openLogModal(log)">
+        <div v-for="log of deck.logs" :key="JSON.stringify(log)" @click="openLogModal(log)" class="orange text-dark round mb-1">
             {{ log.name }}
         </div>
     </div>

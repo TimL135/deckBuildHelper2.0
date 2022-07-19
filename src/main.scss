@@ -19,6 +19,15 @@ html{
 ul {
   list-style: none;
 }
+.round{
+  border-radius: 0.5rem !important;
+}
+.round-start{
+  border-radius: 0.5rem 0 0 0.5rem !important;
+}
+.round-end{
+  border-radius: 0 0.5rem 0.5rem 0 !important;
+}
 .modal {
   display: none;
   position: fixed;
@@ -35,6 +44,7 @@ ul {
   margin: 15% auto;
   padding: 5px;
   border: 1px solid #888;
+  border-radius: 0.5rem !important;
   width: 95% !important;
 
 }
@@ -71,6 +81,7 @@ label{
 .btn-check:checked+.btn-outline-primary{
     background-color:#289287 !important;
     color: #000 !important;
+    
 }
 .btn-check+.btn-outline-primary{
   @media (max-width: 768px) {
@@ -166,3 +177,11 @@ border-color: #ffa107 !important ;
       color: #ffa107 !important;
       fill: #ffa107 !important
   }
+.deleteModal{
+  display: grid;
+  display: grid;
+    grid-template-columns: 5fr 2fr 2fr 5fr;
+    grid-template-areas:
+        '. yes no .'
+
+}

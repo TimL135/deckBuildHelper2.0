@@ -14,7 +14,7 @@
             <div style="grid-area: text2">
                 {{ view ? `view: ${view == 'slot' ? selectedFrom : view}` : 'no view' }}
             </div>
-            <div style="grid-area: effect" v-if="selectedCard" class="orange text-dark text-center" @click="activeEffect()">effect</div>
+            <div style="grid-area: effect" v-if="selectedCard" class="orange text-dark round text-center" @click="activeEffect()">effect</div>
             <div class="d-flex flex-row-reverse mb-3" style="grid-area: settings">
                 <button class="me-2" style="background-color: #ffffff00; border: none" @click="openEditSettingsModal()">
                     <svg xmlns="http://www.w3.org/2000/svg" width="5.5vw" height="5.5vw" class="bi bi-gear" viewBox="0 0 16 16" stroke="#ffa107">
@@ -149,10 +149,10 @@
                 <div class="d-flex justify-content: center mb-1">
                     <div class="w-100">
                         <div class="mb-3">
-                            <button @click="reset()" type="button" class="btn orange w-100 mt-1">Reset</button>
+                            <button @click="reset()" type="button" class="btn orange w-100 round mt-1">Reset</button>
                         </div>
                         <div class="mb-3">
-                            <button @click="changeStartHand()" type="button" class="btn orange w-100 mt-1">{{ startHand }}</button>
+                            <button @click="changeStartHand()" type="button" class="btn orange w-100 round mt-1">{{ startHand }}</button>
                         </div>
                         <div v-if="startHand == 'custom'">
                             <SexyInput
@@ -180,7 +180,7 @@
                             />
                         </div>
                         <div v-if="log.length">
-                            <div>log</div>
+                            <div class="text-dark">log</div>
                             <form @submit.prevent="saveLog()">
                                 <div>
                                     <SexyInput
@@ -197,7 +197,7 @@
                                     />
                                 </div>
                             </form>
-                            <div v-for="(action, index) of log" :key="action + index">
+                            <div v-for="(action, index) of log" :key="action + index" class="orange text-dark round mt-1">
                                 {{ actionToText(action) }}
                             </div>
                         </div>

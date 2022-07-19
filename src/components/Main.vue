@@ -26,8 +26,8 @@
                     :list-item-class="item => 'orange text-dark'"
                 />
             </div>
-            <button style="background-color: black; border: none" @click="openDeckSettingsModal()">
-                <svg xmlns="http://www.w3.org/2000/svg" width="5.5vw" height="5.5vw" class="bi bi-gear" viewBox="0 0 16 16" stroke="#ffa107">
+            <button style="background-color: black; border: none; padding-top: 1.5vh" @click="openDeckSettingsModal()">
+                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" class="bi bi-gear" viewBox="0 0 16 16" stroke="#ffa107">
                     <path
                         d="M8 4.754a3.246 3.246 0 1 0 0 6.492 3.246 3.246 0 0 0 0-6.492zM5.754 8a2.246 2.246 0 1 1 4.492 0 2.246 2.246 0 0 1-4.492 0z"
                     />
@@ -37,47 +37,33 @@
                 </svg>
             </button>
         </div>
-        <div class="btn-group rounded w-100 orange mt-2" role="group" aria-label="Basic radio toggle button group">
-            <input
-                type="radio"
-                class="btn-check"
-                name="btnradio"
-                id="btnradioMainDeck"
-                autocomplete="off"
-                @change="selectedDeckKind = 'mainDeck'"
-                :checked="selectedDeckKind == 'mainDeck'"
-            />
-            <label class="btn btn-outline-primary w-25" for="btnradioMainDeck">Main Deck</label>
-            <input
-                type="radio"
-                class="btn-check"
-                name="btnradio"
-                id="btnradioExtraDeck"
-                autocomplete="off"
-                @change="selectedDeckKind = 'extraDeck'"
-                :checked="selectedDeckKind == 'extraDeck'"
-            />
-            <label class="btn btn-outline-primary w-25" for="btnradioExtraDeck">Extra Deck</label>
-            <input
-                type="radio"
-                class="btn-check"
-                name="btnradio"
-                id="btnradioSideDeck"
-                autocomplete="off"
-                @change="selectedDeckKind = 'sideDeck'"
-                :checked="selectedDeckKind == 'sideDeck'"
-            />
-            <label class="btn btn-outline-primary w-25" for="btnradioSideDeck">Side Deck</label>
-            <input
-                type="radio"
-                class="btn-check"
-                name="btnradio"
-                id="btnradioAlternativeDeck"
-                autocomplete="off"
-                @change="selectedDeckKind = 'alternativeDeck'"
-                :checked="selectedDeckKind == 'alternativeDeck'"
-            />
-            <label class="btn btn-outline-primary w-25" for="btnradioAlternativeDeck">Alternative Deck</label>
+        <div class="deckSelect text-dark mt-1">
+            <div
+                class="round-start"
+                :class="selectedDeckKind == 'mainDeck' ? 'green' : 'orange'"
+                style="border: 1px solid black"
+                @click="selectedDeckKind = 'mainDeck'"
+            >
+                Main Deck
+            </div>
+            <div
+                :class="selectedDeckKind == 'extraDeck' ? 'green' : 'orange'"
+                style="border: 1px solid black"
+                @click="selectedDeckKind = 'extraDeck'"
+            >
+                Extra Deck
+            </div>
+            <div :class="selectedDeckKind == 'sideDeck' ? 'green' : 'orange'" style="border: 1px solid black" @click="selectedDeckKind = 'sideDeck'">
+                Side Deck
+            </div>
+            <div
+                class="round-end"
+                :class="selectedDeckKind == 'alternativeDeck' ? 'green' : 'orange'"
+                style="border: 1px solid black"
+                @click="selectedDeckKind = 'alternativeDeck'"
+            >
+                Alternative Deck
+            </div>
         </div>
     </div>
     <div v-if="selectedDeckKind == 'mainDeck'">
@@ -98,7 +84,7 @@
             <div class="container">
                 <div class="d-flex justify-content: center mb-1">
                     <div class="w-100">
-                        <div v-for="deck of decks" :key="JSON.stringify(deck)" class="decklist mb-2 orange">
+                        <div v-for="deck of decks" :key="JSON.stringify(deck)" class="decklist mb-2 orange round">
                             <div></div>
                             <div class="text-dark">
                                 {{ deck.name }}
@@ -110,7 +96,7 @@
                                     />
                                 </svg>
                             </div>
-                            <div class="orange" @click="deleteDeckCheck(deck.name)">
+                            <div class="orange round" @click="deleteDeckCheck(deck.name)">
                                 <svg xmlns="http://www.w3.org/2000/svg" width="30" height="30" class="bi bi-trash" viewBox="0 0 16 16">
                                     <path
                                         d="M5.5 5.5A.5.5 0 0 1 6 6v6a.5.5 0 0 1-1 0V6a.5.5 0 0 1 .5-.5zm2.5 0a.5.5 0 0 1 .5.5v6a.5.5 0 0 1-1 0V6a.5.5 0 0 1 .5-.5zm3 .5a.5.5 0 0 0-1 0v6a.5.5 0 0 0 1 0V6z"
@@ -128,20 +114,40 @@
                             v-model="newDeck"
                             class="orange"
                             label-class="orange"
+                            :label-border="true"
                             btn-class="orange"
                             btn-text="&#10004;"
                             :btn-action="addNewDeck"
                         />
                     </div>
                 </div>
-                <div v-if="deckInfo" class="text-dark">
+                <div v-if="deckInfo" class="orange text-dark round">
                     {{ deckInfo }}
                 </div>
-                <div v-if="deckInput">
-                    <div class="w-100">Are you sure to delete {{ deckInput }}</div>
-                    <div class="d-flex justify-content: center">
-                        <button type="button" class="btn btn-success w-50" @click="deleteDeck()">Yes</button>
-                        <button type="button" class="btn btn-danger w-50" @click="deleteDeckCancel()">No</button>
+                <div v-if="deckInput" class="mt-3">
+                    <div class="w-100 orange text-dark round mb-1">Are you sure to delete {{ deckInput }}</div>
+                    <div class="deleteModal">
+                        <button type="button" class="btn btn-success me-1" style="grid-area: yes" @click="deleteDeck()">
+                            <svg
+                                xmlns="http://www.w3.org/2000/svg"
+                                width="16"
+                                height="16"
+                                fill="currentColor"
+                                class="bi bi-check-lg"
+                                viewBox="0 0 16 16"
+                            >
+                                <path
+                                    d="M12.736 3.97a.733.733 0 0 1 1.047 0c.286.289.29.756.01 1.05L7.88 12.01a.733.733 0 0 1-1.065.02L3.217 8.384a.757.757 0 0 1 0-1.06.733.733 0 0 1 1.047 0l3.052 3.093 5.4-6.425a.247.247 0 0 1 .02-.022Z"
+                                />
+                            </svg>
+                        </button>
+                        <button type="button" class="btn btn-danger" style="grid-area: no" @click="deleteDeckCancel()">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-x-lg" viewBox="0 0 16 16">
+                                <path
+                                    d="M2.146 2.854a.5.5 0 1 1 .708-.708L8 7.293l5.146-5.147a.5.5 0 0 1 .708.708L8.707 8l5.147 5.146a.5.5 0 0 1-.708.708L8 8.707l-5.146 5.147a.5.5 0 0 1-.708-.708L7.293 8 2.146 2.854Z"
+                                />
+                            </svg>
+                        </button>
                     </div>
                 </div>
             </div>
@@ -284,5 +290,9 @@ export default defineComponent({
 .decklist {
     display: grid;
     grid-template-columns: 2fr 15fr 1fr 1fr;
+}
+.deckSelect {
+    display: grid;
+    grid-template-columns: auto auto auto auto;
 }
 </style>

@@ -7,14 +7,8 @@
     />
 
     <div class="container mt-2">
-        <br />
-        <div>
-            <button type="submit" class="w-100 btn orange" @click="openCardAddModal()">Add new Card</button>
-        </div>
-
-        <br />
         <div class="d-flex mb-1">
-            <div class="col-4 rounded-start" style="border: 1px solid #ffa107">
+            <div class="col-4 round-start" style="border: 1px solid #ffa107">
                 Card amount:
                 <br />
                 {{ deckNumber }}
@@ -26,7 +20,7 @@
                     {{ deckRating }}%
                 </div>
             </div>
-            <div class="col-4 rounded-end" style="border: 1px solid #ffa107">
+            <div class="col-4 round-end" style="border: 1px solid #ffa107">
                 <div>
                     Deckvalue average:
                     <br />
@@ -35,7 +29,7 @@
             </div>
         </div>
         <div class="d-flex mb-1">
-            <div class="w-25 rounded-start" style="border: 1px solid #ffa107">
+            <div class="w-25 round-start" style="border: 1px solid #ffa107">
                 Handtraps:
                 <br />
                 {{ counts[0] }}({{ uniqueCounts[0] }})
@@ -50,14 +44,14 @@
                 <br />
                 {{ counts[2] }}({{ uniqueCounts[2] }})
             </div>
-            <div class="w-25 rounded-end" style="border: 1px solid #ffa107">
+            <div class="w-25 round-end" style="border: 1px solid #ffa107">
                 Negate:
                 <br />
                 {{ counts[6] }}({{ uniqueCounts[6] }})
             </div>
         </div>
         <div class="d-flex mb-1">
-            <div class="w-25 rounded-start" style="border: 1px solid #ffa107">
+            <div class="w-25 round-start" style="border: 1px solid #ffa107">
                 Once per Turn:
                 <br />
                 {{ counts[5] }}({{ uniqueCounts[5] }})
@@ -72,12 +66,22 @@
                 <br />
                 {{ counts[3] }}({{ uniqueCounts[3] }})
             </div>
-            <div class="w-25 rounded-end" style="border: 1px solid #ffa107">
+            <div class="w-25 round-end" style="border: 1px solid #ffa107">
                 Interaption:
                 <br />
                 {{ counts[7] }}({{ uniqueCounts[7] }})
             </div>
         </div>
+        <br />
+        <div>
+            <button type="button" class="w-100 btn orange round" @click="openCardAddModal()">
+                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-plus-circle" viewBox="0 0 16 16">
+                    <path d="M8 15A7 7 0 1 1 8 1a7 7 0 0 1 0 14zm0 1A8 8 0 1 0 8 0a8 8 0 0 0 0 16z" />
+                    <path d="M8 4a.5.5 0 0 1 .5.5v3h3a.5.5 0 0 1 0 1h-3v3a.5.5 0 0 1-1 0v-3h-3a.5.5 0 0 1 0-1h3v-3A.5.5 0 0 1 8 4z" />
+                </svg>
+            </button>
+        </div>
+
         <br />
         <!-- new table -->
         <table class="table table-striped">
@@ -287,11 +291,24 @@
         <div class="modal-content">
             <div class="container">
                 <div class="d-flex justify-content: center mb-1">
-                    <div class="w-100">Are you sure to delete {{ nameInput }}</div>
+                    <div class="w-25"></div>
+                    <div class="w-50 orange text-dark">Are you sure to delete {{ nameInput }}</div>
                 </div>
-                <div class="d-flex justify-content: center">
-                    <button type="button" class="btn btn-success w-50" @click="deleteCard(deleteCardId)">Yes</button>
-                    <button type="button" class="btn btn-danger w-50" @click="closeCardDeleteModal()">No</button>
+                <div class="deleteModal">
+                    <button type="button" class="btn btn-success me-1" style="grid-area: yes" @click="deleteCard(deleteCardId)">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-check-lg" viewBox="0 0 16 16">
+                            <path
+                                d="M12.736 3.97a.733.733 0 0 1 1.047 0c.286.289.29.756.01 1.05L7.88 12.01a.733.733 0 0 1-1.065.02L3.217 8.384a.757.757 0 0 1 0-1.06.733.733 0 0 1 1.047 0l3.052 3.093 5.4-6.425a.247.247 0 0 1 .02-.022Z"
+                            />
+                        </svg>
+                    </button>
+                    <button type="button" class="btn btn-danger" style="grid-area: no" @click="closeCardDeleteModal()">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-x-lg" viewBox="0 0 16 16">
+                            <path
+                                d="M2.146 2.854a.5.5 0 1 1 .708-.708L8 7.293l5.146-5.147a.5.5 0 0 1 .708.708L8.707 8l5.147 5.146a.5.5 0 0 1-.708.708L8 8.707l-5.146 5.147a.5.5 0 0 1-.708-.708L7.293 8 2.146 2.854Z"
+                            />
+                        </svg>
+                    </button>
                 </div>
             </div>
         </div>
@@ -343,9 +360,6 @@ export default defineComponent({
             }
         },
         editAddCard() {
-            window.onclick = event => {
-                if (event.target == document.getElementById('cardAddEditModal')) this.closeCardAddEditModal()
-            }
             switch (this.editAdd) {
                 case 'add':
                     this.addCard()
@@ -370,11 +384,17 @@ export default defineComponent({
             if (modal) modal.style.display = 'none'
         },
         openCardAddModal() {
+            window.onclick = event => {
+                if (event.target == document.getElementById('cardAddEditModal')) this.closeCardAddEditModal()
+            }
             this.editAdd = 'add'
             let modal = document.getElementById('cardAddEditModal')
             if (modal) modal.style.display = 'block'
         },
         openCardEditModal(id: string) {
+            window.onclick = event => {
+                if (event.target == document.getElementById('cardAddEditModal')) this.closeCardAddEditModal()
+            }
             this.editAdd = 'edit'
             this.editCardIndex = this.deck.cards.findIndex(c => c.id == id)
             this.nameInput = this.deck.cards[this.editCardIndex].name
@@ -413,7 +433,7 @@ export default defineComponent({
                         count: parseInt(this.countInput),
                         properties: this.properties,
                         value: this.value,
-                        id: this.deck.alternativeCards.find(c => c.name == this.nameInput)?.id || Math.random().toString(36).slice(-15),
+                        id: this.deck.alternativeCards.find(c => c.name == this.nameInput)?.id || Math.random().toString().slice(-15),
                     })
                     this.deck.alternativeCards = this.deck.alternativeCards.filter(card => card.name != this.nameInput)
                 }

@@ -6,13 +6,8 @@
         crossorigin="anonymous"
     />
     <div class="container mt-2">
-        <br />
-        <div>
-            <button type="submit" class="w-100 btn orange" @click="openExtraCardAddModal()">Add new Card</button>
-        </div>
-        <br />
         <div class="d-flex mb-1">
-            <div class="w-25 rounded-start" style="border: 1px solid #ffa107">
+            <div class="w-25 round-start" style="border: 1px solid #ffa107">
                 Fusion:
                 <br />
                 {{ counts[0] }}
@@ -27,12 +22,22 @@
                 <br />
                 {{ counts[2] }}
             </div>
-            <div class="w-25 rounded-end" style="border: 1px solid #ffa107">
+            <div class="w-25 round-end" style="border: 1px solid #ffa107">
                 Link:
                 <br />
                 {{ counts[3] }}
             </div>
         </div>
+        <br />
+        <div>
+            <button type="button" class="w-100 btn orange round" @click="openExtraCardAddModal()">
+                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-plus-circle" viewBox="0 0 16 16">
+                    <path d="M8 15A7 7 0 1 1 8 1a7 7 0 0 1 0 14zm0 1A8 8 0 1 0 8 0a8 8 0 0 0 0 16z" />
+                    <path d="M8 4a.5.5 0 0 1 .5.5v3h3a.5.5 0 0 1 0 1h-3v3a.5.5 0 0 1-1 0v-3h-3a.5.5 0 0 1 0-1h3v-3A.5.5 0 0 1 8 4z" />
+                </svg>
+            </button>
+        </div>
+        <br />
         <!-- new table -->
         <table class="table table-striped">
             <thead>
@@ -155,11 +160,31 @@
             <div class="modal-content">
                 <div class="container">
                     <div class="d-flex justify-content: center mb-1">
-                        <div class="w-100">Are you sure to delete {{ nameInput }}</div>
+                        <div class="w-25"></div>
+                        <div class="w-50 orange text-dark">Are you sure to delete {{ nameInput }}</div>
                     </div>
-                    <div class="d-flex justify-content: center">
-                        <button type="button" class="btn btn-success w-50" @click="deleteExtraCard()">Yes</button>
-                        <button type="button" class="btn btn-danger w-50" @click="closeExtraCardDeleteModal()">No</button>
+                    <div class="deleteModal">
+                        <button type="button" class="btn btn-success me-1" style="grid-area: yes" @click="deleteExtraCard(deleteCardId)">
+                            <svg
+                                xmlns="http://www.w3.org/2000/svg"
+                                width="16"
+                                height="16"
+                                fill="currentColor"
+                                class="bi bi-check-lg"
+                                viewBox="0 0 16 16"
+                            >
+                                <path
+                                    d="M12.736 3.97a.733.733 0 0 1 1.047 0c.286.289.29.756.01 1.05L7.88 12.01a.733.733 0 0 1-1.065.02L3.217 8.384a.757.757 0 0 1 0-1.06.733.733 0 0 1 1.047 0l3.052 3.093 5.4-6.425a.247.247 0 0 1 .02-.022Z"
+                                />
+                            </svg>
+                        </button>
+                        <button type="button" class="btn btn-danger" style="grid-area: no" @click="closeExtraCardDeleteModal()">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-x-lg" viewBox="0 0 16 16">
+                                <path
+                                    d="M2.146 2.854a.5.5 0 1 1 .708-.708L8 7.293l5.146-5.147a.5.5 0 0 1 .708.708L8.707 8l5.147 5.146a.5.5 0 0 1-.708.708L8 8.707l-5.146 5.147a.5.5 0 0 1-.708-.708L7.293 8 2.146 2.854Z"
+                                />
+                            </svg>
+                        </button>
                     </div>
                 </div>
             </div>
@@ -193,9 +218,6 @@ export default defineComponent({
     },
     methods: {
         editAddExtraCard() {
-            window.onclick = event => {
-                if (event.target == document.getElementById('extraCardAddEditModal')) this.closeExtraCardAddEditModal()
-            }
             switch (this.editAdd) {
                 case 'add':
                     this.addExtraCard()
@@ -206,11 +228,17 @@ export default defineComponent({
             }
         },
         openExtraCardAddModal() {
+            window.onclick = event => {
+                if (event.target == document.getElementById('extraCardAddEditModal')) this.closeExtraCardAddEditModal()
+            }
             this.editAdd = 'add'
             var modal = document.getElementById('extraCardAddEditModal')
             if (modal) modal.style.display = 'block'
         },
         openExtraCardEditModal(name: string) {
+            window.onclick = event => {
+                if (event.target == document.getElementById('extraCardAddEditModal')) this.closeExtraCardAddEditModal()
+            }
             this.editAdd = 'edit'
             this.editCardId = this.deck.extraCards.findIndex(c => c.name == name)
             this.type = this.deck.extraCards[this.editCardId].type
@@ -245,7 +273,7 @@ export default defineComponent({
                 name: this.nameInput,
                 count: parseInt(this.countInput),
                 type: this.type as type.ExtraCardType,
-                id: Math.random().toString(36).slice(-15),
+                id: Math.random().toString().slice(-15),
             })
             this.countExtraCards()
             this.safeDeck()
@@ -258,7 +286,7 @@ export default defineComponent({
                 name: this.nameInput,
                 count: parseInt(this.countInput),
                 type: this.type as type.ExtraCardType,
-                id: this.deck.extraCards.find(c => c.name == this.nameInput)?.id || Math.random().toString(36).slice(-15),
+                id: this.deck.extraCards.find(c => c.name == this.nameInput)?.id,
             }
             this.countExtraCards()
             this.safeDeck()
