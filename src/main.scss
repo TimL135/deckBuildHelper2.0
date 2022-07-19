@@ -49,6 +49,8 @@
     color: #ffa107;
     background-color: #000;
     font-weight: bold !important;
+    min-height: 100vh;
+    min-width: 100vw;
 }
 #nav {
     @media (max-width: 768px) {
