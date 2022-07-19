@@ -161,7 +161,7 @@ import ExtraDeck from '@/components/DeckKind/ExtraDeck.vue'
 import SideDeck from '@/components/DeckKind/SideDeck.vue'
 import AlternativeDeck from '@/components/DeckKind/AlternativeDeck.vue'
 import SexyInput from '../components/SexyInput.vue'
-import { selectedDeckGlobal, decks, deck } from '@/global'
+import { selectedDeckGlobal, decks, deck, setHTMLClass } from '@/global'
 import { getDecks, getDeck, setDeck, setDecks } from '@/API'
 import * as type from '@/types'
 export default defineComponent({
@@ -170,6 +170,7 @@ export default defineComponent({
         if (getDeck()) {
             this.selectedDeck = getDeck().name
         }
+        setHTMLClass('Main')
     },
     setup() {
         return { selectedDeckGlobal, decks, deck }

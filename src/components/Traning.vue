@@ -210,7 +210,7 @@
 </template>
 <script lang="ts">
 import { setDecks, setDeck, getDeck } from '@/API'
-import { deck, decks, findCard, findCardByName, searchOnline, actionToText } from '@/global'
+import { deck, decks, findCard, findCardByName, searchOnline, actionToText, setHTMLClass } from '@/global'
 import * as type from '@/types'
 import { defineComponent } from 'vue'
 import SexyInput from './SexyInput.vue'
@@ -219,6 +219,7 @@ export default defineComponent({
     setup() {
         return { deck, decks, findCard, findCardByName, searchOnline, actionToText }
     },
+
     data() {
         return {
             allCards: [] as string[],
@@ -246,6 +247,7 @@ export default defineComponent({
     mounted() {
         console.log(type.debug)
         this.reset()
+        setHTMLClass('Traning')
     },
     methods: {
         search(slotIndex) {

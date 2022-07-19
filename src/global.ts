@@ -38,3 +38,18 @@ export function actionToText(action: string) {
 
     return action
 }
+
+export function setHTMLClass(router: string) {
+    switch (router) {
+        case 'Main':
+        case 'StartHand':
+        case 'Combos':
+        case 'CardGroups':
+            document.getElementsByTagName('html')[0].className = 'portrait'
+            break
+        case 'Traning':
+        case 'Logs':
+            document.getElementsByTagName('html')[0].className = 'landscape'
+            break
+    }
+}

@@ -116,7 +116,7 @@
 </template>
 <script lang="ts">
 import { getDeck } from '@/API'
-import { deck, findCard, findCardByName, findCardGroup, findCardGroupByName, searchOnline } from '@/global'
+import { deck, findCard, findCardByName, findCardGroup, findCardGroupByName, searchOnline, setHTMLClass } from '@/global'
 import * as type from '@/types'
 import { defineComponent } from 'vue'
 import SexyInput from '../components/SexyInput.vue'
@@ -124,6 +124,9 @@ export default defineComponent({
     components: { SexyInput },
     setup() {
         return { deck, findCard, findCardByName, findCardGroup, findCardGroupByName, searchOnline }
+    },
+    mounted() {
+        setHTMLClass('StartHand')
     },
     data() {
         return {

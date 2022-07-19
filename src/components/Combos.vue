@@ -186,7 +186,18 @@
 </template>
 <script lang="ts">
 import { defineComponent } from 'vue'
-import { selectedDeckGlobal, decks, deck, uniqueAllCards, findCard, findCardByName, findCardGroup, findCardGroupByName, searchOnline } from '@/global'
+import {
+    selectedDeckGlobal,
+    decks,
+    deck,
+    uniqueAllCards,
+    findCard,
+    findCardByName,
+    findCardGroup,
+    findCardGroupByName,
+    searchOnline,
+    setHTMLClass,
+} from '@/global'
 import * as type from '@/types'
 import { getDecks, getDeck, setDecks, setDeck } from '@/API'
 import SexyInput from '../components/SexyInput.vue'
@@ -195,7 +206,9 @@ export default defineComponent({
     setup() {
         return { selectedDeckGlobal, decks, deck, uniqueAllCards, findCard, findCardByName, findCardGroup, findCardGroupByName, searchOnline }
     },
-
+    mounted() {
+        setHTMLClass('Combos')
+    },
     data() {
         return {
             editAdd: 'add',

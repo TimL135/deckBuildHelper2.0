@@ -59,21 +59,42 @@
 <script>
 import { defineComponent } from 'vue'
 import { deck } from '@/global'
+import router from './router'
 export default defineComponent({
   setup() {
     return { deck }
-  }
-
+  },
 })
 </script>
 <style lang="scss">
-@media only screen and (orientation:portrait) {
-  body {
+.landscape {
+  @media screen and (min-width: 320px) and (max-width: 900px) and (orientation: portrait) {
     transform: rotate(90deg);
-    height: 100vw !important;
-    margin: none;
+    transform-origin: right top;
+    width: 100vh;
+    height: 100vw;
+    overflow-x: hidden;
+    position: absolute;
+    top: 100%;
+    right: 0;
   }
 }
+
+.portrait {
+  @media screen and (min-width: 320px) and (max-width: 900px) and (orientation: landscape) {
+    transform: rotate(-90deg);
+    transform-origin: left top;
+    width: 100vh;
+    height: 100vw;
+    overflow-y: hidden;
+    position: absolute;
+    top: 100%;
+    left: 0;
+  }
+}
+
+
+
 #app {
   font-family: Avenir, Helvetica, Arial, sans-serif;
   -webkit-font-smoothing: antialiased;
@@ -85,9 +106,11 @@ export default defineComponent({
 
 #nav {
   padding: 10px;
+
   a {
     font-weight: bold;
     color: #ffa107;
+
     &.router-link-exact-active {
       color: #42b983;
     }

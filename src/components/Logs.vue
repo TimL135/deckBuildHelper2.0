@@ -39,7 +39,7 @@
 </template>
 <script lang="ts">
 import { setDecks, setDeck, getDeck } from '@/API'
-import { deck, decks, findCard, findCardByName, searchOnline, actionToText } from '@/global'
+import { deck, decks, findCard, findCardByName, searchOnline, actionToText, setHTMLClass } from '@/global'
 import * as type from '@/types'
 import { defineComponent } from 'vue'
 // import SexyInput from './SexyInput.vue'
@@ -47,6 +47,9 @@ export default defineComponent({
     // components: { SexyInput },
     setup() {
         return { deck, decks, findCard, findCardByName, searchOnline, actionToText }
+    },
+    mounted() {
+        setHTMLClass('Logs')
     },
     data() {
         return {
