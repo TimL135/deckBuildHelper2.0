@@ -223,7 +223,12 @@ export default defineComponent({
                 else counter++
             }
             deck.name = deck.name + (counter ? counter : '')
-            this.decks.push(deck)
+            if (this.decks) {
+                this.decks.push(deck)
+            } else {
+                this.decks = [deck]
+            }
+
             this.newDeck = ''
         },
         loadDeck() {
