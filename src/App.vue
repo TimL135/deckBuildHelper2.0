@@ -77,16 +77,12 @@ export default defineComponent({
 }
 
 #nav {
-  padding: 30px;
-
+  padding: 10px;
   a {
     font-weight: bold;
     color: #ffa107;
-    text-decoration: none;
-
     &.router-link-exact-active {
       color: #42b983;
-      text-decoration: underline;
     }
   }
 }
