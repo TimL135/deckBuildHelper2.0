@@ -148,7 +148,7 @@
             <div class="container">
                 <div class="d-flex justify-content: center mb-1">
                     <div class="w-100">
-                        <div class="mb-3">
+                        <div class="mb-1">
                             <button @click="reset()" type="button" class="btn orange w-100 round mt-1">Reset</button>
                         </div>
                         <div class="mb-3">
@@ -159,7 +159,7 @@
                                 type="multiSelect"
                                 placeholder="cards"
                                 v-model="cardInput"
-                                :options="allCards.map(e => findCard(e)?.name)"
+                                :options="allCardsSelect.map(e => findCard(e)?.name)"
                                 class="orange"
                                 labelClass="orange"
                                 :label-border="true"
@@ -179,8 +179,8 @@
                                 "
                             />
                         </div>
-                        <div v-if="log.length">
-                            <div class="text-dark">log</div>
+                        <div v-if="log.length" class="mt-3">
+                            <div class="text-dark orange round">log</div>
                             <form @submit.prevent="saveLog()">
                                 <div>
                                     <SexyInput
@@ -223,6 +223,7 @@ export default defineComponent({
     data() {
         return {
             allCards: [] as string[],
+            allCardsSelect: [] as string[],
             field: [] as type.Slot[],
             handCards: [] as string[],
             selectedCard: '',
@@ -259,7 +260,6 @@ export default defineComponent({
             }
             let modal = document.getElementById('editSettingsModal')
             if (modal) modal.style.display = 'block'
-            this.generateAllCards()
         },
         closeEditSettingsModal() {
             let modal = document.getElementById('editSettingsModal')
@@ -318,6 +318,7 @@ export default defineComponent({
                 }
             }
             this.allCards = []
+
             for (let card of this.deck.cards) {
                 for (let i = card.count; i; i--) {
                     this.allCards.push(card.id)
@@ -333,6 +334,7 @@ export default defineComponent({
                     }
                     return map[findCard(a)?.type] - map[findCard(b)?.type]
                 })
+            this.allCardsSelect = [...this.allCards]
         },
         selectCard(card: string, from: string) {
             this.selectedCard = card
