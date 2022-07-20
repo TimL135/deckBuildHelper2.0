@@ -77,8 +77,7 @@
     </div>
 </template>
 <script lang="ts">
-import { setDecks, setDeck, getDeck } from '@/API'
-import { deck, decks, findCard, findCardByName, searchOnline, actionToText, setHTMLClass } from '@/global'
+import { deck, decks, findCard, findCardByName, searchOnline, actionToText, setHTMLClass, safeDeck } from '@/global'
 import * as type from '@/types'
 import { defineComponent } from 'vue'
 // import SexyInput from './SexyInput.vue'
@@ -117,7 +116,7 @@ export default defineComponent({
                 this.deck.logs = this.deck.logs.filter(e => e.name != this.selectedLog.name)
                 this.selectedLog = {}
                 this.logDeleteCheck = ''
-                this.safeDeck()
+                safeDeck(this.deck)
             }
             if (fun == 'check') {
                 this.logDeleteCheck = `Are you sure to delete ${this.selectedLog.name}`
@@ -125,11 +124,6 @@ export default defineComponent({
             if (fun == 'cancel') {
                 this.logDeleteCheck = ''
             }
-        },
-        safeDeck() {
-            this.decks[this.decks.findIndex(d => d.name == this.deck.name)] = this.deck
-            setDeck(this.deck)
-            setDecks(this.decks)
         },
     },
 })

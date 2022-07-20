@@ -115,8 +115,7 @@
     </div>
 </template>
 <script lang="ts">
-import { getDeck } from '@/API'
-import { deck, findCard, findCardByName, findCardGroup, findCardGroupByName, searchOnline, setHTMLClass } from '@/global'
+import { deck, findCard, findCardByName, findCardGroup, findCardGroupByName, searchOnline, setHTMLClass, getRandomInt } from '@/global'
 import * as type from '@/types'
 import { defineComponent } from 'vue'
 import SexyInput from '../components/SexyInput.vue'
@@ -148,7 +147,7 @@ export default defineComponent({
                 }
             }
             for (let i = 0; i < 5; i++) {
-                let index = this.getRandomInt(this.allCards.length)
+                let index = getRandomInt(this.allCards.length)
                 this.handCards[i] = findCard(this.allCards.splice(index, 1).toString())?.name
             }
             this.countCard()
@@ -225,9 +224,6 @@ export default defineComponent({
                     this.possibleCombos.push(combo)
                 }
             }
-        },
-        getRandomInt(max: number) {
-            return Math.floor(Math.random() * max)
         },
     },
 })

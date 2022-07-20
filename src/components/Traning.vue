@@ -210,8 +210,7 @@
     </div>
 </template>
 <script lang="ts">
-import { setDecks, setDeck, getDeck } from '@/API'
-import { deck, decks, findCard, findCardByName, searchOnline, actionToText, setHTMLClass } from '@/global'
+import { deck, decks, findCard, findCardByName, searchOnline, actionToText, setHTMLClass, safeDeck, getRandomInt } from '@/global'
 import * as type from '@/types'
 import { defineComponent } from 'vue'
 import SexyInput from './SexyInput.vue'
@@ -296,7 +295,7 @@ export default defineComponent({
             this.handCards = []
             if (this.startHand == 'random') {
                 for (let i = 0; i < 5; i++) {
-                    let index = this.getRandomInt(this.allCards.length)
+                    let index = getRandomInt(this.allCards.length)
                     this.handCards[i] = this.allCards.splice(index, 1).toString()
                 }
             } else {
@@ -467,13 +466,12 @@ export default defineComponent({
             this.selectedFrom = ''
         },
         draw() {
-            let index = this.getRandomInt(this.allCards.length)
+            let index = getRandomInt(this.allCards.length)
             this.handCards.push(this.allCards.splice(index, 1).toString())
         },
         activeEffect() {
             this.log.push(`${this.selectedCard} effect`)
-            this.selectedCard = ''
-            this.selectedFrom = ''
+            this.resetSelect()
         },
         saveLog() {
             if (this.deck.logs) {
@@ -481,7 +479,7 @@ export default defineComponent({
             } else {
                 this.deck.logs = [{ name: this.logName, log: this.log, startHand: this.logStartHand }]
             }
-            this.safeDeck()
+            safeDeck(this.deck)
             this.reset()
         },
 
@@ -492,14 +490,6 @@ export default defineComponent({
                 this.startHand = 'random'
                 this.cardInputs = []
             }
-        },
-        safeDeck() {
-            this.decks[this.decks.findIndex(d => d.name == this.deck.name)] = this.deck
-            setDeck(this.deck)
-            setDecks(this.decks)
-        },
-        getRandomInt(max: number) {
-            return Math.floor(Math.random() * max)
         },
     },
 })

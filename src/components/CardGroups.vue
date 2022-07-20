@@ -173,10 +173,10 @@
             <div class="container">
                 <div class="d-flex justify-content: center mb-1">
                     <div class="w-25"></div>
-                    <div class="w-50 orange text-dark">Are you sure to delete {{ nameInput }}</div>
+                    <div class="w-50 orange text-dark">Are you sure to delete {{ deleteCardGroupName }}</div>
                 </div>
                 <div class="deleteModal">
-                    <button type="button" class="btn btn-success me-1" style="grid-area: yes" @click="deleteCardGroup(deleteCardId)">
+                    <button type="button" class="btn btn-success me-1" style="grid-area: yes" @click="deleteCardGroup()">
                         <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-check-lg" viewBox="0 0 16 16">
                             <path
                                 d="M12.736 3.97a.733.733 0 0 1 1.047 0c.286.289.29.756.01 1.05L7.88 12.01a.733.733 0 0 1-1.065.02L3.217 8.384a.757.757 0 0 1 0-1.06.733.733 0 0 1 1.047 0l3.052 3.093 5.4-6.425a.247.247 0 0 1 .02-.022Z"
@@ -196,15 +196,13 @@
     </div>
 </template>
 <script lang="ts">
-import { setDecks, setDeck } from '@/API'
-import * as type from '@/types'
-import { selectedDeckGlobal, decks, deck, uniqueAllCards, findCard, findCardByName, searchOnline, setHTMLClass } from '@/global'
+import { decks, deck, uniqueAllCards, findCard, findCardByName, searchOnline, setHTMLClass, safeDeck } from '@/global'
 import { defineComponent } from 'vue'
 import SexyInput from '../components/SexyInput.vue'
 export default defineComponent({
     components: { SexyInput },
     setup() {
-        return { selectedDeckGlobal, decks, deck, uniqueAllCards, findCard, findCardByName, searchOnline }
+        return { decks, deck, uniqueAllCards, findCard, findCardByName, searchOnline }
     },
     mounted() {
         setHTMLClass('CardGroups')
@@ -278,7 +276,7 @@ export default defineComponent({
                 })
             }
             this.closeCardGroupAddEditModal()
-            this.safeDeck()
+            safeDeck(this.deck)
         },
         editCardGroup() {
             let copieCardInputs = [...this.cardInputs.map(e => findCardByName(e).id)]
@@ -300,7 +298,7 @@ export default defineComponent({
             this.checkComboCardGroups()
             this.inputReset()
             this.checkCardInputs()
-            this.safeDeck()
+            safeDeck(this.deck)
         },
         openCardGroupDeleteModal(index: number) {
             window.onclick = event => {
@@ -318,7 +316,7 @@ export default defineComponent({
         },
         deleteCardGroup() {
             this.deck.cardGroups.splice(this.deleteCardGroupIndex, 1)
-            this.safeDeck()
+            safeDeck(this.deck)
             this.closeCardGroupDeleteModal()
         },
         checkCardInputs() {
@@ -326,11 +324,7 @@ export default defineComponent({
             this.cardInputs.push(`${this.cardInputs.length + 1}. Card`)
             this.changeType()
         },
-        safeDeck() {
-            this.decks[this.decks.findIndex(d => d.name == this.deck.name)] = this.deck
-            setDeck(this.deck)
-            setDecks(this.decks)
-        },
+
         inputReset() {
             this.cardGroupNameInput = ''
             this.cardInputs = []

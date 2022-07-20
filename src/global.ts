@@ -1,6 +1,6 @@
-import { getDeck, getDecks } from '@/API'
+import { getDeck, getDecks, setDeck, setDecks } from '@/API'
 import { ref } from 'vue'
-export const selectedDeckGlobal = ref('')
+import * as type from '@/types'
 export const decks = ref(getDecks())
 export const deck = ref(getDeck())
 export const uniqueAllCards = ref([...new Set(deck.value.cards?.filter(c => c.name))])
@@ -52,4 +52,12 @@ export function setHTMLClass(router: string) {
             document.getElementsByTagName('html')[0].className = 'landscape'
             break
     }
+}
+export function safeDeck(safedDeck: type.Deck) {
+    decks.value[decks.value.findIndex(d => d.name == safedDeck.name)] = safedDeck
+    setDeck(safedDeck)
+    setDecks(decks.value)
+}
+export function getRandomInt(max: number) {
+    return Math.floor(Math.random() * max)
 }

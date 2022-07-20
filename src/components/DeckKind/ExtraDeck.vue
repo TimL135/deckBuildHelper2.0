@@ -193,14 +193,13 @@
 </template>
 <script lang="ts">
 import { defineComponent } from 'vue'
-import { selectedDeckGlobal, decks, deck, searchOnline } from '@/global'
+import { decks, deck, searchOnline, safeDeck } from '@/global'
 import * as type from '@/types'
 import SexyInput from '../SexyInput.vue'
-import { getDecks, getDeck, setDeck, setDecks } from '@/API'
 export default defineComponent({
     components: { SexyInput },
     setup() {
-        return { selectedDeckGlobal, decks, deck, searchOnline }
+        return { decks, deck, searchOnline }
     },
     mounted() {
         this.countExtraCards()
@@ -275,8 +274,7 @@ export default defineComponent({
                 type: this.type as type.ExtraCardType,
                 id: Math.random().toString().slice(-15),
             })
-            this.countExtraCards()
-            this.safeDeck()
+            this.countExtraCards()(this.deck)
             this.closeExtraCardAddEditModal()
         },
         editExtraCard() {
@@ -289,12 +287,12 @@ export default defineComponent({
                 id: this.deck.extraCards.find(c => c.name == this.nameInput)?.id,
             }
             this.countExtraCards()
-            this.safeDeck()
+            safeDeck(this.deck)
             this.closeExtraCardAddEditModal()
         },
         deleteExtraCard() {
             this.deck.extraCards.splice(this.deleteCardId, 1)
-            this.safeDeck()
+            safeDeck(this.deck)
             this.closeExtraCardDeleteModal()
         },
         countExtraCards() {
@@ -321,11 +319,6 @@ export default defineComponent({
             this.type = 'fusion'
             this.nameInput = ''
             this.countInput = ''
-        },
-        safeDeck() {
-            this.decks[this.decks.findIndex(d => d.name == this.deck.name)] = this.deck
-            setDeck(this.deck)
-            setDecks(this.decks)
         },
     },
 })

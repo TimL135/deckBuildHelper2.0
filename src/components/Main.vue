@@ -100,7 +100,7 @@
                                     />
                                 </svg>
                             </div>
-                            <div class="orange round" @click="deleteDeckCheck(deck.name)">
+                            <div class="orange round" @click="deleteDeck('check', deck.name)">
                                 <svg xmlns="http://www.w3.org/2000/svg" width="30" height="30" class="bi bi-trash" viewBox="0 0 16 16">
                                     <path
                                         d="M5.5 5.5A.5.5 0 0 1 6 6v6a.5.5 0 0 1-1 0V6a.5.5 0 0 1 .5-.5zm2.5 0a.5.5 0 0 1 .5.5v6a.5.5 0 0 1-1 0V6a.5.5 0 0 1 .5-.5zm3 .5a.5.5 0 0 0-1 0v6a.5.5 0 0 0 1 0V6z"
@@ -131,7 +131,7 @@
                 <div v-if="deckInput" class="mt-3">
                     <div class="w-100 orange text-dark round mb-1">Are you sure to delete {{ deckInput }}</div>
                     <div class="deleteModal">
-                        <button type="button" class="btn btn-success me-1" style="grid-area: yes" @click="deleteDeck()">
+                        <button type="button" class="btn btn-success me-1" style="grid-area: yes" @click="deleteDeck('delete')">
                             <svg
                                 xmlns="http://www.w3.org/2000/svg"
                                 width="16"
@@ -145,7 +145,7 @@
                                 />
                             </svg>
                         </button>
-                        <button type="button" class="btn btn-danger" style="grid-area: no" @click="deleteDeckCancel()">
+                        <button type="button" class="btn btn-danger" style="grid-area: no" @click="deleteDeck('cancel')">
                             <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-x-lg" viewBox="0 0 16 16">
                                 <path
                                     d="M2.146 2.854a.5.5 0 1 1 .708-.708L8 7.293l5.146-5.147a.5.5 0 0 1 .708.708L8.707 8l5.147 5.146a.5.5 0 0 1-.708.708L8 8.707l-5.146 5.147a.5.5 0 0 1-.708-.708L7.293 8 2.146 2.854Z"
@@ -165,8 +165,8 @@ import ExtraDeck from '@/components/DeckKind/ExtraDeck.vue'
 import SideDeck from '@/components/DeckKind/SideDeck.vue'
 import AlternativeDeck from '@/components/DeckKind/AlternativeDeck.vue'
 import SexyInput from '../components/SexyInput.vue'
-import { selectedDeckGlobal, decks, deck, setHTMLClass } from '@/global'
-import { getDecks, getDeck, setDeck, setDecks } from '@/API'
+import { decks, deck, setHTMLClass, safeDeck } from '@/global'
+import { getDeck, setDeck, setDecks } from '@/API'
 import * as type from '@/types'
 export default defineComponent({
     components: { MainDeck, ExtraDeck, SideDeck, AlternativeDeck, SexyInput },
@@ -177,7 +177,7 @@ export default defineComponent({
         setHTMLClass('Main')
     },
     setup() {
-        return { selectedDeckGlobal, decks, deck }
+        return { decks, deck }
     },
     data() {
         return {
@@ -201,17 +201,21 @@ export default defineComponent({
             let modal = document.getElementById('deckSettingsModal')
             if (modal) modal.style.display = 'block'
         },
-        deleteDeckCheck(deck: string) {
-            this.deckInput = deck
+
+        deleteDeck(fun: string, deck?: string) {
+            if (fun == 'delete') {
+                this.decks = this.decks.filter(deck => deck.name != this.deckInput)
+                this.deckInput = ''
+                safeDeck(this.deck)
+            }
+            if (fun == 'check') {
+                this.deckInput = deck
+            }
+            if (fun == 'cancel') {
+                this.deckInput = ''
+            }
         },
-        deleteDeck() {
-            this.decks = this.decks.filter(deck => deck.name != this.deckInput)
-            this.deckInput = ''
-            this.safeDeck()
-        },
-        deleteDeckCancel() {
-            this.deckInput = ''
-        },
+
         shareDeck(deck: type.Deck) {
             navigator.clipboard.writeText(JSON.stringify(deck))
             this.deckInfo = `deck ${deck.name} was copied`
@@ -275,14 +279,8 @@ export default defineComponent({
                         this.deck = this.decks[this.decks.findIndex(d => d.name == this.selectedDeck)]
                     }
                 }
-                this.safeDeck()
+                safeDeck(this.deck)
             }
-        },
-        safeDeck() {
-            this.decks[this.decks.findIndex(d => d.name == this.deck.name)] = this.deck
-            setDeck(this.deck)
-            setDecks(this.decks)
-            this.selectedDeckGlobal = this.selectedDeck
         },
     },
 })

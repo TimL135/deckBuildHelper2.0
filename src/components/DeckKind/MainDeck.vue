@@ -316,15 +316,13 @@
 </template>
 <script lang="ts">
 import { defineComponent } from 'vue'
-import { selectedDeckGlobal, decks, deck, uniqueAllCards, searchOnline, findCardByName } from '@/global'
+import { decks, deck, uniqueAllCards, searchOnline, findCardByName, safeDeck } from '@/global'
 import * as type from '@/types'
 import SexyInput from '../SexyInput.vue'
-import { getDecks, getDeck, setDecks, setDeck } from '@/API'
 export default defineComponent({
     components: { SexyInput },
-    watch: { selectedDeckGlobal: 'updateDeck' },
     setup() {
-        return { selectedDeckGlobal, decks, deck, uniqueAllCards, searchOnline, findCardByName }
+        return { decks, deck, uniqueAllCards, searchOnline, findCardByName }
     },
     mounted() {
         this.updateDeck()
@@ -352,8 +350,7 @@ export default defineComponent({
     },
     methods: {
         updateDeck() {
-            if (getDeck()) {
-                this.deck = getDeck()
+            if (this.deck) {
                 this.uniqueCardDeck()
                 this.countCard()
                 this.deckRatingValue()
@@ -443,7 +440,7 @@ export default defineComponent({
                 this.deckRatingValue()
                 this.sortDeck()
                 this.checkComboCardGroups()
-                this.safeDeck()
+                safeDeck(this.deck)
                 this.closeCardAddEditModal()
             }
         },
@@ -469,7 +466,7 @@ export default defineComponent({
             this.deckRatingValue()
             this.sortDeck()
             this.checkComboCardGroups()
-            this.safeDeck()
+            safeDeck(this.deck)
             this.closeCardAddEditModal()
         },
         inputReset() {
@@ -497,7 +494,7 @@ export default defineComponent({
             this.countCard()
             this.deckRatingValue()
             this.checkComboCardGroups()
-            this.safeDeck()
+            safeDeck(this.deck)
             this.closeCardDeleteModal()
         },
         countCard() {
@@ -545,11 +542,6 @@ export default defineComponent({
             }
             this.deckRating = Math.round(this.deckRating * 10) / 10
         },
-        safeDeck() {
-            this.decks[this.decks.findIndex(d => d.name == this.deck.name)] = this.deck
-            setDeck(this.deck)
-            setDecks(this.decks)
-        },
         sortDeck() {
             this.deck.cards
                 .sort(function (a, b) {
@@ -566,27 +558,6 @@ export default defineComponent({
                     }
                     return map[a.type] - map[b.type]
                 })
-        },
-        loadDeck() {
-            if (this.selectedDeckGlobal) {
-                if (this.decks[this.decks.findIndex(d => d.name == this.selectedDeckGlobal)]) {
-                    this.deck = this.decks[this.decks.findIndex(d => d.name == this.selectedDeckGlobal)]
-                } else {
-                    this.decks.push({
-                        name: this.selectedDeckGlobal,
-                        cards: [],
-                        extraCards: [],
-                        combos: [],
-                        cardGroups: [],
-                        sideCards: [],
-                        alternativeCards: [],
-                    })
-                    this.deck = this.decks[this.decks.findIndex(d => d.name == this.selectedDeckGlobal)]
-                }
-                this.uniqueCardDeck()
-                this.countCard()
-                setDeck(this.deck)
-            }
         },
     },
 })
