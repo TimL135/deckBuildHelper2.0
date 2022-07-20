@@ -102,7 +102,7 @@
                         <div
                             v-for="card in combo.cards"
                             :key="card"
-                            class="mb-1 green"
+                            class="mb-1 orange text-dark"
                             :class="findCard(card)?.type"
                             @dblclick="typeof card !== 'object' ? searchOnline(findCard(card)?.name) : null"
                         >

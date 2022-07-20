@@ -26,7 +26,7 @@
                     :list-item-class="item => 'orange text-dark'"
                 />
             </div>
-            <button style="background-color: black; border: none; padding-top: 1.5vh" @click="openDeckSettingsModal()">
+            <button style="background-color: rgb(12, 12, 12); border: none; padding-top: 1.5vh" @click="openDeckSettingsModal()">
                 <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" class="bi bi-gear" viewBox="0 0 16 16" stroke="#ffa107">
                     <path
                         d="M8 4.754a3.246 3.246 0 1 0 0 6.492 3.246 3.246 0 0 0 0-6.492zM5.754 8a2.246 2.246 0 1 1 4.492 0 2.246 2.246 0 0 1-4.492 0z"
@@ -41,25 +41,29 @@
             <div
                 class="round-start"
                 :class="selectedDeckKind == 'mainDeck' ? 'green' : 'orange'"
-                style="border: 1px solid black"
+                style="border: 1px solid rgb(12, 12, 12)"
                 @click="selectedDeckKind = 'mainDeck'"
             >
                 Main Deck
             </div>
             <div
                 :class="selectedDeckKind == 'extraDeck' ? 'green' : 'orange'"
-                style="border: 1px solid black"
+                style="border: 1px solid rgb(12, 12, 12)"
                 @click="selectedDeckKind = 'extraDeck'"
             >
                 Extra Deck
             </div>
-            <div :class="selectedDeckKind == 'sideDeck' ? 'green' : 'orange'" style="border: 1px solid black" @click="selectedDeckKind = 'sideDeck'">
+            <div
+                :class="selectedDeckKind == 'sideDeck' ? 'green' : 'orange'"
+                style="border: 1px solid rgb(12, 12, 12)"
+                @click="selectedDeckKind = 'sideDeck'"
+            >
                 Side Deck
             </div>
             <div
                 class="round-end"
                 :class="selectedDeckKind == 'alternativeDeck' ? 'green' : 'orange'"
-                style="border: 1px solid black"
+                style="border: 1px solid rgb(12, 12, 12)"
                 @click="selectedDeckKind = 'alternativeDeck'"
             >
                 Alternative Deck

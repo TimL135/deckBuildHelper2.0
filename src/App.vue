@@ -84,7 +84,7 @@ export default defineComponent({
     color: #ffa107;
 
     &.router-link-exact-active {
-      color: #42b983;
+      color: #ffee07;
     }
   }
 }

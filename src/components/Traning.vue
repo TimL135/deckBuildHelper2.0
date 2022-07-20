@@ -33,9 +33,10 @@
                 v-for="(slot, index) of field"
                 :key="slot"
                 :style="`grid-area:slot${index + 1}`"
-                style="background-color: gray; border: 2px solid black"
+                style="background-color: gray; border: 2px solid rgb(12, 12, 12)"
                 @click="selectSlot(index, slot)"
                 @dblclick="slot.value.length == 1 && slot.value != slot.name ? searchOnline(slot.value[0]) : null"
+                class="text-dark"
                 :class="findCardByName(slot.value[0])?.type"
             >
                 {{
@@ -58,7 +59,7 @@
             <div
                 v-for="(card, index) of handCards"
                 :key="card + index"
-                style="background-color: red; border: 2px solid black"
+                style="background-color: red; border: 2px solid rgb(12, 12, 12)"
                 :class="findCard(card)?.type"
                 @click="selectCard(card, 'hand')"
                 @dblclick="searchOnline(findCard(card)?.name)"
@@ -73,7 +74,7 @@
                     v-for="card of allCards"
                     :key="card"
                     :class="findCard(card)?.type"
-                    style="border: 2px solid black"
+                    style="border: 2px solid rgb(12, 12, 12)"
                     @click="selectCard(card, 'deck')"
                     @dblclick="searchOnline(findCard(card)?.name)"
                 >
@@ -88,7 +89,7 @@
                     v-for="card of allExtraCards"
                     :key="card"
                     :class="findCard(card)?.type"
-                    style="border: 2px solid black"
+                    style="border: 2px solid rgb(12, 12, 12)"
                     @click="selectCard(card, 'extradeck')"
                     @dblclick="searchOnline(findCard(card)?.name)"
                 >
@@ -103,7 +104,7 @@
                     v-for="card of graveYard"
                     :key="card"
                     :class="findCard(card)?.type"
-                    style="border: 2px solid black"
+                    style="border: 2px solid rgb(12, 12, 12)"
                     @click="selectCard(card, 'graveyard')"
                     @dblclick="searchOnline(findCard(card)?.name)"
                 >
@@ -118,7 +119,7 @@
                     v-for="card of banish"
                     :key="card"
                     :class="findCard(card)?.type"
-                    style="border: 2px solid black"
+                    style="border: 2px solid rgb(12, 12, 12)"
                     @click="selectCard(card, 'banish')"
                     @dblclick="searchOnline(findCard(card)?.name)"
                 >
@@ -133,7 +134,7 @@
                     v-for="card of selectedSlotValue"
                     :key="card"
                     :class="findCardByName(card)?.type"
-                    style="border: 2px solid black"
+                    style="border: 2px solid rgb(12, 12, 12)"
                     @click="selectCard(findCardByName(card)?.id, selectedFrom)"
                     @dblclick="searchOnline(card)"
                 >
@@ -513,13 +514,13 @@ body {
 }
 .header {
     display: grid;
-    grid-template-columns: 2fr 10fr 1fr 1fr;
+    grid-template-columns: 1fr 1fr 10fr 1fr 1fr;
     grid-template-areas:
-        '. text1 effect settings'
-        '. text2 . .';
+        '. . text1 effect settings'
+        '. . text2 . .';
 }
 .sticky {
-    background-color: black;
+    background-color: rgb(12, 12, 12);
     position: -webkit-sticky; /* Safari */
     position: sticky;
     top: 0;

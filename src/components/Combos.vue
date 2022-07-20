@@ -59,7 +59,7 @@
                         <div
                             v-for="card in combo.cards"
                             :key="card"
-                            class="mb-1 green"
+                            class="mb-1 orange text-dark"
                             :class="findCard(card)?.type"
                             @dblclick="typeof card !== 'object' ? searchOnline(findCard(card)?.name) : null"
                         >
@@ -117,7 +117,7 @@
                         <div
                             v-for="card in combo.cards"
                             :key="card"
-                            class="mb-1 green"
+                            class="mb-1 orange text-dark"
                             :class="findCard(card)?.type"
                             @dblclick="typeof card !== 'object' ? searchOnline(findCard(card)?.name) : null"
                         >
@@ -146,7 +146,12 @@
                                 :options="deck.cards.concat(deck.cardGroups)"
                                 :option-projection="a => a.name"
                                 @selectItem="changeType()"
-                                :listItemClass="item => (findCardGroupByName(item) ? 'green' : findCardByName(item)?.type || 'orange text-dark')"
+                                :listItemClass="
+                                    item =>
+                                        findCardGroupByName(item)
+                                            ? 'orange text-dark'
+                                            : findCardByName(item)?.type + ' text-dark' || 'orange text-dark'
+                                "
                             />
                         </div>
                     </div>

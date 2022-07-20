@@ -57,7 +57,7 @@
                             v-for="card in cardGroup.cards"
                             :key="card"
                             class="mb-1"
-                            :class="findCard(card)?.type"
+                            :class="findCard(card)?.type + ' text-dark'"
                             @dblclick="searchOnline(findCard(card)?.name)"
                         >
                             {{ findCard(card)?.name }}
@@ -113,7 +113,7 @@
                             v-for="card in cardGroup.cards"
                             :key="card"
                             class="mb-1"
-                            :class="findCard(card)?.type"
+                            :class="findCard(card)?.type + ' text-dark'"
                             @dblclick="searchOnline(findCard(card)?.name)"
                         >
                             {{ findCard(card)?.name }}
@@ -147,9 +147,9 @@
                         class="orange"
                         labelClass="orange"
                         :label-border="true"
-                        :listItemClass="item => findCardByName(item)?.type || 'orange text-dark'"
+                        :listItemClass="item => findCardByName(item)?.type + ' text-dark' || 'orange text-dark'"
                         :multiSelect="cardInputs"
-                        :multiSelectClass="e => findCardByName(e).type"
+                        :multiSelectClass="e => findCardByName(e)?.type + ' text-dark' || 'orange text-dark'"
                         @selectItem="
                             a => {
                                 cardInputs.push(a)

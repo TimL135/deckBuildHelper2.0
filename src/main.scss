@@ -42,7 +42,7 @@
 //     }
 // }
 html{
-  background-color: #000;
+  background-color: rgb(12, 12, 12);
 }
 #app {
     font-family: Avenir, Helvetica, Arial, sans-serif;
@@ -50,7 +50,7 @@ html{
     -moz-osx-font-smoothing: grayscale;
     text-align: center;
     color: #ffa107;
-    background-color: #000;
+    background-color: rgb(12, 12, 12);
     font-weight: bold !important;
     min-height: 100vh;
     min-width: 100vw;
@@ -84,7 +84,7 @@ ul {
     background-color: rgba(0, 0, 0, 0.4);
 }
 .modal-content {
-    background-color: #42b983 !important;
+    background-color: #2b2a2a !important;
     margin: 15% auto;
     padding: 5px;
     border: 1px solid #888;
@@ -94,45 +94,29 @@ ul {
 label:focus {
     box-shadow: none !important;
 }
-div {
-    @media (max-width: 768px) {
-        font-size: 3.8vw !important;
-    }
-}
-label {
-    @media (max-width: 768px) {
-        font-size: 3.8vw !important;
-    }
-}
+
 .close {
     @media (max-width: 768px) {
         font-size: 10vw !important;
     }
-
     color: red;
     float: right;
     font-weight: bold;
 }
 .close:hover,
 .close:focus {
-    color: black;
+    color: rgb(12, 12, 12);
     text-decoration: none;
     cursor: pointer;
 }
 .btn-check:checked + .btn-outline-primary {
-    background-color: #289287 !important;
+    background-color: #ffee07 !important;
     color: #000 !important;
 }
 .btn-check + .btn-outline-primary {
-    @media (max-width: 768px) {
-        font-size: 3.8vw !important;
-    }
-    color: #289287 !important;
+    color:  #333741 !important;
 }
 span {
-    @media (max-width: 768px) {
-        font-size: 3.8vw !important;
-    }
     font-weight: bold !important;
 }
 svg {
@@ -144,23 +128,14 @@ svg {
     }
 }
 .btn {
-    @media (max-width: 768px) {
-        font-size: 3.8vw !important;
-    }
     border-color: #000 !important;
     font-weight: bold !important;
 }
 .form-select:focus {
-    @media (max-width: 768px) {
-        font-size: 3.8vw !important;
-    }
     box-shadow: none !important;
 }
 .form-control,
 .form-select {
-    @media (max-width: 768px) {
-        font-size: 3.8vw !important;
-    }
     box-shadow: none !important;
     font-weight: bold !important;
 }
@@ -184,22 +159,27 @@ svg {
     background-color: #ffa107 !important;
 }
 .green {
-    background-color: #42b983 !important;
+    background-color: #ffee07 !important;
 }
 .monster {
     background-color: #b5542c !important;
+    color: rgb(12, 12, 12);
 }
 .spell {
     background-color: #289287 !important;
+    color: rgb(12, 12, 12);
 }
 .trap {
     background-color: #a91475 !important;
+    color: rgb(12, 12, 12);
 }
 .fusion {
     background-color: #823b91 !important;
+    color: rgb(12, 12, 12);
 }
 .synchro {
     background-color: #d8d8d7 !important;
+    color: rgb(12, 12, 12);
 }
 .xyz {
     background-color: #020101 !important;
@@ -207,6 +187,7 @@ svg {
 }
 .link {
     background-color: #0172b9 !important;
+    color: rgb(12, 12, 12);
 }
 .table-striped > tbody > tr:nth-of-type(odd) {
     --bs-table-accent-bg: var(--bs-table-striped-bg);
