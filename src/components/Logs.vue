@@ -18,7 +18,7 @@
             <div class="container">
                 <div class="text-dark orange round header">
                     <div></div>
-                    <div class="w-100 mb-1">{{ selectedLog.name }}</div>
+                    <div class="w-100">{{ selectedLog.name }}</div>
                     <div class="orange round" @click="deleteLog('check')">
                         <svg xmlns="http://www.w3.org/2000/svg" width="30" height="30" class="bi bi-trash" viewBox="0 0 16 16">
                             <path
@@ -57,7 +57,7 @@
                         </button>
                     </div>
                 </div>
-                <div class="startHand mb-3">
+                <div class="startHand mb-3 mt-1">
                     <div
                         v-for="(card, index) of selectedLog.startHand"
                         :key="card + index"
