@@ -8,6 +8,13 @@
 
     <div class="mx-3">
         <div class="header sticky">
+            <div style="grid-area: special" @click="specialAction('view')">
+                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-stars" viewBox="0 0 16 16">
+                    <path
+                        d="M7.657 6.247c.11-.33.576-.33.686 0l.645 1.937a2.89 2.89 0 0 0 1.829 1.828l1.936.645c.33.11.33.576 0 .686l-1.937.645a2.89 2.89 0 0 0-1.828 1.829l-.645 1.936a.361.361 0 0 1-.686 0l-.645-1.937a2.89 2.89 0 0 0-1.828-1.828l-1.937-.645a.361.361 0 0 1 0-.686l1.937-.645a2.89 2.89 0 0 0 1.828-1.828l.645-1.937zM3.794 1.148a.217.217 0 0 1 .412 0l.387 1.162c.173.518.579.924 1.097 1.097l1.162.387a.217.217 0 0 1 0 .412l-1.162.387A1.734 1.734 0 0 0 4.593 5.69l-.387 1.162a.217.217 0 0 1-.412 0L3.407 5.69A1.734 1.734 0 0 0 2.31 4.593l-1.162-.387a.217.217 0 0 1 0-.412l1.162-.387A1.734 1.734 0 0 0 3.407 2.31l.387-1.162zM10.863.099a.145.145 0 0 1 .274 0l.258.774c.115.346.386.617.732.732l.774.258a.145.145 0 0 1 0 .274l-.774.258a1.156 1.156 0 0 0-.732.732l-.258.774a.145.145 0 0 1-.274 0l-.258-.774a1.156 1.156 0 0 0-.732-.732L9.1 2.137a.145.145 0 0 1 0-.274l.774-.258c.346-.115.617-.386.732-.732L10.863.1z"
+                    />
+                </svg>
+            </div>
             <div @click="resetSelect()" style="grid-area: text1">
                 {{ selectedCard ? `selected card: ${findCard(selectedCard)?.name}(${selectedFrom})` : 'no card selected' }}
             </div>
@@ -142,6 +149,13 @@
                 </div>
             </div>
         </div>
+        <div v-if="view == 'special'">
+            <div>Special</div>
+            <div class="startHand">
+                <div class="orange text-dark me-1" @click="specialAction('pendel')">pendel</div>
+                <div class="orange text-dark" @click="specialAction('token')">token</div>
+            </div>
+        </div>
     </div>
     <!-- new modal -->
     <div id="editSettingsModal" class="modal">
@@ -181,12 +195,11 @@
                             />
                         </div>
                         <div v-if="log.length" class="mt-3">
-                            <div class="text-dark orange round">log</div>
                             <form @submit.prevent="saveLog()">
                                 <div>
                                     <SexyInput
                                         type="text"
-                                        placeholder="name"
+                                        placeholder="log name"
                                         v-model="logName"
                                         class="orange"
                                         label-class="orange"
@@ -344,7 +357,7 @@ export default defineComponent({
             if (this.selectedCard) this.log.push(`${this.selectedCard} from ${this.selectedFrom} to ${slot.name}`)
             if (slot.name == 'deck') {
                 if (this.selectedCard) {
-                    this.allCards.push(this.selectedCard)
+                    if (this.selectedCard != 'token') this.allCards.push(this.selectedCard)
                     this.removeCard(this.selectedCard)
                     return
                 } else {
@@ -357,7 +370,7 @@ export default defineComponent({
             }
             if (slot.name == 'graveyard') {
                 if (this.selectedCard) {
-                    this.graveYard.push(this.selectedCard)
+                    if (this.selectedCard != 'token') this.graveYard.push(this.selectedCard)
                     this.removeCard(this.selectedCard)
                     return
                 } else {
@@ -370,7 +383,7 @@ export default defineComponent({
             }
             if (slot.name == 'banish') {
                 if (this.selectedCard) {
-                    this.banish.push(this.selectedCard)
+                    if (this.selectedCard != 'token') this.banish.push(this.selectedCard)
                     this.removeCard(this.selectedCard)
                     return
                 } else {
@@ -383,7 +396,7 @@ export default defineComponent({
             }
             if (slot.name == 'extradeck') {
                 if (this.selectedCard) {
-                    this.allExtraCards.push(this.selectedCard)
+                    if (this.selectedCard != 'token') this.allExtraCards.push(this.selectedCard)
                     this.removeCard(this.selectedCard)
                     return
                 } else {
@@ -449,6 +462,8 @@ export default defineComponent({
                 case 'graveyard':
                     this.graveYard.splice(this.graveYard.indexOf(this.selectedCard), 1)
                     break
+                case 'token':
+                    break
                 default:
                     if (fieldSlot!.value.length == 1) {
                         fieldSlot!.value = [fieldSlot!.name]
@@ -482,7 +497,23 @@ export default defineComponent({
             safeDeck(this.deck)
             this.reset()
         },
-
+        specialAction(special: string) {
+            switch (special) {
+                case 'view':
+                    if (this.view == 'special') this.view = ''
+                    else this.view = 'special'
+                    break
+                case 'pendel':
+                    this.log.push('pendel summon')
+                    this.view = ''
+                    break
+                case 'token':
+                    this.selectedCard = 'token'
+                    this.selectedFrom = 'token'
+                    this.view = ''
+                    break
+            }
+        },
         changeStartHand() {
             if (this.startHand == 'random') {
                 this.startHand = 'custom'
@@ -506,7 +537,7 @@ body {
     display: grid;
     grid-template-columns: 1fr 1fr 10fr 1fr 1fr;
     grid-template-areas:
-        '. . text1 effect settings'
+        '. special text1 effect settings'
         '. . text2 . .';
 }
 .sticky {

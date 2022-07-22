@@ -6,6 +6,13 @@ export const deck = ref(getDeck())
 export const uniqueAllCards = ref([...new Set(deck.value.cards?.filter(c => c.name))])
 
 export function findCard(id: string) {
+    if (id == 'token')
+        return {
+            name: 'token',
+            count: 1,
+            type: 'token',
+            id: 'token',
+        }
     return (
         deck.value.cards?.find(c => c.id == id) ||
         deck.value.alternativeCards?.find(c => c.id == id) ||
@@ -14,6 +21,13 @@ export function findCard(id: string) {
     )
 }
 export function findCardByName(name: string) {
+    if (name == 'token')
+        return {
+            name: 'token',
+            count: 1,
+            type: 'token',
+            id: 'token',
+        }
     return (
         deck.value.cards?.find(c => c.name == name) ||
         deck.value.alternativeCards?.find(c => c.name == name) ||
@@ -32,6 +46,7 @@ export function searchOnline(search) {
     window.open(`http://www.google.com/search?q=cardcluster ${search}`, '_newtab')
 }
 export function actionToText(action: string) {
+    // if (action.match('token')) return action
     while (action.match('0')) {
         let id = undefined
         let counter = 12
