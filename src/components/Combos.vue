@@ -157,7 +157,7 @@
                     </div>
                 </div>
 
-                <button type="button" class="btn orange w-100 mt-1" @click="addCombo()">Confirm</button>
+                <button type="button" class="btn orange w-100 mt-1 round" @click="addCombo()">&#10004;</button>
             </div>
         </div>
     </div>

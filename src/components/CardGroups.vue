@@ -163,7 +163,7 @@
                         "
                     />
                 </div>
-                <button type="submit" class="btn orange w-100 mt-1" style="float: right">Confirm</button>
+                <button type="submit" class="btn orange w-100 mt-1 round" style="float: right">&#10004;</button>
             </form>
         </div>
     </div>
@@ -281,17 +281,6 @@ export default defineComponent({
         editCardGroup() {
             let copieCardInputs = [...this.cardInputs.map(e => findCardByName(e).id)]
             this.cardGroupNameInput.trim()
-            for (let combo of this.deck.combos) {
-                let comboIndex = this.deck.combos.findIndex(c => c == combo)
-                if (combo.cards.findIndex(c => (typeof c === 'object' ? c.name == this.deck.cardGroups[this.editCardGroupIndex].name : null)) != -1) {
-                    combo.cards[
-                        combo.cards.findIndex(c => (typeof c === 'object' ? c.name == this.deck.cardGroups[this.editCardGroupIndex].name : null))
-                        // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-                        // @ts-ignore
-                    ].name = this.cardGroupNameInput
-                }
-                this.deck.combos[comboIndex] = combo
-            }
             if (copieCardInputs.length) this.deck.cardGroups[this.editCardGroupIndex].cards = copieCardInputs
             this.deck.cardGroups[this.editCardGroupIndex].name = this.cardGroupNameInput
             this.closeCardGroupAddEditModal()

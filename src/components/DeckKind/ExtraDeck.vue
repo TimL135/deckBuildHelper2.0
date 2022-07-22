@@ -82,12 +82,21 @@
                     <form @submit.prevent="editAddExtraCard">
                         <div>
                             <SexyInput
-                                type="text"
+                                @change="alternativeCheck"
+                                :onSelectItem="alternativeCheck"
+                                type="select"
                                 placeholder="name"
                                 v-model="nameInput"
+                                :options="deck.alternativeExtraCards"
+                                :optionProjection="a => a.name"
                                 :labelBorder="true"
+                                :selectOnBlur="true"
+                                :controlInput="false"
+                                :noElementMessage="deck.alternativeExtraCards.length ? nameInput : nameInput ? nameInput : 'no alternative cards'"
                                 class="orange"
                                 labelClass="orange"
+                                listClass="orange text-dark"
+                                :listItemClass="item => findCardByName(item)?.type || 'orange text-dark'"
                                 :required="true"
                             />
                         </div>
@@ -107,50 +116,14 @@
                                 :required="true"
                             />
                         </div>
-                        <div class="btn-group w-100 mb-1" role="group" aria-label="Basic radio toggle button group">
-                            <input
-                                type="radio"
-                                class="btn-check"
-                                name="type"
-                                id="fusionRadioButton"
-                                autocomplete="off"
-                                @change="type = 'fusion'"
-                                :checked="type == 'fusion'"
-                            />
-                            <label class="btn orange col-4" :class="{ fusion: type == 'fusion' }" for="fusionRadioButton">Fusion</label>
-                            <input
-                                type="radio"
-                                class="btn-check"
-                                name="type"
-                                id="synchroRadioButton"
-                                autocomplete="off"
-                                @change="type = 'synchro'"
-                                :checked="type == 'synchro'"
-                            />
-                            <label class="btn orange col-4" :class="{ synchro: type == 'synchro' }" for="synchroRadioButton">Synchro</label>
-                            <input
-                                type="radio"
-                                class="btn-check"
-                                name="type"
-                                id="xyzRadioButton"
-                                autocomplete="off"
-                                @change="type = 'xyz'"
-                                :checked="type == 'xyz'"
-                            />
-                            <label class="btn orange col-4" :class="{ xyz: type == 'xyz' }" for="xyzRadioButton">XYZ</label>
-                            <input
-                                type="radio"
-                                class="btn-check"
-                                name="type"
-                                id="linkRadioButton"
-                                autocomplete="off"
-                                @change="type = 'link'"
-                                :checked="type == 'link'"
-                            />
-                            <label class="btn orange col-4" :class="{ link: type == 'link' }" for="linkRadioButton">Link</label>
+                        <div class="extraTypes">
+                            <div @click="type = 'fusion'" class="round-start" :class="type == 'fusion' ? 'fusion' : 'orange text-dark'">Fusion</div>
+                            <div @click="type = 'synchro'" :class="type == 'synchro' ? 'synchro' : 'orange text-dark'">Synchro</div>
+                            <div @click="type = 'xyz'" :class="type == 'xyz' ? 'xyz' : 'orange text-dark'">XYZ</div>
+                            <div @click="type = 'link'" class="round-end" :class="type == 'link' ? 'link' : 'orange text-dark'">Link</div>
                         </div>
                         <br />
-                        <button type="submit" class="btn w-100 mt-1 orange">Confirm</button>
+                        <button type="submit" class="btn w-100 mt-1 orange round">&#10004;</button>
                     </form>
                 </div>
             </div>
@@ -193,13 +166,13 @@
 </template>
 <script lang="ts">
 import { defineComponent } from 'vue'
-import { decks, deck, searchOnline, safeDeck } from '@/global'
+import { decks, deck, searchOnline, safeDeck, findCardByName } from '@/global'
 import * as type from '@/types'
 import SexyInput from '../SexyInput.vue'
 export default defineComponent({
     components: { SexyInput },
     setup() {
-        return { decks, deck, searchOnline }
+        return { decks, deck, searchOnline, findCardByName }
     },
     mounted() {
         this.countExtraCards()
@@ -264,22 +237,34 @@ export default defineComponent({
             var modal = document.getElementById('extraCardDeleteModal')
             if (modal) modal.style.display = 'none'
         },
+        alternativeCheck() {
+            this.nameInput.trim()
+            this.deck.alternativeExtraCards.forEach(card => {
+                if (card.name == this.nameInput) {
+                    this.type = card.type
+                    this.countInput = card.count
+                }
+            })
+        },
         addExtraCard() {
             if (this.deck.extraCards.findIndex(c => c.name == this.nameInput) != -1) return this.closeExtraCardAddEditModal()
             if (this.counts.reduce((a, b) => a + b) + parseInt(this.countInput) > 15) return this.closeExtraCardAddEditModal()
-
+            this.nameInput.trim()
+            this.deck.alternativeExtraCards = this.deck.alternativeExtraCards.filter(card => card.name != this.nameInput)
             this.deck.extraCards.push({
                 name: this.nameInput,
                 count: parseInt(this.countInput),
                 type: this.type as type.ExtraCardType,
                 id: Math.random().toString().slice(-15),
             })
-            this.countExtraCards()(this.deck)
+            this.countExtraCards()
+            safeDeck(this.deck)
             this.closeExtraCardAddEditModal()
         },
         editExtraCard() {
             if (this.counts.reduce((a, b) => a + b) - this.deck.extraCards[this.editCardId].count + parseInt(this.countInput) > 15)
                 return this.closeExtraCardAddEditModal()
+            this.nameInput.trim()
             this.deck.extraCards[this.editCardId] = {
                 name: this.nameInput,
                 count: parseInt(this.countInput),
@@ -291,6 +276,12 @@ export default defineComponent({
             this.closeExtraCardAddEditModal()
         },
         deleteExtraCard() {
+            if (this.deck.alternativeExtraCards) {
+                this.deck.alternativeExtraCards.push(this.deck.extraCards[this.deleteCardId])
+            } else {
+                this.deck.alternativeExtraCards = [this.deck.extraCards[this.deleteCardId]]
+            }
+
             this.deck.extraCards.splice(this.deleteCardId, 1)
             safeDeck(this.deck)
             this.closeExtraCardDeleteModal()

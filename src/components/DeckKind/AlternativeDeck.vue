@@ -7,51 +7,6 @@
     />
 
     <div class="container mt-2">
-        <div class="d-flex mb-1">
-            <div class="w-25 round-start" style="border: 1px solid #ffa107">
-                Handtraps:
-                <br />
-                {{ counts[0] }}({{ uniqueCounts[0] }})
-            </div>
-            <div class="w-25" style="border: 1px solid #ffa107">
-                Seacher:
-                <br />
-                {{ counts[1] }}({{ uniqueCounts[1] }})
-            </div>
-            <div class="w-25" style="border: 1px solid #ffa107">
-                Combo Starter:
-                <br />
-                {{ counts[2] }}({{ uniqueCounts[2] }})
-            </div>
-            <div class="w-25 round-end" style="border: 1px solid #ffa107">
-                Negate:
-                <br />
-                {{ counts[6] }}({{ uniqueCounts[6] }})
-            </div>
-        </div>
-        <div class="d-flex mb-1">
-            <div class="w-25 round-start" style="border: 1px solid #ffa107">
-                Once per Turn:
-                <br />
-                {{ counts[5] }}({{ uniqueCounts[5] }})
-            </div>
-            <div class="w-25" style="border: 1px solid #ffa107">
-                Searchable:
-                <br />
-                {{ counts[4] }}({{ uniqueCounts[4] }})
-            </div>
-            <div class="w-25" style="border: 1px solid #ffa107">
-                Combo Piece:
-                <br />
-                {{ counts[3] }}({{ uniqueCounts[3] }})
-            </div>
-            <div class="w-25 round-end" style="border: 1px solid #ffa107">
-                Interaption:
-                <br />
-                {{ counts[7] }}({{ uniqueCounts[7] }})
-            </div>
-        </div>
-        <br />
         <div>
             <button type="button" class="w-100 btn orange round" @click="openCardAddModal()">
                 <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-plus-circle" viewBox="0 0 16 16">
@@ -70,10 +25,10 @@
                 </tr>
             </thead>
             <tbody>
-                <tr v-for="card in deck.alternativeCards" :key="card.name">
+                <tr v-for="card in deck.alternativeCards.concat(deck.alternativeExtraCards)" :key="card.name">
                     <th style="text-align: left" :class="card.type" @dblclick="searchOnline(card.name)">{{ card.name }}({{ card.count }})</th>
                     <td :class="card.type">
-                        <button @click="openCardEditModal(card.name)" class="me-2" style="background-color: #ffffff00; border: none">
+                        <button @click="openCardEditModal(card)" class="me-2" style="background-color: #ffffff00; border: none">
                             <svg xmlns="http://www.w3.org/2000/svg" width="5.5vw" height="5.5vw" class="bi bi-gear" viewBox="0 0 16 16">
                                 <path
                                     d="M8 4.754a3.246 3.246 0 1 0 0 6.492 3.246 3.246 0 0 0 0-6.492zM5.754 8a2.246 2.246 0 1 1 4.492 0 2.246 2.246 0 0 1-4.492 0z"
@@ -131,104 +86,172 @@
                             :required="true"
                         />
                     </div>
-                    <div class="btn-group w-100 mb-1" role="group" aria-label="Basic radio toggle button group">
-                        <input
-                            type="radio"
-                            class="btn-check"
-                            name="type"
-                            id="btnradio12"
-                            autocomplete="off"
-                            @change="type = 'monster'"
-                            :checked="type == 'monster'"
-                        />
-                        <label class="btn orange col-4" :class="{ monster: type == 'monster' }" for="btnradio12">Monster</label>
-                        <input
-                            type="radio"
-                            class="btn-check"
-                            name="type"
-                            id="btnradio13"
-                            autocomplete="off"
-                            @change="type = 'spell'"
-                            :checked="type == 'spell'"
-                        />
-                        <label class="btn orange col-4" :class="{ spell: type == 'spell' }" for="btnradio13">Spell</label>
-                        <input
-                            type="radio"
-                            class="btn-check"
-                            name="type"
-                            id="btnradio14"
-                            autocomplete="off"
-                            @change="type = 'trap'"
-                            :checked="type == 'trap'"
-                        />
-                        <label class="btn orange col-4" :class="{ trap: type == 'trap' }" for="btnradio14">Trap</label>
+                    <div
+                        v-if="editAdd == 'add' || selectedCard.type == 'monster' || selectedCard.type == 'spell' || selectedCard.type == 'trap'"
+                        class="types"
+                    >
+                        <div
+                            @click="type = 'monster'"
+                            style="border: 1px solid rgb(12, 12, 12)"
+                            class="round-start"
+                            :class="type == 'monster' ? 'monster' : 'orange text-dark'"
+                        >
+                            Monster
+                        </div>
+                        <div
+                            @click="type = 'spell'"
+                            style="border: 1px solid rgb(12, 12, 12)"
+                            :class="type == 'spell' ? 'spell' : 'orange text-dark'"
+                        >
+                            Spell
+                        </div>
+                        <div
+                            @click="type = 'trap'"
+                            style="border: 1px solid rgb(12, 12, 12)"
+                            class="round-end"
+                            :class="type == 'trap' ? 'trap' : 'orange text-dark'"
+                        >
+                            Trap
+                        </div>
                     </div>
-                    <div class="btn-group rounded orange mb-1 w-100" role="group" aria-label="Basic checkbox toggle button group">
-                        <input type="checkbox" class="btn-check" id="btncheck9" autocomplete="off" v-model="properties[0]" />
-                        <label class="btn btn-outline-primary w-25" for="btncheck9">Handtrap</label>
-                        <input type="checkbox" class="btn-check" id="btncheck10" autocomplete="off" v-model="properties[1]" />
-                        <label class="btn btn-outline-primary w-25" for="btncheck10">Searcher</label>
-                        <input type="checkbox" class="btn-check" id="btncheck11" autocomplete="off" v-model="properties[2]" />
-                        <label class="btn btn-outline-primary w-25" for="btncheck11">Combo Starter</label>
-                        <input type="checkbox" class="btn-check" id="btncheck12" autocomplete="off" v-model="properties[6]" />
-                        <label class="btn btn-outline-primary w-25" for="btncheck12">Negate</label>
+                    <div
+                        class="extraTypes mt-1"
+                        v-if="
+                            editAdd == 'add' ||
+                            selectedCard.type == 'fusion' ||
+                            selectedCard.type == 'synchro' ||
+                            selectedCard.type == 'xyz' ||
+                            selectedCard.type == 'link'
+                        "
+                    >
+                        <div
+                            @click="type = 'fusion'"
+                            style="border: 1px solid rgb(12, 12, 12)"
+                            class="round-start"
+                            :class="type == 'fusion' ? 'fusion' : 'orange text-dark'"
+                        >
+                            Fusion
+                        </div>
+                        <div
+                            @click="type = 'synchro'"
+                            style="border: 1px solid rgb(12, 12, 12)"
+                            :class="type == 'synchro' ? 'synchro' : 'orange text-dark'"
+                        >
+                            Synchro
+                        </div>
+                        <div @click="type = 'xyz'" style="border: 1px solid rgb(12, 12, 12)" :class="type == 'xyz' ? 'xyz' : 'orange text-dark'">
+                            XYZ
+                        </div>
+                        <div
+                            @click="type = 'link'"
+                            style="border: 1px solid rgb(12, 12, 12)"
+                            class="round-end"
+                            :class="type == 'link' ? 'link' : 'orange text-dark'"
+                        >
+                            Link
+                        </div>
                     </div>
+                    <div v-if="type == 'monster' || type == 'spell' || type == 'trap'" class="mt-3">
+                        <div class="properties">
+                            <div
+                                @click="properties[0] = !properties[0]"
+                                style="border: 1px solid rgb(12, 12, 12)"
+                                class="round-start"
+                                :class="properties[0] ? 'green text-black' : 'orange text-dark'"
+                            >
+                                Handtrap
+                            </div>
+                            <div
+                                @click="properties[1] = !properties[1]"
+                                style="border: 1px solid rgb(12, 12, 12)"
+                                :class="properties[1] ? 'green text-black' : 'orange text-dark'"
+                            >
+                                Searcher
+                            </div>
+                            <div
+                                @click="properties[2] = !properties[2]"
+                                style="border: 1px solid rgb(12, 12, 12)"
+                                :class="properties[2] ? 'green text-black' : 'orange text-dark'"
+                            >
+                                Combo Starter
+                            </div>
+                            <div
+                                @click="properties[3] = !properties[3]"
+                                style="border: 1px solid rgb(12, 12, 12)"
+                                class="round-end"
+                                :class="properties[3] ? 'green text-black' : 'orange text-dark'"
+                            >
+                                Negate
+                            </div>
+                        </div>
+                        <div class="properties mt-1">
+                            <div
+                                @click="properties[4] = !properties[4]"
+                                style="border: 1px solid rgb(12, 12, 12)"
+                                class="round-start"
+                                :class="properties[4] ? 'green text-black' : 'orange text-dark'"
+                            >
+                                Once per Turn
+                            </div>
+                            <div
+                                @click="properties[5] = !properties[5]"
+                                style="border: 1px solid rgb(12, 12, 12)"
+                                :class="properties[5] ? 'green text-black' : 'orange text-dark'"
+                            >
+                                Searchable
+                            </div>
+                            <div
+                                @click="properties[6] = !properties[6]"
+                                style="border: 1px solid rgb(12, 12, 12)"
+                                :class="properties[6] ? 'green text-black' : 'orange text-dark'"
+                            >
+                                Combo Piece
+                            </div>
+                            <div
+                                @click="properties[7] = !properties[7]"
+                                style="border: 1px solid rgb(12, 12, 12)"
+                                class="round-end"
+                                :class="properties[7] ? 'green text-black' : 'orange text-dark'"
+                            >
+                                Interaption
+                            </div>
+                        </div>
+                    </div>
+                    <div class="value mt-3">
+                        <div
+                            @click="value = -1"
+                            style="border: 1px solid rgb(12, 12, 12)"
+                            class="round-start"
+                            :class="value == -1 ? 'green text-black' : 'orange text-dark'"
+                        >
+                            -1
+                        </div>
+                        <div
+                            @click="value = 0"
+                            style="border: 1px solid rgb(12, 12, 12)"
+                            :class="value == 0 ? 'green text-black' : 'orange text-dark'"
+                        >
+                            0
+                        </div>
+                        <div
+                            @click="value = 0.5"
+                            style="border: 1px solid rgb(12, 12, 12)"
+                            :class="value == 0.5 ? 'green text-black' : 'orange text-dark'"
+                        >
+                            Maybe +1
+                        </div>
+                        <div
+                            @click="value = 1"
+                            style="border: 1px solid rgb(12, 12, 12)"
+                            class="round-end"
+                            :class="value == 1 ? 'green text-black' : 'orange text-dark'"
+                        >
+                            1
+                        </div>
+                    </div>
+
                     <br />
-                    <div class="btn-group rounded orange mb-1 w-100" role="group" aria-label="Basic checkbox toggle button group">
-                        <input type="checkbox" class="btn-check" id="btncheck13" autocomplete="off" v-model="properties[5]" />
-                        <label class="btn btn-outline-primary w-25" for="btncheck13">Once per Turn</label>
-                        <input type="checkbox" class="btn-check" id="btncheck14" autocomplete="off" v-model="properties[4]" />
-                        <label class="btn btn-outline-primary w-25" for="btncheck14">Searchable</label>
-                        <input type="checkbox" class="btn-check" id="btncheck15" autocomplete="off" v-model="properties[3]" />
-                        <label class="btn btn-outline-primary w-25" for="btncheck15">Combo Piece</label>
-                        <input type="checkbox" class="btn-check" id="btncheck16" autocomplete="off" v-model="properties[7]" />
-                        <label class="btn btn-outline-primary w-25" for="btncheck16">Interaption</label>
-                    </div>
-                    <br />
-                    <div class="btn-group rounded w-100 orange" role="group" aria-label="Basic radio toggle button group">
-                        <input
-                            type="radio"
-                            class="btn-check"
-                            name="btnradio"
-                            id="btnradio4"
-                            autocomplete="off"
-                            @change="value = -1"
-                            :checked="value == -1"
-                        />
-                        <label class="btn btn-outline-primary w-25" for="btnradio4">-1</label>
-                        <input
-                            type="radio"
-                            class="btn-check"
-                            name="btnradio"
-                            id="btnradio5"
-                            autocomplete="off"
-                            @change="value = 0"
-                            :checked="value == 0"
-                        />
-                        <label class="btn btn-outline-primary w-25" for="btnradio5">0</label>
-                        <input
-                            type="radio"
-                            class="btn-check"
-                            name="btnradio"
-                            id="btnradio6"
-                            autocomplete="off"
-                            @change="value = 0.5"
-                            :checked="value == 0.5"
-                        />
-                        <label class="btn btn-outline-primary w-25" for="btnradio6">Maybe +1</label>
-                        <input
-                            type="radio"
-                            class="btn-check"
-                            name="btnradio"
-                            id="btnradio7"
-                            autocomplete="off"
-                            @change="value = 1"
-                            :checked="value == 1"
-                        />
-                        <label class="btn btn-outline-primary w-25" for="btnradio7">+1</label>
-                    </div>
-                    <br />
-                    <button type="submit" class="btn w-100 mt-1 orange">Confirm</button>
+                    <button type="submit" class="btn w-100 mt-1 orange round">&#10004;</button>
                 </form>
             </div>
         </div>
@@ -282,18 +305,19 @@ export default defineComponent({
             deckValue: 0,
             value: 0,
             deckNumber: 0,
-            type: 'monster' as type.CardType,
+            type: 'monster' as type.CardType | type.ExtraCardType,
 
             properties: [false, false, false, false, false, false, false, false],
             counts: [0, 0, 0, 0, 0, 0, 0, 0],
             uniqueCounts: [0, 0, 0, 0, 0, 0, 0, 0],
 
-            editCardIndex: 0,
             deleteCardId: 0,
 
             nameInput: '',
             countInput: '',
             editAdd: '',
+
+            selectedCard: {} as type.Card | type.ExtraCard,
         }
     },
     methods: {
@@ -319,6 +343,7 @@ export default defineComponent({
             }
             this.deleteCardId = this.deck.alternativeCards.findIndex(c => c.name == name)
             this.nameInput = this.deck.alternativeCards[this.deleteCardId].name
+            this.type = 'monster'
             var modal = document.getElementById('cardDeleteModal')
             if (modal) modal.style.display = 'block'
         },
@@ -335,17 +360,17 @@ export default defineComponent({
             var modal = document.getElementById('cardAddEditModal')
             if (modal) modal.style.display = 'block'
         },
-        openCardEditModal(name: string) {
+        openCardEditModal(card: type.Card) {
             window.onclick = event => {
                 if (event.target == document.getElementById('cardAddEditModal')) this.closeCardAddEditModal()
             }
+            this.selectedCard = card
             this.editAdd = 'edit'
-            this.editCardIndex = this.deck.alternativeCards.findIndex(c => c.name == name)
-            this.nameInput = this.deck.alternativeCards[this.editCardIndex].name
-            this.countInput = JSON.stringify(this.deck.alternativeCards[this.editCardIndex].count)
-            this.properties = this.deck.alternativeCards[this.editCardIndex].properties
-            this.value = this.deck.alternativeCards[this.editCardIndex].value
-            this.type = this.deck.alternativeCards[this.editCardIndex].type
+            this.nameInput = card.name
+            this.countInput = card.count
+            this.type = card.type
+            this.properties = card.properties || []
+            this.value = card.value || 0
             var modal = document.getElementById('cardAddEditModal')
             if (modal) modal.style.display = 'block'
         },
@@ -355,35 +380,66 @@ export default defineComponent({
             if (modal) modal.style.display = 'none'
         },
         addCard() {
-            while (this.nameInput.endsWith(' ')) this.nameInput = this.nameInput.slice(0, -1)
-            if (this.deck.alternativeCards) {
-                if (this.deck.alternativeCards.findIndex(c => c.name == this.nameInput) == -1) {
-                    this.deck.alternativeCards.push({
-                        name: this.nameInput,
-                        type: this.type,
-                        count: parseInt(this.countInput),
-                        properties: this.properties,
-                        value: this.value,
-                        id: Math.random().toString().slice(-15),
-                    })
+            this.nameInput.trim()
+            if (this.type == 'monster' || this.type == 'spell' || this.type == 'trap') {
+                if (this.deck.alternativeCards) {
+                    if (this.deck.alternativeCards.findIndex(c => c.name == this.nameInput) == -1) {
+                        this.deck.alternativeCards.push({
+                            name: this.nameInput,
+                            type: this.type,
+                            count: parseInt(this.countInput),
+                            properties: this.properties,
+                            value: this.value,
+                            id: Math.random().toString().slice(-15),
+                        })
+                    }
                 }
-                this.uniqueCardDeck()
-                this.inputReset()
-                this.countCard()
-                this.sortDeck()
-                safeDeck(this.deck)
-                this.closeCardAddEditModal()
+            } else {
+                if (this.deck.alternativeExtraCards) {
+                    if (this.deck.alternativeExtraCards.findIndex(c => c.name == this.nameInput) == -1) {
+                        this.deck.alternativeExtraCards.push({
+                            name: this.nameInput,
+                            type: this.type,
+                            count: parseInt(this.countInput),
+                            id: Math.random().toString().slice(-15),
+                        })
+                    }
+                } else {
+                    this.alternativeExtraCards = [
+                        {
+                            name: this.nameInput,
+                            type: this.type,
+                            count: parseInt(this.countInput),
+                            id: Math.random().toString().slice(-15),
+                        },
+                    ]
+                }
             }
+            this.uniqueCardDeck()
+            this.inputReset()
+            this.countCard()
+            this.sortDeck()
+            safeDeck(this.deck)
+            this.closeCardAddEditModal()
         },
         editCard() {
-            while (this.nameInput.endsWith(' ')) this.nameInput = this.nameInput.slice(0, -1)
-            this.deck.alternativeCards[this.editCardIndex] = {
-                name: this.nameInput,
-                type: this.type,
-                count: parseInt(this.countInput),
-                properties: this.properties,
-                value: this.value,
-                id: this.deck.alternativeCards[this.editCardIndex].id,
+            this.nameInput.trim()
+            if (this.type == 'monster' || this.type == 'spell' || this.type == 'trap') {
+                this.deck.alternativeCards[this.deck.alternativeCards.findIndex(e => e.id == this.selectedCard.id)] = {
+                    name: this.nameInput,
+                    type: this.type,
+                    count: this.countInput,
+                    properties: this.properties,
+                    value: this.value,
+                    id: this.selectedCard.id,
+                }
+            } else {
+                this.deck.alternativeExtraCards[this.deck.alternativeExtraCards.findIndex(e => e.id == this.selectedCard.id)] = {
+                    name: this.nameInput,
+                    type: this.type,
+                    count: this.countInput,
+                    id: this.selectedCard.id,
+                }
             }
             this.uniqueCardDeck()
             this.countCard()

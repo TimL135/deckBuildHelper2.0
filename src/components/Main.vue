@@ -17,7 +17,7 @@
                     :selectOnBlur="true"
                     :controlInput="false"
                     :optionProjection="a => a.name"
-                    btnText="Confirm"
+                    btnText="&#10004;"
                     :btnAction="loadDeck"
                     class="orange"
                     btnClass="orange"
@@ -66,7 +66,7 @@
                 style="border: 1px solid rgb(12, 12, 12)"
                 @click="selectedDeckKind = 'alternativeDeck'"
             >
-                Alternative Deck
+                Alternatives
             </div>
         </div>
     </div>
@@ -166,14 +166,10 @@ import SideDeck from '@/components/DeckKind/SideDeck.vue'
 import AlternativeDeck from '@/components/DeckKind/AlternativeDeck.vue'
 import SexyInput from '../components/SexyInput.vue'
 import { decks, deck, setHTMLClass, safeDeck } from '@/global'
-import { getDeck, setDeck, setDecks } from '@/API'
 import * as type from '@/types'
 export default defineComponent({
     components: { MainDeck, ExtraDeck, SideDeck, AlternativeDeck, SexyInput },
     mounted() {
-        if (getDeck()) {
-            this.selectedDeck = getDeck().name
-        }
         setHTMLClass('Main')
     },
     setup() {
@@ -259,6 +255,7 @@ export default defineComponent({
                         cardGroups: [],
                         sideCards: [],
                         alternativeCards: [],
+                        alternativeExtraCards: [],
                         logs: [],
                     }
                     this.decks.push(this.deck)
@@ -274,6 +271,7 @@ export default defineComponent({
                             cardGroups: [],
                             sideCards: [],
                             alternativeCards: [],
+                            alternativeExtraCards: [],
                             logs: [],
                         })
                         this.deck = this.decks[this.decks.findIndex(d => d.name == this.selectedDeck)]

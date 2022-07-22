@@ -106,12 +106,21 @@
                 <form @submit.prevent="editAddCard()">
                     <div>
                         <SexyInput
-                            type="text"
+                            @change="alternativeCheck"
+                            :onSelectItem="alternativeCheck"
+                            type="select"
                             placeholder="name"
                             v-model="nameInput"
+                            :options="deck.alternativeCards"
+                            :optionProjection="a => a.name"
                             :labelBorder="true"
+                            :selectOnBlur="true"
+                            :controlInput="false"
+                            :noElementMessage="deck.alternativeCards.length ? nameInput : nameInput ? nameInput : 'no alternative cards'"
                             class="orange"
                             labelClass="orange"
+                            listClass="orange text-dark"
+                            :listItemClass="item => findCardByName(item)?.type || 'orange text-dark'"
                             :required="true"
                         />
                     </div>
@@ -131,105 +140,129 @@
                             :required="true"
                         />
                     </div>
-                    <div class="btn-group w-100 mb-1" role="group" aria-label="Basic radio toggle button group">
-                        <input
-                            type="radio"
-                            class="btn-check"
-                            name="type"
-                            id="btnradio12"
-                            autocomplete="off"
-                            @change="type = 'monster'"
-                            :checked="type == 'monster'"
-                        />
-                        <label class="btn orange col-4" :class="{ monster: type == 'monster' }" for="btnradio12">Monster</label>
-                        <input
-                            type="radio"
-                            class="btn-check"
-                            name="type"
-                            id="btnradio13"
-                            autocomplete="off"
-                            @change="type = 'spell'"
-                            :checked="type == 'spell'"
-                        />
-                        <label class="btn orange col-4" :class="{ spell: type == 'spell' }" for="btnradio13">Spell</label>
-                        <input
-                            type="radio"
-                            class="btn-check"
-                            name="type"
-                            id="btnradio14"
-                            autocomplete="off"
-                            @change="type = 'trap'"
-                            :checked="type == 'trap'"
-                        />
-                        <label class="btn orange col-4" :class="{ trap: type == 'trap' }" for="btnradio14">Trap</label>
+                    <div class="types">
+                        <div
+                            @click="type = 'monster'"
+                            style="border: 1px solid rgb(12, 12, 12)"
+                            class="round-start"
+                            :class="type == 'monster' ? 'monster' : 'orange text-dark'"
+                        >
+                            Monster
+                        </div>
+                        <div
+                            @click="type = 'spell'"
+                            style="border: 1px solid rgb(12, 12, 12)"
+                            :class="type == 'spell' ? 'spell' : 'orange text-dark'"
+                        >
+                            Spell
+                        </div>
+                        <div
+                            @click="type = 'trap'"
+                            style="border: 1px solid rgb(12, 12, 12)"
+                            class="round-end"
+                            :class="type == 'trap' ? 'trap' : 'orange text-dark'"
+                        >
+                            Trap
+                        </div>
                     </div>
-                    <div class="btn-group rounded orange mb-1 w-100" role="group" aria-label="Basic checkbox toggle button group">
-                        <input type="checkbox" class="btn-check" id="btncheck9" autocomplete="off" v-model="properties[0]" />
-                        <label class="btn btn-outline-primary w-25" for="btncheck9">Handtrap</label>
-                        <input type="checkbox" class="btn-check" id="btncheck10" autocomplete="off" v-model="properties[1]" />
-                        <label class="btn btn-outline-primary w-25" for="btncheck10">Searcher</label>
-                        <input type="checkbox" class="btn-check" id="btncheck11" autocomplete="off" v-model="properties[2]" />
-                        <label class="btn btn-outline-primary w-25" for="btncheck11">Combo Starter</label>
-                        <input type="checkbox" class="btn-check" id="btncheck12" autocomplete="off" v-model="properties[6]" />
-
-                        <label class="btn btn-outline-primary w-25" for="btncheck12">Negate</label>
+                    <div class="properties mt-3">
+                        <div
+                            @click="properties[0] = !properties[0]"
+                            style="border: 1px solid rgb(12, 12, 12)"
+                            class="round-start"
+                            :class="properties[0] ? 'green text-black' : 'orange text-dark'"
+                        >
+                            Handtrap
+                        </div>
+                        <div
+                            @click="properties[1] = !properties[1]"
+                            style="border: 1px solid rgb(12, 12, 12)"
+                            :class="properties[1] ? 'green text-black' : 'orange text-dark'"
+                        >
+                            Searcher
+                        </div>
+                        <div
+                            @click="properties[2] = !properties[2]"
+                            style="border: 1px solid rgb(12, 12, 12)"
+                            :class="properties[2] ? 'green text-black' : 'orange text-dark'"
+                        >
+                            Combo Starter
+                        </div>
+                        <div
+                            @click="properties[3] = !properties[3]"
+                            style="border: 1px solid rgb(12, 12, 12)"
+                            class="round-end"
+                            :class="properties[3] ? 'green text-black' : 'orange text-dark'"
+                        >
+                            Negate
+                        </div>
+                    </div>
+                    <div class="properties mt-1">
+                        <div
+                            @click="properties[4] = !properties[4]"
+                            style="border: 1px solid rgb(12, 12, 12)"
+                            class="round-start"
+                            :class="properties[4] ? 'green text-black' : 'orange text-dark'"
+                        >
+                            Once per Turn
+                        </div>
+                        <div
+                            @click="properties[5] = !properties[5]"
+                            style="border: 1px solid rgb(12, 12, 12)"
+                            :class="properties[5] ? 'green text-black' : 'orange text-dark'"
+                        >
+                            Searchable
+                        </div>
+                        <div
+                            @click="properties[6] = !properties[6]"
+                            style="border: 1px solid rgb(12, 12, 12)"
+                            :class="properties[6] ? 'green text-black' : 'orange text-dark'"
+                        >
+                            Combo Piece
+                        </div>
+                        <div
+                            @click="properties[7] = !properties[7]"
+                            style="border: 1px solid rgb(12, 12, 12)"
+                            class="round-end"
+                            :class="properties[7] ? 'green text-black' : 'orange text-dark'"
+                        >
+                            Interaption
+                        </div>
+                    </div>
+                    <div class="value mt-3">
+                        <div
+                            @click="value = -1"
+                            style="border: 1px solid rgb(12, 12, 12)"
+                            class="round-start"
+                            :class="value == -1 ? 'green text-black' : 'orange text-dark'"
+                        >
+                            -1
+                        </div>
+                        <div
+                            @click="value = 0"
+                            style="border: 1px solid rgb(12, 12, 12)"
+                            :class="value == 0 ? 'green text-black' : 'orange text-dark'"
+                        >
+                            0
+                        </div>
+                        <div
+                            @click="value = 0.5"
+                            style="border: 1px solid rgb(12, 12, 12)"
+                            :class="value == 0.5 ? 'green text-black' : 'orange text-dark'"
+                        >
+                            Maybe +1
+                        </div>
+                        <div
+                            @click="value = 1"
+                            style="border: 1px solid rgb(12, 12, 12)"
+                            class="round-end"
+                            :class="value == 1 ? 'green text-black' : 'orange text-dark'"
+                        >
+                            1
+                        </div>
                     </div>
                     <br />
-                    <div class="btn-group rounded orange mb-1 w-100" role="group" aria-label="Basic checkbox toggle button group">
-                        <input type="checkbox" class="btn-check" id="btncheck13" autocomplete="off" v-model="properties[5]" />
-                        <label class="btn btn-outline-primary w-25" for="btncheck13">Once per Turn</label>
-                        <input type="checkbox" class="btn-check" id="btncheck14" autocomplete="off" v-model="properties[4]" />
-                        <label class="btn btn-outline-primary w-25" for="btncheck14">Searchable</label>
-                        <input type="checkbox" class="btn-check" id="btncheck15" autocomplete="off" v-model="properties[3]" />
-                        <label class="btn btn-outline-primary w-25" for="btncheck15">Combo Piece</label>
-                        <input type="checkbox" class="btn-check" id="btncheck16" autocomplete="off" v-model="properties[7]" />
-                        <label class="btn btn-outline-primary w-25" for="btncheck16">Interaption</label>
-                    </div>
-                    <br />
-                    <div class="btn-group rounded w-100 orange" role="group" aria-label="Basic radio toggle button group">
-                        <input
-                            type="radio"
-                            class="btn-check"
-                            name="btnradio"
-                            id="btnradio4"
-                            autocomplete="off"
-                            @change="value = -1"
-                            :checked="value == -1"
-                        />
-                        <label class="btn btn-outline-primary w-25" for="btnradio4">-1</label>
-                        <input
-                            type="radio"
-                            class="btn-check"
-                            name="btnradio"
-                            id="btnradio5"
-                            autocomplete="off"
-                            @change="value = 0"
-                            :checked="value == 0"
-                        />
-                        <label class="btn btn-outline-primary w-25" for="btnradio5">0</label>
-                        <input
-                            type="radio"
-                            class="btn-check"
-                            name="btnradio"
-                            id="btnradio6"
-                            autocomplete="off"
-                            @change="value = 0.5"
-                            :checked="value == 0.5"
-                        />
-                        <label class="btn btn-outline-primary w-25" for="btnradio6">Maybe +1</label>
-                        <input
-                            type="radio"
-                            class="btn-check"
-                            name="btnradio"
-                            id="btnradio7"
-                            autocomplete="off"
-                            @change="value = 1"
-                            :checked="value == 1"
-                        />
-                        <label class="btn btn-outline-primary w-25" for="btnradio7">+1</label>
-                    </div>
-                    <br />
-                    <button type="submit" class="btn w-100 mt-1 orange">Confirm</button>
+                    <button type="submit" class="btn w-100 mt-1 orange">&#10004;</button>
                 </form>
             </div>
         </div>
@@ -264,13 +297,13 @@
 </template>
 <script lang="ts">
 import { defineComponent } from 'vue'
-import { decks, deck, uniqueAllCards, searchOnline, safeDeck } from '@/global'
+import { decks, deck, uniqueAllCards, searchOnline, safeDeck, findCardByName } from '@/global'
 import * as type from '@/types'
 import SexyInput from '../SexyInput.vue'
 export default defineComponent({
     components: { SexyInput },
     setup() {
-        return { decks, deck, uniqueAllCards, searchOnline }
+        return { decks, deck, uniqueAllCards, searchOnline, findCardByName }
     },
     mounted() {
         this.updateDeck()
@@ -354,14 +387,25 @@ export default defineComponent({
             var modal = document.getElementById('cardAddEditModal')
             if (modal) modal.style.display = 'none'
         },
+        alternativeCheck() {
+            this.nameInput.trim()
+            this.deck.alternativeCards.forEach(card => {
+                if (card.name == this.nameInput) {
+                    this.type = card.type
+                    this.countInput = card.count
+                    this.properties = card.properties
+                    this.value = card.value
+                }
+            })
+        },
         addCard() {
             if (this.deck.sideCards.length > 2) {
                 if (this.deck.sideCards.map(c => c.count).reduce((a, b) => a + b) + parseInt(this.countInput) > 15)
                     return this.closeCardAddEditModal()
             }
-
-            while (this.nameInput.endsWith(' ')) this.nameInput = this.nameInput.slice(0, -1)
+            this.nameInput.trim()
             if (this.deck.sideCards) {
+                this.deck.alternativeCards = this.deck.alternativeCards.filter(card => card.name != this.nameInput)
                 if (this.deck.sideCards.findIndex(c => c.name == this.nameInput) == -1) {
                     this.deck.sideCards.push({
                         name: this.nameInput,
@@ -388,7 +432,7 @@ export default defineComponent({
                 15
             )
                 return this.closeCardAddEditModal()
-            while (this.nameInput.endsWith(' ')) this.nameInput = this.nameInput.slice(0, -1)
+            this.nameInput.trim()
             this.deck.sideCards[this.editCardIndex] = {
                 name: this.nameInput,
                 type: this.type,

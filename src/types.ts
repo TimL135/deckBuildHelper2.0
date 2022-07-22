@@ -24,6 +24,7 @@ export interface Deck {
     extraCards: ExtraCard[]
     sideCards: Card[]
     alternativeCards: Card[]
+    alternativeExtraCards: ExtraCard[]
     logs: Log[]
 }
 export interface Log {

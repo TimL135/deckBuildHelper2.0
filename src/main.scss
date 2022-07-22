@@ -193,6 +193,9 @@ svg {
     --bs-table-accent-bg: var(--bs-table-striped-bg);
     color: #ffa107 !important;
 }
+.text-black{
+color: #000;
+}
 table {
     font-weight: bold !important;
     border-color: #ffa107 !important ;
@@ -201,7 +204,22 @@ table {
 }
 .deleteModal {
     display: grid;
-    display: grid;
     grid-template-columns: 5fr 2fr 2fr 5fr;
     grid-template-areas: '. yes no .';
+}
+.properties{
+    display: grid;
+    grid-template-columns: auto auto auto auto;
+}
+.extraTypes {
+    display: grid;
+    grid-template-columns: auto auto auto auto;
+}
+.types {
+    display: grid;
+    grid-template-columns: auto auto auto;
+}
+.value {
+    display: grid;
+    grid-template-columns: auto auto auto auto;
 }
