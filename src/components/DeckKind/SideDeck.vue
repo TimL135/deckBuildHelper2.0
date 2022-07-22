@@ -302,6 +302,7 @@ import * as type from '@/types'
 import SexyInput from '../SexyInput.vue'
 export default defineComponent({
     components: { SexyInput },
+    watch: { deck: 'updateDeck' },
     setup() {
         return { decks, deck, uniqueAllCards, searchOnline, findCardByName }
     },

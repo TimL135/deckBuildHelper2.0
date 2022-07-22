@@ -17,7 +17,7 @@
                 <div>
                     Deckrating:
                     <br />
-                    {{ deckRating }}%
+                    {{ deckRating }}
                 </div>
             </div>
             <div class="col-4 round-end" style="border: 1px solid #ffa107">
@@ -338,6 +338,7 @@ import * as type from '@/types'
 import SexyInput from '../SexyInput.vue'
 export default defineComponent({
     components: { SexyInput },
+    watch: { deck: 'updateDeck' },
     setup() {
         return { decks, deck, uniqueAllCards, searchOnline, findCardByName }
     },
@@ -559,6 +560,8 @@ export default defineComponent({
         deckRatingValue() {
             if (this.allCards.length) {
                 this.deckValue = Math.round((this.allCards.map(c => c.value).reduce((a, b) => a + b) / this.allCards.length) * 10) / 10
+            } else {
+                this.deckValue = 0
             }
             this.deckRating = 12.5 * (1 - Math.pow(2, -0.5 * this.deckValue))
             this.deckRating += 12.5 * (1 - Math.pow(2, -0.4 * this.counts[0]))

@@ -92,7 +92,7 @@
                                 :labelBorder="true"
                                 :selectOnBlur="true"
                                 :controlInput="false"
-                                :noElementMessage="deck.alternativeExtraCards.length ? nameInput : nameInput ? nameInput : 'no alternative cards'"
+                                :noElementMessage="deck.alternativeExtraCards?.length ? nameInput : nameInput ? nameInput : 'no alternative cards'"
                                 class="orange"
                                 labelClass="orange"
                                 listClass="orange text-dark"
@@ -171,6 +171,7 @@ import * as type from '@/types'
 import SexyInput from '../SexyInput.vue'
 export default defineComponent({
     components: { SexyInput },
+    watch: { deck: 'updateDeck' },
     setup() {
         return { decks, deck, searchOnline, findCardByName }
     },

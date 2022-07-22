@@ -170,6 +170,7 @@ import * as type from '@/types'
 export default defineComponent({
     components: { MainDeck, ExtraDeck, SideDeck, AlternativeDeck, SexyInput },
     mounted() {
+        this.selectedDeck = this.deck.name
         setHTMLClass('Main')
     },
     setup() {
