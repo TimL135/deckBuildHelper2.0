@@ -7,18 +7,18 @@ export const uniqueAllCards = ref([...new Set(deck.value.cards?.filter(c => c.na
 
 export function findCard(id: string) {
     return (
-        deck.value.cards.find(c => c.id == id) ||
-        deck.value.alternativeCards.find(c => c.id == id) ||
-        deck.value.extraCards.find(c => c.id == id) ||
-        deck.value.alternativeExtraCards.find(c => c.id == id)
+        deck.value.cards?.find(c => c.id == id) ||
+        deck.value.alternativeCards?.find(c => c.id == id) ||
+        deck.value.extraCards?.find(c => c.id == id) ||
+        deck.value.alternativeExtraCards?.find(c => c.id == id)
     )
 }
 export function findCardByName(name: string) {
     return (
-        deck.value.cards.find(c => c.name == name) ||
-        deck.value.alternativeCards.find(c => c.name == name) ||
-        deck.value.extraCards.find(c => c.name == name) ||
-        deck.value.alternativeExtraCards.find(c => c.name == name)
+        deck.value.cards?.find(c => c.name == name) ||
+        deck.value.alternativeCards?.find(c => c.name == name) ||
+        deck.value.extraCards?.find(c => c.name == name) ||
+        deck.value.alternativeExtraCards?.find(c => c.name == name)
     )
 }
 export function findCardGroup(id: string) {

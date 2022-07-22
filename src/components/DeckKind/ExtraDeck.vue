@@ -137,7 +137,7 @@
                         <div class="w-50 orange text-dark">Are you sure to delete {{ nameInput }}</div>
                     </div>
                     <div class="deleteModal">
-                        <button type="button" class="btn btn-success me-1" style="grid-area: yes" @click="deleteExtraCard(deleteCardId)">
+                        <button type="button" class="btn btn-success me-1" style="grid-area: yes" @click="deleteExtraCard()">
                             <svg
                                 xmlns="http://www.w3.org/2000/svg"
                                 width="16"

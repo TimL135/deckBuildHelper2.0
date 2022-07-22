@@ -20,7 +20,7 @@
                 </tr>
             </thead>
             <tbody>
-                <tr v-for="combo in deck.combos.filter(c => c.active)" :key="combo">
+                <tr v-for="combo in deck.combos.filter(c => c.active)" :key="JSON.stringify(combo)">
                     <td>
                         {{ deck.combos.findIndex(c => c == combo) + 1 }}
                     </td>
@@ -58,7 +58,7 @@
                     <td>
                         <div
                             v-for="card in combo.cards"
-                            :key="card"
+                            :key="JSON.stringify(card)"
                             class="mb-1 orange text-dark"
                             :class="findCard(card)?.type"
                             @dblclick="typeof card !== 'object' ? searchOnline(findCard(card)?.name) : null"
@@ -78,7 +78,7 @@
                 </tr>
             </thead>
             <tbody>
-                <tr v-for="combo in deck.combos.filter(c => !c.active)" :key="combo">
+                <tr v-for="combo in deck.combos.filter(c => !c.active)" :key="JSON.stringify(combo)">
                     <td>
                         {{ deck.combos.findIndex(c => c == combo) + 1 }}
                     </td>
@@ -116,7 +116,7 @@
                     <td>
                         <div
                             v-for="card in combo.cards"
-                            :key="card"
+                            :key="JSON.stringify(card)"
                             class="mb-1 orange text-dark"
                             :class="findCard(card)?.type"
                             @dblclick="typeof card !== 'object' ? searchOnline(findCard(card)?.name) : null"
@@ -143,7 +143,7 @@
                                 :label-class="comboCardsType[cardNumber - 1] || 'orange'"
                                 :label-border="true"
                                 @change="changeType()"
-                                :options="deck.cards.concat(deck.cardGroups)"
+                                :options="deck.cards.concat(deck.cardGroups || [])"
                                 :option-projection="a => a.name"
                                 @selectItem="changeType()"
                                 :listItemClass="

@@ -31,7 +31,7 @@
         <div class="field">
             <div
                 v-for="(slot, index) of field"
-                :key="slot"
+                :key="slot.name"
                 :style="`grid-area:slot${index + 1}`"
                 style="background-color: gray; border: 2px solid rgb(12, 12, 12)"
                 @click="selectSlot(index, slot)"
