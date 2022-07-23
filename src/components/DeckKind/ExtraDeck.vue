@@ -247,9 +247,10 @@ export default defineComponent({
         },
         addExtraCard() {
             this.nameInput.trim()
+            if (this.deck.alternativeExtraCards)
+                this.deck.alternativeExtraCards = this.deck.alternativeExtraCards.filter(card => card.name != this.nameInput)
             if (this.deck.extraCards.findIndex(c => c.name == this.nameInput) != -1) return this.closeExtraCardAddEditModal()
             if (this.counts.reduce((a, b) => a + b) + parseInt(this.countInput) > 15) {
-                this.deck.alternativeExtraCards = this.deck.alternativeExtraCards.filter(card => card.name != this.nameInput)
                 this.deck.alternativeExtraCards.push({
                     name: this.nameInput,
                     type: this.type,
@@ -260,8 +261,6 @@ export default defineComponent({
                 this.closeExtraCardAddEditModal()
                 return
             }
-
-            this.deck.alternativeExtraCards = this.deck.alternativeExtraCards.filter(card => card.name != this.nameInput)
             this.deck.extraCards.push({
                 name: this.nameInput,
                 count: parseInt(this.countInput),
