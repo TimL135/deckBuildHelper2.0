@@ -248,9 +248,21 @@ export default defineComponent({
             })
         },
         addExtraCard() {
-            if (this.deck.extraCards.findIndex(c => c.name == this.nameInput) != -1) return this.closeExtraCardAddEditModal()
-            if (this.counts.reduce((a, b) => a + b) + parseInt(this.countInput) > 15) return this.closeExtraCardAddEditModal()
             this.nameInput.trim()
+            if (this.deck.extraCards.findIndex(c => c.name == this.nameInput) != -1) return this.closeExtraCardAddEditModal()
+            if (this.counts.reduce((a, b) => a + b) + parseInt(this.countInput) > 15) {
+                this.deck.alternativeExtraCards = this.deck.alternativeExtraCards.filter(card => card.name != this.nameInput)
+                this.deck.alternativeExtraCards.push({
+                    name: this.nameInput,
+                    type: this.type,
+                    count: parseInt(this.countInput),
+                    id: Math.random().toString().slice(-15),
+                })
+                safeDeck(this.deck)
+                this.closeExtraCardAddEditModal()
+                return
+            }
+
             this.deck.alternativeExtraCards = this.deck.alternativeExtraCards.filter(card => card.name != this.nameInput)
             this.deck.extraCards.push({
                 name: this.nameInput,

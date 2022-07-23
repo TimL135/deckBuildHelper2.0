@@ -400,18 +400,30 @@ export default defineComponent({
             })
         },
         addCard() {
-            if (this.deck.sideCards.length > 2) {
-                if (this.deck.sideCards.map(c => c.count).reduce((a, b) => a + b) + parseInt(this.countInput) > 15)
-                    return this.closeCardAddEditModal()
-            }
             this.nameInput.trim()
+            if (this.deck.sideCards.length > 2) {
+                if (this.deck.sideCards.map(c => c.count).reduce((a, b) => a + b) + this.countInput > 15) {
+                    this.deck.alternativeCards = this.deck.alternativeCards.filter(card => card.name != this.nameInput)
+                    this.deck.alternativeCards.push({
+                        name: this.nameInput,
+                        type: this.type,
+                        count: parseInt(this.countInput),
+                        properties: this.properties,
+                        value: this.value,
+                        id: Math.random().toString().slice(-15),
+                    })
+                    safeDeck(this.deck)
+                    this.closeCardAddEditModal()
+                    return
+                }
+            }
             if (this.deck.sideCards) {
                 this.deck.alternativeCards = this.deck.alternativeCards.filter(card => card.name != this.nameInput)
                 if (this.deck.sideCards.findIndex(c => c.name == this.nameInput) == -1) {
                     this.deck.sideCards.push({
                         name: this.nameInput,
                         type: this.type,
-                        count: parseInt(this.countInput),
+                        count: this.countInput,
                         properties: this.properties,
                         value: this.value,
                         id: Math.random().toString(36).slice(),
@@ -426,18 +438,13 @@ export default defineComponent({
             }
         },
         editCard() {
-            if (
-                this.deck.sideCards.map(c => c.count).reduce((a, b) => a + b) -
-                    this.deck.sideCards[this.editCardIndex].count +
-                    parseInt(this.countInput) >
-                15
-            )
+            if (this.deck.sideCards.map(c => c.count).reduce((a, b) => a + b) - this.deck.sideCards[this.editCardIndex].count + this.countInput > 15)
                 return this.closeCardAddEditModal()
             this.nameInput.trim()
             this.deck.sideCards[this.editCardIndex] = {
                 name: this.nameInput,
                 type: this.type,
-                count: parseInt(this.countInput),
+                count: this.countInput,
                 properties: this.properties,
                 value: this.value,
                 id: this.deck.cards[this.editCardIndex].id,
@@ -459,6 +466,7 @@ export default defineComponent({
             this.countInput = ''
         },
         deleteCard(cardIndex: number) {
+            this.deck.alternativeCards.push(this.deck.sideCards[cardIndex])
             this.deck.sideCards.splice(cardIndex, 1)
             this.countCard()
             safeDeck(this.deck)

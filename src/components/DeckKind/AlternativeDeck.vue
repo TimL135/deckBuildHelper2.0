@@ -384,16 +384,25 @@ export default defineComponent({
             this.nameInput.trim()
             if (this.type == 'monster' || this.type == 'spell' || this.type == 'trap') {
                 if (this.deck.alternativeCards) {
-                    if (this.deck.alternativeCards.findIndex(c => c.name == this.nameInput) == -1) {
-                        this.deck.alternativeCards.push({
-                            name: this.nameInput,
-                            type: this.type,
-                            count: parseInt(this.countInput),
-                            properties: this.properties,
-                            value: this.value,
-                            id: Math.random().toString().slice(-15),
-                        })
+                    if (
+                        this.deck.alternativeCards.findIndex(c => c.name == this.nameInput) != -1 ||
+                        this.deck.cards.findIndex(c => c.name == this.nameInput) != -1 ||
+                        this.deck.sideCards.findIndex(c => c.name == this.nameInput) != -1 ||
+                        this.deck.extraCards.findIndex(c => c.name == this.nameInput) != -1 ||
+                        this.deck.alternativeExtraCards.findIndex(c => c.name == this.nameInput) != -1
+                    ) {
+                        this.closeCardAddEditModal()
+                        return
                     }
+
+                    this.deck.alternativeCards.push({
+                        name: this.nameInput,
+                        type: this.type,
+                        count: parseInt(this.countInput),
+                        properties: this.properties,
+                        value: this.value,
+                        id: Math.random().toString().slice(-15),
+                    })
                 }
             } else {
                 if (this.deck.alternativeExtraCards) {
