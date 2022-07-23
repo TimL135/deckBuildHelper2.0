@@ -576,12 +576,8 @@ export default defineComponent({
         },
         sortDeck() {
             this.deck.cards
-                .sort(function (a, b) {
-                    a.name.localeCompare(b.name)
-                })
-                .sort(function (a, b) {
-                    return b.count - a.count
-                })
+                .sort((a, b) => a.name.toLowerCase().localeCompare(b.name.toLowerCase()))
+                .sort((a, b) => b.count - a.count)
                 .sort(function (a, b) {
                     let map = {
                         monster: 1,

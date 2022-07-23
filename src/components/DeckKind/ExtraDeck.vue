@@ -269,6 +269,7 @@ export default defineComponent({
                 id: Math.random().toString().slice(-15),
             })
             this.countExtraCards()
+            this.sortDeck()
             safeDeck(this.deck)
             this.closeExtraCardAddEditModal()
         },
@@ -283,6 +284,7 @@ export default defineComponent({
                 id: this.deck.extraCards.find(c => c.name == this.nameInput)?.id,
             }
             this.countExtraCards()
+            this.sortDeck()
             safeDeck(this.deck)
             this.closeExtraCardAddEditModal()
         },
@@ -321,6 +323,20 @@ export default defineComponent({
             this.type = 'fusion'
             this.nameInput = ''
             this.countInput = ''
+        },
+        sortDeck() {
+            this.deck.extraCards
+                .sort((a, b) => a.name.toLowerCase().localeCompare(b.name.toLowerCase()))
+                .sort((a, b) => b.count - a.count)
+                .sort(function (a, b) {
+                    let map = {
+                        fusion: 1,
+                        synchro: 2,
+                        xyz: 3,
+                        link: 4,
+                    }
+                    return map[a.type] - map[b.type]
+                })
         },
     },
 })
