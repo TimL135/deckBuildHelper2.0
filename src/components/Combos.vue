@@ -166,8 +166,7 @@
         <div class="modal-content">
             <div class="container">
                 <div class="d-flex justify-content: center mb-1">
-                    <div class="w-25"></div>
-                    <div class="w-50 orange text-dark">Are you sure to delete combo{{ deleteComboIndex + 1 }}</div>
+                    <div class="w-100 orange text-dark">Are you sure to delete combo{{ deleteComboIndex + 1 }}</div>
                 </div>
                 <div class="deleteModal">
                     <button type="button" class="btn btn-success me-1" style="grid-area: yes" @click="deleteCombo()">
