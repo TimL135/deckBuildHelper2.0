@@ -162,7 +162,7 @@
         />
         <!-- /sideInput for rangeInput -->
         <!-- sideButton -->
-        <button v-if="btnText" :type="btnType" @click="affirm()" :class="btnClass">
+        <button v-if="btnText" type="button" @click="affirm()" :class="btnClass">
             {{ btnText }}
         </button>
         <!-- /sideButton -->
@@ -229,10 +229,6 @@ export default defineComponent({
         },
         btnAction: {
             type: Function,
-        },
-        btnType: {
-            type: String,
-            default: 'button',
         },
         sideInputType: {
             type: String,
@@ -437,18 +433,27 @@ export default defineComponent({
             //correct the value if necessary and update it
             if (this.controlInput) {
                 if (this.type == 'range') {
-                    let inputValue = parseInt(event.target.value)
-                    if (inputValue > (event.target.max || 100)) inputValue = parseInt(event.target.max) || 100
-                    if (inputValue < (event.target.min || 0)) inputValue = parseInt(event.target.min) || 0
+                    let inputValue = event.target.value * 1
+                    if (inputValue > (event.target.max || 100)) inputValue = event.target.max * 1 || 100
+                    if (inputValue < (event.target.min || 0)) inputValue = event.target.min * 1 || 0
                     if (isNaN(inputValue)) inputValue = 0
-                    this.$emit('update:modelValue', inputValue)
-                    return
+                    event.target.value = inputValue
+                }
+                if (this.type == 'number') {
+                    let inputValue = event.target.value * 1
+                    if (event.target.max) {
+                        if (inputValue > event.target.max) inputValue = event.target.max * 1
+                    }
+                    if (event.target.min) {
+                        if (inputValue < event.target.min) inputValue = event.target.min * 1
+                    }
+                    if (event.target.value) event.target.value = inputValue
                 }
             }
             if (typeof event == 'string') {
                 this.$emit('update:modelValue', event)
             } else {
-                if (this.type == 'number') {
+                if (this.type == 'number' || this.type == 'range') {
                     this.$emit('update:modelValue', event.target.value * 1)
                 } else {
                     this.$emit('update:modelValue', event.target.value)
