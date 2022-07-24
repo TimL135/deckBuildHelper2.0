@@ -46,20 +46,25 @@ export function searchOnline(search) {
     window.open(`http://www.google.com/search?q=cardcluster ${search}`, '_newtab')
 }
 export function actionToText(action: string) {
-    // if (action.match('token')) return action
+    console.log(action)
     while (action.match('0')) {
         let id = undefined
         let counter = 12
-        while (!findCard(id) && counter < 16) {
+        while (!findCard(id) && counter <= 16) {
             id = action.slice(action.indexOf('0'), counter)
             counter++
         }
         action = action.replace(id, findCard(id)?.name)
     }
-
+    const pattern = /\d{15}/g
+    while (action.match(pattern)) {
+        action = action.replace(pattern, convert)
+    }
     return action
 }
-
+function convert(str, p1, offset, s) {
+    return findCard(str)?.name
+}
 export function setHTMLClass(router: string) {
     switch (router) {
         case 'Main':

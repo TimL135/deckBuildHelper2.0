@@ -8,6 +8,14 @@
 
     <div class="mx-3">
         <div class="header sticky">
+            <div style="grid-area: switch" @click="switchSite()">
+                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-arrow-down-up" viewBox="0 0 16 16">
+                    <path
+                        fill-rule="evenodd"
+                        d="M11.5 15a.5.5 0 0 0 .5-.5V2.707l3.146 3.147a.5.5 0 0 0 .708-.708l-4-4a.5.5 0 0 0-.708 0l-4 4a.5.5 0 1 0 .708.708L11 2.707V14.5a.5.5 0 0 0 .5.5zm-7-14a.5.5 0 0 1 .5.5v11.793l3.146-3.147a.5.5 0 0 1 .708.708l-4 4a.5.5 0 0 1-.708 0l-4-4a.5.5 0 0 1 .708-.708L4 13.293V1.5a.5.5 0 0 1 .5-.5z"
+                    />
+                </svg>
+            </div>
             <div style="grid-area: special" @click="specialAction('view')">
                 <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-stars" viewBox="0 0 16 16">
                     <path
@@ -35,13 +43,13 @@
                 </button>
             </div>
         </div>
-        <div class="field">
+        <div class="field" v-if="playerSite">
             <div
-                v-for="(slot, index) of field"
+                v-for="(slot, index) of field.filter(e => !e.name.includes('enemy'))"
                 :key="slot.name"
                 :style="`grid-area:slot${index + 1}`"
                 style="background-color: gray; border: 2px solid rgb(12, 12, 12)"
-                @click="selectSlot(index, slot)"
+                @click="selectSlot(slot)"
                 @dblclick="slot.value.length == 1 && slot.value != slot.name ? searchOnline(slot.value[0]) : null"
                 class="text-dark"
                 :class="findCardByName(slot.value[0])?.type"
@@ -59,6 +67,20 @@
                         ? `${slot.value[0]}(${slot.value.length})`
                         : slot.value[0]
                 }}
+            </div>
+        </div>
+        <div class="enemyField" v-else>
+            <div
+                v-for="(slot, index) of [field[1], field[0], ...field.filter(e => e.name.includes('enemy'))]"
+                :key="slot.name"
+                :style="`grid-area:slot${index + 1}`"
+                style="background-color: gray; border: 2px solid rgb(12, 12, 12)"
+                @click="selectSlot(slot)"
+                @dblclick="slot.value.length == 1 && slot.value != slot.name ? searchOnline(slot.value[0]) : null"
+                class="text-dark"
+                :class="findCardByName(slot.value[0])?.type"
+            >
+                {{ slot.value[0] }}
             </div>
         </div>
         <div @click="addHandCard" @dblclick="draw">handcards</div>
@@ -244,6 +266,7 @@ export default defineComponent({
             graveYard: [] as string[],
             banish: [] as string[],
             view: '',
+            playerSite: true,
             allExtraCards: [] as string[],
             startHand: 'random',
             cardInput: '',
@@ -303,6 +326,22 @@ export default defineComponent({
                 { name: 'spelltrap4', value: ['spelltrap4'] },
                 { name: 'spelltrap5', value: ['spelltrap5'] },
                 { name: 'deck', value: ['deck'] },
+
+                { name: 'enemy banish', value: ['enemy banish'] },
+                { name: 'enemy graveyard', value: ['enemy graveyard'] },
+                { name: 'enemy monster5', value: ['enemy monster5'] },
+                { name: 'enemy monster4', value: ['enemy monster4'] },
+                { name: 'enemy monster3', value: ['enemy monster3'] },
+                { name: 'enemy monster2', value: ['enemy monster2'] },
+                { name: 'enemy monster1', value: ['enemy monster1'] },
+                { name: 'enemy field', value: ['enemy field'] },
+                { name: 'enemy deck', value: ['enemy deck'] },
+                { name: 'enemy spelltrap5', value: ['enemy spelltrap5'] },
+                { name: 'enemy spelltrap4', value: ['enemy spelltrap4'] },
+                { name: 'enemy spelltrap3', value: ['enemy spelltrap3'] },
+                { name: 'enemy spelltrap2', value: ['enemy spelltrap2'] },
+                { name: 'enemy spelltrap1', value: ['enemy spelltrap1'] },
+                { name: 'enemy extradeck', value: ['enemy extradeck'] },
             ]
             this.generateAllCards()
             this.handCards = []
@@ -330,15 +369,19 @@ export default defineComponent({
                     this.allExtraCards.push(card.id)
                 }
             }
+            this.sortExtraDeck()
             this.allCards = []
-
             for (let card of this.deck.cards) {
                 for (let i = card.count; i; i--) {
                     this.allCards.push(card.id)
                 }
             }
+            this.sortDeck()
+            this.allCardsSelect = [...this.allCards]
+        },
+        sortDeck() {
             this.allCards
-                .sort((a, b) => findCard(a)?.name.localeCompare(findCard(b)?.name))
+                .sort((a, b) => findCard(a)?.name.toLowerCase().localeCompare(findCard(b)?.name.toLowerCase()))
                 .sort(function (a, b) {
                     let map = {
                         monster: 1,
@@ -347,64 +390,102 @@ export default defineComponent({
                     }
                     return map[findCard(a)?.type] - map[findCard(b)?.type]
                 })
-            this.allCardsSelect = [...this.allCards]
+        },
+        sortExtraDeck() {
+            this.allExtraCards
+                .sort((a, b) => findCard(a)?.name.toLowerCase().localeCompare(findCard(b)?.name.toLowerCase()))
+                .sort(function (a, b) {
+                    let map = {
+                        monster: -2,
+                        spell: -1,
+                        trap: 0,
+                        fusion: 1,
+                        synchro: 2,
+                        xyz: 3,
+                        link: 4,
+                    }
+                    return map[findCard(a)?.type] - map[findCard(b)?.type]
+                })
         },
         selectCard(card: string, from: string) {
             this.selectedCard = card
             this.selectedFrom = from
         },
-        selectSlot(slotIndex: number, slot: type.Slot) {
-            if (this.selectedCard) this.log.push(`${this.selectedCard} from ${this.selectedFrom} to ${slot.name}`)
-            if (slot.name == 'deck') {
-                if (this.selectedCard) {
+        addCardToArray(name: 'deck' | 'graveyard' | 'banish' | 'extradeck') {
+            switch (name) {
+                case 'deck':
                     if (this.selectedCard != 'token') this.allCards.push(this.selectedCard)
                     this.removeCard(this.selectedCard)
+                    this.sortDeck()
+                    break
+                case 'graveyard':
+                    if (this.selectedCard != 'token') this.graveYard.push(this.selectedCard)
+                    this.removeCard(this.selectedCard)
+                    break
+                case 'banish':
+                    if (this.selectedCard != 'token') this.banish.push(this.selectedCard)
+                    this.removeCard(this.selectedCard)
+                    break
+                case 'extradeck':
+                    if (this.selectedCard != 'token') this.allExtraCards.push(this.selectedCard)
+                    this.removeCard(this.selectedCard)
+                    this.sortExtraDeck()
+                    break
+            }
+        },
+        selectSlot(slot: type.Slot) {
+            if (this.selectedCard) {
+                switch (slot.name) {
+                    case 'enemy deck':
+                        if (this.selectedCard) this.log.push(`${this.selectedCard} from ${this.selectedFrom} to deck`)
+                        this.addCardToArray('deck')
+                        return
+                    case 'enemy graveyard':
+                        if (this.selectedCard) this.log.push(`${this.selectedCard} from ${this.selectedFrom} to graveyard`)
+                        this.addCardToArray('graveyard')
+                        return
+                    case 'enemy banish':
+                        if (this.selectedCard) this.log.push(`${this.selectedCard} from ${this.selectedFrom} to banish`)
+                        this.addCardToArray('banish')
+                        return
+                    case 'enemy extradeck':
+                        if (this.selectedCard) this.log.push(`${this.selectedCard} from ${this.selectedFrom} to extradeck`)
+                        this.addCardToArray('extradeck')
+                        return
+                }
+            }
+            if (this.selectedCard) this.log.push(`${this.selectedCard} from ${this.selectedFrom} to ${slot.name}`)
+            let slotIndex = this.field.findIndex(e => e.name == slot.name)
+            if (slot.name == 'deck') {
+                if (this.selectedCard) {
+                    this.addCardToArray('deck')
                     return
                 } else {
-                    if (this.view == 'deck') {
-                        this.view = ''
-                    } else {
-                        this.view = 'deck'
-                    }
+                    this.changeView('deck')
                 }
             }
             if (slot.name == 'graveyard') {
                 if (this.selectedCard) {
-                    if (this.selectedCard != 'token') this.graveYard.push(this.selectedCard)
-                    this.removeCard(this.selectedCard)
+                    this.addCardToArray('graveyard')
                     return
                 } else {
-                    if (this.view == 'graveyard') {
-                        this.view = ''
-                    } else {
-                        this.view = 'graveyard'
-                    }
+                    this.changeView('graveyard')
                 }
             }
             if (slot.name == 'banish') {
                 if (this.selectedCard) {
-                    if (this.selectedCard != 'token') this.banish.push(this.selectedCard)
-                    this.removeCard(this.selectedCard)
+                    this.addCardToArray('banish')
                     return
                 } else {
-                    if (this.view == 'banish') {
-                        this.view = ''
-                    } else {
-                        this.view = 'banish'
-                    }
+                    this.changeView('banish')
                 }
             }
             if (slot.name == 'extradeck') {
                 if (this.selectedCard) {
-                    if (this.selectedCard != 'token') this.allExtraCards.push(this.selectedCard)
-                    this.removeCard(this.selectedCard)
+                    this.addCardToArray('extradeck')
                     return
                 } else {
-                    if (this.view == 'extradeck') {
-                        this.view = ''
-                    } else {
-                        this.view = 'extradeck'
-                    }
+                    this.changeView('extradeck')
                 }
             }
             if (!this.selectedCard) {
@@ -414,11 +495,7 @@ export default defineComponent({
                 }
                 if (slot.value.length > 1) {
                     this.selectedFrom = slot.name
-                    if (this.view == 'slot') {
-                        this.view = ''
-                    } else {
-                        this.view = 'slot'
-                    }
+                    this.changeView('slot')
                     return
                 } else {
                     if (this.view == 'slot') this.view = ''
@@ -437,6 +514,13 @@ export default defineComponent({
                 this.field[slotIndex].value[0] = findCard(this.selectedCard)!.name
             }
             this.removeCard(this.selectedCard)
+        },
+        changeView(view: string) {
+            if (this.view == view) {
+                this.view = ''
+            } else {
+                this.view = view
+            }
         },
         addHandCard() {
             if (!this.selectedCard) return
@@ -474,7 +558,7 @@ export default defineComponent({
                         if (this.view == 'slot') this.view = ''
                     }
             }
-            this.selectedCard = ''
+            this.resetSelect()
         },
         resetSelect() {
             this.selectedCard = ''
@@ -489,6 +573,7 @@ export default defineComponent({
             this.resetSelect()
         },
         saveLog() {
+            console.log('f')
             if (this.deck.logs) {
                 this.deck.logs.push({ name: this.logName, log: this.log, startHand: this.logStartHand })
             } else {
@@ -514,6 +599,9 @@ export default defineComponent({
                     break
             }
         },
+        switchSite() {
+            this.playerSite = !this.playerSite
+        },
         changeStartHand() {
             if (this.startHand == 'random') {
                 this.startHand = 'custom'
@@ -537,7 +625,7 @@ body {
     display: grid;
     grid-template-columns: 1fr 1fr 10fr 1fr 1fr;
     grid-template-areas:
-        '. special text1 effect settings'
+        'switch special text1 effect settings'
         '. . text2 . .';
 }
 .sticky {
@@ -557,6 +645,15 @@ body {
     grid-auto-rows: minmax(50px, auto);
     grid-template-areas:
         '. . slot1 . slot2 . slot3'
+        'slot4 slot5 slot6 slot7 slot8 slot9 slot10'
+        'slot11 slot12 slot13 slot14 slot15 slot16 slot17';
+}
+.enemyField {
+    display: grid;
+    grid-template-columns: repeat(7, 1fr);
+    grid-auto-rows: minmax(50px, auto);
+    grid-template-areas:
+        'slot3 . slot1 . slot2 . .'
         'slot4 slot5 slot6 slot7 slot8 slot9 slot10'
         'slot11 slot12 slot13 slot14 slot15 slot16 slot17';
 }

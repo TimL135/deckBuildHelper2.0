@@ -54,6 +54,10 @@ html{
     font-weight: bold !important;
     min-height: 100vh;
     min-width: 100vw;
+    user-select: none; /* standard syntax */
+    -webkit-user-select: none; /* webkit (safari, chrome) browsers */
+    -moz-user-select: none; /* mozilla browsers */
+    -khtml-user-select: none; /* webkit (konqueror) browsers */
 }
 #nav {
     @media (max-width: 768px) {
