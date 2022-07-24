@@ -510,6 +510,12 @@ export default defineComponent({
             ]
             this.generateAllCards()
             this.handCards = [...this.playLog.startHand]
+            for (let card of this.handCards) {
+                this.allCards.splice(
+                    this.allCards.findIndex(e => e == card),
+                    1
+                )
+            }
         },
         generateAllCards() {
             this.allExtraCards = []

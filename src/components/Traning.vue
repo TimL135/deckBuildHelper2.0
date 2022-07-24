@@ -494,6 +494,7 @@ export default defineComponent({
         },
         addHandCard() {
             if (!this.selectedCard) return
+            this.log.push(`${this.selectedCard} from ${this.selectedFrom} to hand`)
             this.handCards.push(this.selectedCard)
             this.removeCard(this.selectedCard)
             this.selectedCard = ''
