@@ -43,46 +43,15 @@
                 </button>
             </div>
         </div>
-        <div class="field" v-if="playerSite">
-            <div
-                v-for="(slot, index) of field.filter(e => !e.name.includes('enemy'))"
-                :key="slot.name"
-                :style="`grid-area:slot${index + 1}`"
-                style="background-color: gray; border: 2px solid rgb(12, 12, 12)"
-                @click="selectSlot(slot)"
-                @dblclick="slot.value.length == 1 && slot.value != slot.name ? searchOnline(slot.value[0]) : null"
-                class="text-dark"
-                :class="findCardByName(slot.value[0])?.type"
-            >
-                {{
-                    slot.name == 'deck'
-                        ? `${slot.name}(${allCards.length})`
-                        : slot.name == 'graveyard'
-                        ? `${slot.name}(${graveYard.length})`
-                        : slot.name == 'extradeck'
-                        ? `${slot.name}(${allExtraCards.length})`
-                        : slot.name == 'banish'
-                        ? `${slot.name}(${banish.length})`
-                        : slot.value.length > 1
-                        ? `${slot.value[0]}(${slot.value.length})`
-                        : slot.value[0]
-                }}
-            </div>
-        </div>
-        <div class="enemyField" v-else>
-            <div
-                v-for="(slot, index) of [field[1], field[0], ...field.filter(e => e.name.includes('enemy'))]"
-                :key="slot.name"
-                :style="`grid-area:slot${index + 1}`"
-                style="background-color: gray; border: 2px solid rgb(12, 12, 12)"
-                @click="selectSlot(slot)"
-                @dblclick="slot.value.length == 1 && slot.value != slot.name ? searchOnline(slot.value[0]) : null"
-                class="text-dark"
-                :class="findCardByName(slot.value[0])?.type"
-            >
-                {{ slot.value[0] }}
-            </div>
-        </div>
+        <Field
+            :field="field"
+            :all-cards="allCards"
+            :all-extra-cards="allExtraCards"
+            :banish="banish"
+            :grave-yard="graveYard"
+            :player-site="playerSite"
+            @selectSlot="slot => selectSlot(slot)"
+        />
         <div @click="addHandCard" @dblclick="draw">handcards</div>
         <div class="startHand mb-3">
             <div
@@ -249,8 +218,9 @@ import { deck, decks, findCard, findCardByName, searchOnline, actionToText, setH
 import * as type from '@/types'
 import { defineComponent } from 'vue'
 import SexyInput from './SexyInput.vue'
+import Field from './Field.vue'
 export default defineComponent({
-    components: { SexyInput },
+    components: { SexyInput, Field },
     setup() {
         return { deck, decks, findCard, findCardByName, searchOnline, actionToText }
     },
@@ -261,13 +231,13 @@ export default defineComponent({
             allCardsSelect: [] as string[],
             field: [] as type.Slot[],
             handCards: [] as string[],
-            selectedCard: '',
-            selectedFrom: '',
             graveYard: [] as string[],
             banish: [] as string[],
+            allExtraCards: [] as string[],
+            selectedCard: '',
+            selectedFrom: '',
             view: '',
             playerSite: true,
-            allExtraCards: [] as string[],
             startHand: 'random',
             cardInput: '',
             cardInputs: [],
@@ -639,24 +609,7 @@ body {
     grid-template-columns: repeat(5, 1fr);
     grid-auto-rows: minmax(50px, auto);
 }
-.field {
-    display: grid;
-    grid-template-columns: repeat(7, 1fr);
-    grid-auto-rows: minmax(50px, auto);
-    grid-template-areas:
-        '. . slot1 . slot2 . slot3'
-        'slot4 slot5 slot6 slot7 slot8 slot9 slot10'
-        'slot11 slot12 slot13 slot14 slot15 slot16 slot17';
-}
-.enemyField {
-    display: grid;
-    grid-template-columns: repeat(7, 1fr);
-    grid-auto-rows: minmax(50px, auto);
-    grid-template-areas:
-        'slot3 . slot1 . slot2 . .'
-        'slot4 slot5 slot6 slot7 slot8 slot9 slot10'
-        'slot11 slot12 slot13 slot14 slot15 slot16 slot17';
-}
+
 .deck {
     display: grid;
     grid-auto-rows: minmax(50px, auto);
