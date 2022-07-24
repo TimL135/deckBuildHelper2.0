@@ -266,12 +266,12 @@ export default defineComponent({
             clearInterval(this.autoPlayIntervalId)
         },
         nextStep() {
+            this.autoPlayStop()
             let step = []
             if (this.playLog.log[this.playIndex]) {
                 step = this.playLog.log[this.playIndex].split(' ')
                 this.playIndex++
             } else {
-                this.autoPlayStop()
                 this.showText = 'end'
                 return
             }
@@ -372,6 +372,7 @@ export default defineComponent({
             }
         },
         previousStep() {
+            this.autoPlayStop()
             let step = []
             if (this.playLog.log[this.playIndex - 1]) {
                 step = this.playLog.log[this.playIndex - 1].split(' ')
