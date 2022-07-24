@@ -1,11 +1,11 @@
 self.__precacheManifest = (self.__precacheManifest || []).concat([
   {
-    "revision": "eabbb71de99a3a1aeb2fa209aa62d55a",
+    "revision": "2ff384aac76c8a23df13238a2c4af452",
     "url": "/deckBuildHelper2.0/index.html"
   },
   {
-    "revision": "c1dadfff167a2bc98f4b",
-    "url": "/deckBuildHelper2.0/js/app.03d069a9.js"
+    "revision": "1c574024b9521c928ab8",
+    "url": "/deckBuildHelper2.0/js/app.d0f4ec61.js"
   },
   {
     "revision": "bd2261781759e994df0b",

@@ -355,6 +355,9 @@ export default defineComponent({
                 case 'extradeck':
                     if (card.name != 'token') this.allExtraCards.push(card.id)
                     break
+                case 'hand':
+                    if (card.name != 'token') this.handCards.push(card.id)
+                    break
                 default:
                     if (this.field[slotIndex].value[0] != this.field[slotIndex].name) {
                         if (card.type == 'xyz') {
@@ -421,6 +424,12 @@ export default defineComponent({
                 case 'extradeck':
                     this.allExtraCards.splice(
                         this.allExtraCards.findIndex(e => e == step[0]),
+                        1
+                    )
+                    break
+                case 'hand':
+                    this.handCards.splice(
+                        this.handCards.findIndex(e => e == step[0]),
                         1
                     )
                     break
