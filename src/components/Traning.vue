@@ -543,7 +543,6 @@ export default defineComponent({
             this.resetSelect()
         },
         saveLog() {
-            console.log('f')
             if (this.deck.logs) {
                 this.deck.logs.push({ name: this.logName, log: this.log, startHand: this.logStartHand })
             } else {

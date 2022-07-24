@@ -465,7 +465,6 @@ export default defineComponent({
                         }
                     } else {
                         this.field[this.field.findIndex(e => e.name == step[2])].value[0] = card.name
-                        console.log(card.name)
                     }
                     break
             }
