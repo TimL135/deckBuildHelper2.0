@@ -23,7 +23,7 @@
                         <path d="M10.205 12.456A.5.5 0 0 0 10.5 12V4a.5.5 0 0 0-.832-.374l-4.5 4a.5.5 0 0 0 0 .748l4.5 4a.5.5 0 0 0 .537.082z" />
                     </svg>
                 </div>
-                <div @click="nextStep()">
+                <div @click="doNextStep()">
                     <svg
                         xmlns="http://www.w3.org/2000/svg"
                         width="16"
@@ -265,8 +265,11 @@ export default defineComponent({
             this.autoPlay = false
             clearInterval(this.autoPlayIntervalId)
         },
-        nextStep() {
+        doNextStep() {
             this.autoPlayStop()
+            this.nextStep()
+        },
+        nextStep() {
             let step = []
             if (this.playLog.log[this.playIndex]) {
                 step = this.playLog.log[this.playIndex].split(' ')
