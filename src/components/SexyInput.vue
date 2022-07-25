@@ -354,7 +354,7 @@ export default defineComponent({
         },
         filteredItems() {
             //options that are still possible
-            const regexp = new RegExp(this.escapeRegExp(this.modelValue), 'i')
+            const regexp = new RegExp('^' + this.escapeRegExp(this.modelValue), 'i')
             let array = [] as any[]
             try {
                 array = this.options!.filter(item => this.optionProjection(item).match(regexp))
@@ -371,7 +371,8 @@ export default defineComponent({
                         )
                 }
             }
-            return array
+            if (array.length > 50) return array.slice(0, 50)
+            else return array
         },
         currentSelection() {
             //the option which is currently selected

@@ -87,8 +87,7 @@
                                 type="select"
                                 placeholder="name"
                                 v-model="nameInput"
-                                :options="deck.alternativeExtraCards"
-                                :optionProjection="a => a.name"
+                                :options="deck.alternativeExtraCards.map(e => e.name).concat(db)"
                                 :labelBorder="true"
                                 :selectOnBlur="true"
                                 :controlInput="false"
@@ -163,14 +162,14 @@
 </template>
 <script lang="ts">
 import { defineComponent } from 'vue'
-import { decks, deck, searchOnline, safeDeck, findCardByName } from '@/global'
+import { decks, deck, searchOnline, safeDeck, findCardByName, db } from '@/global'
 import * as type from '@/types'
 import SexyInput from '../SexyInput.vue'
 export default defineComponent({
     components: { SexyInput },
     watch: { deck: 'updateDeck' },
     setup() {
-        return { decks, deck, searchOnline, findCardByName }
+        return { decks, deck, searchOnline, findCardByName, db }
     },
     mounted() {
         this.countExtraCards()

@@ -61,12 +61,18 @@
                 <form @submit.prevent="editAddCard()">
                     <div>
                         <SexyInput
-                            type="text"
+                            type="select"
                             placeholder="name"
                             v-model="nameInput"
+                            :options="db"
                             :labelBorder="true"
+                            :selectOnBlur="true"
+                            :controlInput="false"
+                            :noElementMessage="nameInput"
                             class="orange"
                             labelClass="orange"
+                            listClass="orange text-dark"
+                            :listItemClass="item => findCardByName(item)?.type || 'orange text-dark'"
                             :required="true"
                         />
                     </div>
@@ -283,14 +289,14 @@
 </template>
 <script lang="ts">
 import { defineComponent } from 'vue'
-import { decks, deck, uniqueAllCards, searchOnline, safeDeck } from '@/global'
+import { decks, deck, uniqueAllCards, searchOnline, safeDeck, findCardByName, db } from '@/global'
 import * as type from '@/types'
 import SexyInput from '../SexyInput.vue'
 export default defineComponent({
     components: { SexyInput },
     watch: { deck: 'updateDeck' },
     setup() {
-        return { decks, deck, uniqueAllCards, searchOnline }
+        return { decks, deck, uniqueAllCards, searchOnline, findCardByName, db }
     },
     mounted() {
         this.updateDeck()

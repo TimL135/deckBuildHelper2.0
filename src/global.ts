@@ -1,6 +1,7 @@
-import { getDeck, getDecks, setDeck, setDecks } from '@/API'
+import { getDeck, getDecks, setDeck, setDecks, setDB, getDB } from '@/API'
 import { ref } from 'vue'
 import * as type from '@/types'
+import axios from 'axios'
 export const decks = ref(getDecks())
 export const deck = ref(getDeck())
 export const uniqueAllCards = ref([...new Set(deck.value.cards?.filter(c => c.name))])
@@ -86,4 +87,15 @@ export function safeDeck(safedDeck: type.Deck) {
 }
 export function getRandomInt(max: number) {
     return Math.floor(Math.random() * max)
+}
+
+export let db = getDB()
+//7 days
+if (db.timeStamp < Date.now() - 6.048e8) db = false
+else db = db.data
+if (!db) {
+    axios.get('https://db.ygoprodeck.com/api/v7/cardinfo.php?language=de').then(resp => {
+        db = resp.data.data.map(e => e.name)
+        setDB({ timeStamp: Date.now(), data: db })
+    })
 }
