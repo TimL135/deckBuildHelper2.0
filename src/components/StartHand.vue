@@ -18,6 +18,7 @@
                 :options="deck.cards.map(a => a.name)"
                 @dblclick="searchOnline(handCards[cardNumber - 1])"
                 @selectItem="countCard()"
+                listClass="orange text-dark"
                 :listItemClass="item => findCardByName(item).type"
             />
         </div>

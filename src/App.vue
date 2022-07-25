@@ -53,7 +53,6 @@
         </svg></router-link>
     </template>
   </div>
-
   <router-view />
 </template>
 <script>

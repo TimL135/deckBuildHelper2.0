@@ -187,6 +187,7 @@ import { deck, decks, findCard, findCardByName, searchOnline, actionToText, setH
 import * as type from '@/types'
 import Field from './Field.vue'
 import { defineComponent } from 'vue'
+import NoSleep from 'nosleep.js'
 // import SexyInput from './SexyInput.vue'
 export default defineComponent({
     components: { Field },
@@ -195,6 +196,10 @@ export default defineComponent({
     },
     mounted() {
         setHTMLClass('Logs')
+        this.noSleep = new NoSleep()
+    },
+    unmounted() {
+        this.noSleep.disable()
     },
     data() {
         return {
@@ -213,10 +218,11 @@ export default defineComponent({
             banish: [] as string[],
             allExtraCards: [] as string[],
             playerSite: true,
+            noSleep: '' as any,
         }
     },
     computed: {},
-    // mounted() {},
+
     methods: {
         openLogModal(log: type.Log) {
             window.onclick = event => {
@@ -249,10 +255,12 @@ export default defineComponent({
             this.playLog = this.selectedLog
             this.reset()
             this.showText = 'begin'
+            this.noSleep.enable()
             this.closeLogModal()
         },
         exitPlayLog() {
             this.playLog = {}
+            this.noSleep.disable()
             this.autoPlay = false
         },
         autoPlayStart() {
@@ -441,7 +449,7 @@ export default defineComponent({
                     if (fieldSlot!.value.length == 1) {
                         fieldSlot!.value = [fieldSlot!.name]
                     } else {
-                        fieldSlot!.value.splice(fieldSlot!.value.indexOf(card.id), 1)
+                        fieldSlot!.value.splice(fieldSlot!.value.indexOf(card.name), 1)
                     }
                     break
             }

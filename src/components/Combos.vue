@@ -146,6 +146,7 @@
                                 :options="deck.cards.concat(deck.cardGroups || [])"
                                 :option-projection="a => a.name"
                                 @selectItem="changeType()"
+                                listClass="orange text-dark"
                                 :listItemClass="
                                     item =>
                                         findCardGroupByName(item)

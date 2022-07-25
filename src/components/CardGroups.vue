@@ -147,6 +147,7 @@
                         class="orange"
                         labelClass="orange"
                         :label-border="true"
+                        listClass="orange text-dark"
                         :listItemClass="item => findCardByName(item)?.type + ' text-dark' || 'orange text-dark'"
                         :multiSelect="cardInputs"
                         :multiSelectClass="e => findCardByName(e)?.type + ' text-dark' || 'orange text-dark'"
