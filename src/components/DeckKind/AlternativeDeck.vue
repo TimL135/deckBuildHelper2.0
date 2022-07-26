@@ -38,7 +38,7 @@
                                 />
                             </svg>
                         </button>
-                        <button @click="openCardDeleteModal(card.name)" class="me-2" style="background-color: #ffffff00; border: none">
+                        <button @click="openCardDeleteModal(card)" class="me-2" style="background-color: #ffffff00; border: none">
                             <svg xmlns="http://www.w3.org/2000/svg" width="5.5vw" height="5.5vw" class="bi bi-trash" viewBox="0 0 16 16">
                                 <path
                                     d="M5.5 5.5A.5.5 0 0 1 6 6v6a.5.5 0 0 1-1 0V6a.5.5 0 0 1 .5-.5zm2.5 0a.5.5 0 0 1 .5.5v6a.5.5 0 0 1-1 0V6a.5.5 0 0 1 .5-.5zm3 .5a.5.5 0 0 0-1 0v6a.5.5 0 0 0 1 0V6z"
@@ -319,6 +319,7 @@ export default defineComponent({
             uniqueCounts: [0, 0, 0, 0, 0, 0, 0, 0],
 
             deleteCardId: 0,
+            deleteFrom: '',
 
             nameInput: '',
             countInput: '',
@@ -347,13 +348,19 @@ export default defineComponent({
                     break
             }
         },
-        openCardDeleteModal(name: string) {
+        openCardDeleteModal(card: type.Card | type.ExtraCard) {
             window.onclick = event => {
                 if (event.target == document.getElementById('cardDeleteModal')) this.closeCardDeleteModal()
             }
-            this.deleteCardId = this.deck.alternativeCards.findIndex(c => c.name == name)
-            this.nameInput = this.deck.alternativeCards[this.deleteCardId].name
-            this.type = 'monster'
+            if (card.type == 'monster' || card.type == 'spell' || card.type == 'trap') {
+                this.deleteFrom = 'main'
+                this.deleteCardId = this.deck.alternativeCards.findIndex(c => c == card)
+            } else {
+                this.deleteFrom = 'extra'
+                this.deck.alternativeExtraCards.findIndex(c => c == card)
+            }
+
+            this.nameInput = card.name
             var modal = document.getElementById('cardDeleteModal')
             if (modal) modal.style.display = 'block'
         },
@@ -476,7 +483,8 @@ export default defineComponent({
             this.countInput = ''
         },
         deleteCard(cardIndex: number) {
-            this.deck.alternativeCards.splice(cardIndex, 1)
+            if (this.deleteFrom == 'main') this.deck.alternativeCards.splice(cardIndex, 1)
+            else this.deck.alternativeExtraCards.splice(cardIndex, 1)
             this.countCard()
             safeDeck(this.deck)
             this.closeCardDeleteModal()
