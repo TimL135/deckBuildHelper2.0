@@ -71,7 +71,7 @@
                         {
                             'simple-typeahead-list-item-active': currentSelectionIndex == index,
                         },
-                        listItemClass(optionProjection(item)),
+                        listItemClass(item),
                     ]"
                     v-for="(item, index) in filteredItems"
                     :key="index"

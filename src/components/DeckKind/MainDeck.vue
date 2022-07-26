@@ -147,7 +147,17 @@
                             type="select"
                             placeholder="name"
                             v-model="nameInput"
-                            :options="deck.alternativeCards.map(e => e.name).concat(db)"
+                            :options="
+                                deck.alternativeCards
+                                    .map(e =>
+                                        Object.fromEntries([
+                                            ['name', e.name],
+                                            ['type', e.type],
+                                        ])
+                                    )
+                                    .concat(mainCardDB)
+                            "
+                            :option-projection="e => e.name"
                             :labelBorder="true"
                             :selectOnBlur="true"
                             :controlInput="false"
@@ -155,7 +165,7 @@
                             class="orange"
                             labelClass="orange"
                             listClass="orange text-dark"
-                            :listItemClass="item => findCardByName(item)?.type || 'orange text-dark'"
+                            :listItemClass="item => item.type || 'orange text-dark'"
                             :required="true"
                         />
                     </div>
@@ -329,14 +339,14 @@
 </template>
 <script lang="ts">
 import { defineComponent } from 'vue'
-import { decks, deck, uniqueAllCards, searchOnline, findCardByName, safeDeck, db } from '@/global'
+import { decks, deck, uniqueAllCards, searchOnline, findCardByName, safeDeck, mainCardDB } from '@/global'
 import * as type from '@/types'
 import SexyInput from '../SexyInput.vue'
 export default defineComponent({
     components: { SexyInput },
     watch: { deck: 'updateDeck' },
     setup() {
-        return { decks, deck, uniqueAllCards, db, searchOnline, findCardByName }
+        return { decks, deck, uniqueAllCards, mainCardDB, searchOnline, findCardByName }
     },
     mounted() {
         this.updateDeck()
@@ -421,8 +431,9 @@ export default defineComponent({
             var modal = document.getElementById('cardAddEditModal')
             if (modal) modal.style.display = 'none'
         },
-        alternativeCheck() {
+        alternativeCheck(card) {
             this.nameInput.trim()
+            this.type = card.type
             this.deck.alternativeCards.forEach(card => {
                 if (card.name == this.nameInput) {
                     this.type = card.type

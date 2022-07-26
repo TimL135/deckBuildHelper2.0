@@ -61,10 +61,13 @@
                 <form @submit.prevent="editAddCard()">
                     <div>
                         <SexyInput
+                            @change="typeCheck"
+                            :onSelectItem="typeCheck"
                             type="select"
                             placeholder="name"
                             v-model="nameInput"
                             :options="db"
+                            :option-projection="e => e.name"
                             :labelBorder="true"
                             :selectOnBlur="true"
                             :controlInput="false"
@@ -72,7 +75,7 @@
                             class="orange"
                             labelClass="orange"
                             listClass="orange text-dark"
-                            :listItemClass="item => findCardByName(item)?.type || 'orange text-dark'"
+                            :listItemClass="item => item.type || 'orange text-dark'"
                             :required="true"
                         />
                     </div>
@@ -330,6 +333,9 @@ export default defineComponent({
                 this.uniqueCardDeck()
                 this.countCard()
             }
+        },
+        typeCheck(card) {
+            this.type = card.type
         },
         editAddCard() {
             switch (this.editAdd) {

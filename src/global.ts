@@ -88,19 +88,51 @@ export function safeDeck(safedDeck: type.Deck) {
 export function getRandomInt(max: number) {
     return Math.floor(Math.random() * max)
 }
-
+function createType(type: string) {
+    if (type.includes('XYZ')) return 'xyz'
+    if (type.includes('Fusion')) return 'fusion'
+    if (type.includes('Synchro')) return 'synchro'
+    if (type.includes('Link')) return 'link'
+    if (type.includes('Monster')) return 'monster'
+    if (type.includes('Spell')) return 'spell'
+    if (type.includes('Trap')) return 'trap'
+}
 export let db = getDB()
 //7 days
-if (db.timeStamp < Date.now() - 6.048e8) db = false
+if (db.timeStamp < Date.now() - 6.048e8 || !db.data[0].type) db = false
 else db = db.data
 if (!db) {
     try {
         axios.get('https://db.ygoprodeck.com/api/v7/cardinfo.php?language=de').then(resp => {
-            db = resp.data.data.map(e => e.name)
+            db = resp.data.data.map(e =>
+                Object.fromEntries([
+                    ['name', e.name],
+                    ['type', createType(e.type)],
+                ])
+            )
             setDB({ timeStamp: Date.now(), data: db })
         })
     } catch {
         if (getDB()) db = getDB()
         else db = []
+    }
+}
+export const mainCardDB = []
+export const extraCardDB = []
+if (db.length) {
+    for (const card of db) {
+        switch (card.type) {
+            case 'link':
+            case 'xyz':
+            case 'fusion':
+            case 'synchro':
+                extraCardDB.push(card)
+                break
+            case 'monster':
+            case 'spell':
+            case 'trap':
+                mainCardDB.push(card)
+                break
+        }
     }
 }
