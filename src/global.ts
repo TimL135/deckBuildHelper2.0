@@ -94,8 +94,13 @@ export let db = getDB()
 if (db.timeStamp < Date.now() - 6.048e8) db = false
 else db = db.data
 if (!db) {
-    axios.get('https://db.ygoprodeck.com/api/v7/cardinfo.php?language=de').then(resp => {
-        db = resp.data.data.map(e => e.name)
-        setDB({ timeStamp: Date.now(), data: db })
-    })
+    try {
+        axios.get('https://db.ygoprodeck.com/api/v7/cardinfo.php?language=de').then(resp => {
+            db = resp.data.data.map(e => e.name)
+            setDB({ timeStamp: Date.now(), data: db })
+        })
+    } catch {
+        if (getDB()) db = getDB()
+        else db = []
+    }
 }
