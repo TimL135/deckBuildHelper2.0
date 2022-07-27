@@ -113,7 +113,7 @@ if (!db) {
             setDB({ timeStamp: Date.now(), data: db })
         })
     } catch {
-        if (getDB()) db = getDB()
+        if (getDB()) db = getDB().data
         else db = []
     }
 }
