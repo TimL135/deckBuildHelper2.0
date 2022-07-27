@@ -29,6 +29,7 @@
             <div style="grid-area: text2">
                 {{ view ? `view: ${view == 'slot' ? selectedFrom : view}` : 'no view' }}
             </div>
+            <div style="grid-area: target" v-if="selectedCard" class="orange text-dark round text-center" @click="targetCard()">target</div>
             <div style="grid-area: effect" v-if="selectedCard" class="orange text-dark round text-center" @click="activeEffect()">effect</div>
             <div class="d-flex flex-row-reverse mb-3" style="grid-area: settings">
                 <button class="me-2" style="background-color: #ffffff00; border: none" @click="openEditSettingsModal()">
@@ -539,6 +540,10 @@ export default defineComponent({
             let index = getRandomInt(this.allCards.length)
             this.handCards.push(this.allCards.splice(index, 1).toString())
         },
+        targetCard() {
+            this.log.push(`target ${this.selectedCard}(${this.selectedFrom})`)
+            this.resetSelect()
+        },
         activeEffect() {
             this.log.push(`${this.selectedCard}(${this.selectedFrom}) effect`)
             this.resetSelect()
@@ -595,8 +600,8 @@ body {
     display: grid;
     grid-template-columns: 1fr 1fr 10fr 1fr 1fr;
     grid-template-areas:
-        'switch special text1 effect settings'
-        '. . text2 . .';
+        'switch special text1 . settings'
+        '. target text2 effect .';
 }
 .sticky {
     background-color: rgb(12, 12, 12);

@@ -13,7 +13,6 @@
             style="background-color: gray; border: 2px solid rgb(12, 12, 12)"
             @click="$emit('selectSlot', slot)"
             @dblclick="slot.value.length == 1 && slot.value != slot.name ? searchOnline(slot.value[0]) : null"
-            class="text-dark"
             :class="findCardByName(slot.value[0])?.type"
         >
             {{
@@ -39,7 +38,6 @@
             style="background-color: gray; border: 2px solid rgb(12, 12, 12)"
             @click="$emit('selectSlot', slot)"
             @dblclick="slot.value.length == 1 && slot.value != slot.name ? searchOnline(slot.value[0]) : null"
-            class="text-dark"
             :class="findCardByName(slot.value[0])?.type"
         >
             {{ slot.value[0] }}
@@ -49,7 +47,6 @@
 <script lang="ts">
 import { findCard, findCardByName, findCardGroup, findCardGroupByName, searchOnline } from '@/global'
 import { defineComponent } from 'vue'
-import * as type from '@/types'
 export default defineComponent({
     setup() {
         return { findCard, findCardByName, findCardGroup, findCardGroupByName, searchOnline }

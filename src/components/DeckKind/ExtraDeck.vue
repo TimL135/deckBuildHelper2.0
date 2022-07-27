@@ -304,6 +304,7 @@ export default defineComponent({
             }
 
             this.deck.extraCards.splice(this.deleteCardId, 1)
+            this.countExtraCards()
             safeDeck(this.deck)
             this.closeExtraCardDeleteModal()
         },
