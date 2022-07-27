@@ -47,24 +47,24 @@
             <div class="w-25 round-end" style="border: 1px solid #ffa107">
                 Negate:
                 <br />
-                {{ counts[6] }}({{ uniqueCounts[6] }})
+                {{ counts[3] }}({{ uniqueCounts[3] }})
             </div>
         </div>
         <div class="d-flex mb-1">
             <div class="w-25 round-start" style="border: 1px solid #ffa107">
                 Once per Turn:
                 <br />
-                {{ counts[5] }}({{ uniqueCounts[5] }})
+                {{ counts[4] }}({{ uniqueCounts[4] }})
             </div>
             <div class="w-25" style="border: 1px solid #ffa107">
                 Searchable:
                 <br />
-                {{ counts[4] }}({{ uniqueCounts[4] }})
+                {{ counts[5] }}({{ uniqueCounts[5] }})
             </div>
             <div class="w-25" style="border: 1px solid #ffa107">
                 Combo Piece:
                 <br />
-                {{ counts[3] }}({{ uniqueCounts[3] }})
+                {{ counts[6] }}({{ uniqueCounts[6] }})
             </div>
             <div class="w-25 round-end" style="border: 1px solid #ffa107">
                 Interaption:
