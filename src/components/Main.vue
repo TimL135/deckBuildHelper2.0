@@ -286,6 +286,7 @@ export default defineComponent({
                 }
                 safeDeck(this.deck)
             }
+            this.selectedDeckKind = 'mainDeck'
         },
     },
 })
