@@ -14,8 +14,9 @@
                     v-model="selectedDeck"
                     type="select"
                     :options="decks"
-                    :selectOnBlur="true"
+                    :selectOnBlur="false"
                     :controlInput="false"
+                    @selectItem="loadDeck()"
                     :optionProjection="a => a.name"
                     btnText="&#10004;"
                     :btnAction="loadDeck"
@@ -90,7 +91,7 @@
                     <div class="w-100">
                         <div v-for="deck of decks" :key="JSON.stringify(deck)" class="decklist mb-2 orange round">
                             <div></div>
-                            <div class="text-dark">
+                            <div class="text-dark" @click="switchDeck(deck.name)">
                                 {{ deck.name }}
                             </div>
                             <div class="orange" @click="shareDeck(deck)">
@@ -242,6 +243,11 @@ export default defineComponent({
             }
 
             this.newDeck = ''
+        },
+        switchDeck(name: string) {
+            this.selectedDeck = name
+            this.loadDeck()
+            this.closeDeckSettingsModal()
         },
         loadDeck() {
             this.selectedDeck.trim()
