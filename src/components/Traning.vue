@@ -248,7 +248,7 @@ export default defineComponent({
     },
     computed: {
         selectedSlotValue() {
-            return this.field.find(e => e.name == this.selectedFrom).value
+            return this.field.find(e => e.name == this.selectedFrom)?.value
         },
     },
     mounted() {
@@ -540,7 +540,7 @@ export default defineComponent({
             this.handCards.push(this.allCards.splice(index, 1).toString())
         },
         activeEffect() {
-            this.log.push(`${this.selectedCard} effect`)
+            this.log.push(`${this.selectedCard}(${this.selectedFrom}) effect`)
             this.resetSelect()
         },
         saveLog() {
