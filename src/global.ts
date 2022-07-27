@@ -100,7 +100,11 @@ function createType(type: string) {
 export let db = getDB()
 //7 days
 if (db.timeStamp < Date.now() - 6.048e8 || !db.data[0].type) db = false
-else db = db.data
+else db = db.data.map(e =>
+                Object.fromEntries([
+                    ['name', e.name],
+                    ['type', createType(e.type)],
+                ])
 if (!db) {
     try {
         axios.get('https://db.ygoprodeck.com/api/v7/cardinfo.php?language=de').then(resp => {
@@ -113,7 +117,11 @@ if (!db) {
             setDB({ timeStamp: Date.now(), data: db })
         })
     } catch {
-        if (getDB()) db = getDB()
+        if (getDB()) db = getDB().data.map(e =>
+                Object.fromEntries([
+                    ['name', e.name],
+                    ['type', createType(e.type)],
+                ])
         else db = []
     }
 }
