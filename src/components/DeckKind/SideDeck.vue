@@ -497,7 +497,7 @@ export default defineComponent({
         uniqueCardDeck() {
             this.allCards = []
             for (let card of this.deck.sideCards) {
-                if (!card.src) card.src = mainCardDB.find(e => e.name == card.name).src
+                if (!card.src) card.src = mainCardDB.find(e => e.name == card.name)?.src
                 let count = card.count
                 for (count; count; count--) {
                     this.allCards.push(card)

@@ -309,7 +309,7 @@ export default defineComponent({
             if (!this.deck) return
             this.counts = [0, 0, 0, 0]
             for (let card of this.deck.extraCards) {
-                if (!card.src) card.src = extraCardDB.find(e => e.name == card.name).src
+                if (!card.src) card.src = extraCardDB.find(e => e.name == card.name)?.src
                 switch (card.type) {
                     case 'fusion':
                         this.counts[0] += card.count

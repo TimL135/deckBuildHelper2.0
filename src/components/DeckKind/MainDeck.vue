@@ -555,7 +555,7 @@ export default defineComponent({
             this.allCards = []
             for (let card of this.deck.cards) {
                 let count = card.count
-                if (!card.src) card.src = mainCardDB.find(e => e.name == card.name).src
+                if (!card.src) card.src = mainCardDB.find(e => e.name == card.name)?.src
                 for (count; count; count--) {
                     this.allCards.push(card)
                 }

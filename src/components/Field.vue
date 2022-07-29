@@ -15,7 +15,7 @@
             @dblclick="slot.value.length == 1 && slot.value != slot.name ? searchOnline(slot.value[0]) : null"
         >
             <img
-                v-if="findCardByName(slot.value[0])"
+                v-if="navigator.onLine && findCardByName(slot.value[0])"
                 style="height: 5rem"
                 :src="`https://storage.googleapis.com/ygoprodeck.com/pics_small/${findCardByName(slot.value[0])?.src}.jpg`"
                 alt=""
@@ -47,7 +47,7 @@
             @dblclick="slot.value.length == 1 && slot.value != slot.name ? searchOnline(slot.value[0]) : null"
         >
             <img
-                v-if="findCardByName(slot.value[0])"
+                v-if="navigator.onLine && findCardByName(slot.value[0])"
                 style="height: 5rem"
                 :src="`https://storage.googleapis.com/ygoprodeck.com/pics_small/${findCardByName(slot.value[0])?.src}.jpg`"
                 alt=""
@@ -63,7 +63,7 @@ import { findCard, findCardByName, findCardGroup, findCardGroupByName, searchOnl
 import { defineComponent } from 'vue'
 export default defineComponent({
     setup() {
-        return { findCard, findCardByName, findCardGroup, findCardGroupByName, searchOnline }
+        return { findCard, findCardByName, findCardGroup, findCardGroupByName, searchOnline, navigator }
     },
     props: {
         field: {

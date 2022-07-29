@@ -63,7 +63,7 @@
                 @dblclick="searchOnline(findCard(card)?.name)"
             >
                 <img
-                    v-if="findCard(card)?.src"
+                    v-if="navigator.onLine && findCard(card)?.src"
                     style="height: 5rem"
                     :src="`https://storage.googleapis.com/ygoprodeck.com/pics_small/${findCard(card)?.src}.jpg`"
                     alt=""
@@ -82,7 +82,7 @@
                     @dblclick="searchOnline(findCard(card)?.name)"
                 >
                     <img
-                        v-if="findCard(card)?.src"
+                        v-if="navigator.onLine && findCard(card)?.src"
                         style="height: 5rem"
                         :src="`https://storage.googleapis.com/ygoprodeck.com/pics_small/${findCard(card)?.src}.jpg`"
                         alt=""
@@ -102,7 +102,7 @@
                     @dblclick="searchOnline(findCard(card)?.name)"
                 >
                     <img
-                        v-if="findCard(card)?.src"
+                        v-if="navigator.onLine && findCard(card)?.src"
                         style="height: 5rem"
                         :src="`https://storage.googleapis.com/ygoprodeck.com/pics_small/${findCard(card)?.src}.jpg`"
                         alt=""
@@ -122,7 +122,7 @@
                     @dblclick="searchOnline(findCard(card)?.name)"
                 >
                     <img
-                        v-if="findCard(card)?.src"
+                        v-if="navigator.onLine && findCard(card)?.src"
                         style="height: 5rem"
                         :src="`https://storage.googleapis.com/ygoprodeck.com/pics_small/${findCard(card)?.src}.jpg`"
                         alt=""
@@ -142,7 +142,7 @@
                     @dblclick="searchOnline(findCard(card)?.name)"
                 >
                     <img
-                        v-if="findCard(card)?.src"
+                        v-if="navigator.onLine && findCard(card)?.src"
                         style="height: 5rem"
                         :src="`https://storage.googleapis.com/ygoprodeck.com/pics_small/${findCard(card)?.src}.jpg`"
                         alt=""
@@ -162,7 +162,7 @@
                     @dblclick="searchOnline(card)"
                 >
                     <img
-                        v-if="findCardByName(card)?.src"
+                        v-if="navigator.onLine && findCardByName(card)?.src"
                         style="height: 5rem"
                         :src="`https://storage.googleapis.com/ygoprodeck.com/pics_small/${findCard(card)?.src}.jpg`"
                         alt=""
@@ -253,7 +253,7 @@ import Field from './Field.vue'
 export default defineComponent({
     components: { SexyInput, Field },
     setup() {
-        return { deck, decks, findCard, findCardByName, searchOnline, actionToText }
+        return { deck, decks, findCard, findCardByName, searchOnline, actionToText, navigator }
     },
 
     data() {
