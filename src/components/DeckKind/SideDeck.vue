@@ -113,7 +113,7 @@
                             v-model="nameInput"
                             :options="
                                 deck.alternativeCards
-                                    .map(e =>
+                                    ?.map(e =>
                                         Object.fromEntries([
                                             ['name', e.name],
                                             ['type', e.type],
@@ -125,7 +125,7 @@
                             :labelBorder="true"
                             :selectOnBlur="true"
                             :controlInput="false"
-                            :noElementMessage="deck.alternativeCards.length ? nameInput : nameInput ? nameInput : 'no alternative cards'"
+                            :noElementMessage="deck.alternativeCards?.length ? nameInput : nameInput ? nameInput : 'no alternative cards'"
                             class="orange"
                             labelClass="orange"
                             listClass="orange text-dark"

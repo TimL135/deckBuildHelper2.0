@@ -38,7 +38,7 @@
                 </svg>
             </button>
         </div>
-        <div class="deckSelect text-dark mt-1">
+        <div class="deckSelect text-dark mt-1" v-if="deck">
             <div
                 class="round-start"
                 :class="selectedDeckKind == 'mainDeck' ? 'green' : 'orange'"
@@ -71,17 +71,19 @@
             </div>
         </div>
     </div>
-    <div v-if="selectedDeckKind == 'mainDeck'">
-        <MainDeck />
-    </div>
-    <div v-if="selectedDeckKind == 'extraDeck'">
-        <ExtraDeck />
-    </div>
-    <div v-if="selectedDeckKind == 'sideDeck'">
-        <SideDeck />
-    </div>
-    <div v-if="selectedDeckKind == 'alternativeDeck'">
-        <AlternativeDeck />
+    <div v-if="deck">
+        <div v-if="selectedDeckKind == 'mainDeck'">
+            <MainDeck />
+        </div>
+        <div v-if="selectedDeckKind == 'extraDeck'">
+            <ExtraDeck />
+        </div>
+        <div v-if="selectedDeckKind == 'sideDeck'">
+            <SideDeck />
+        </div>
+        <div v-if="selectedDeckKind == 'alternativeDeck'">
+            <AlternativeDeck />
+        </div>
     </div>
     <!-- new modal -->
     <div id="deckSettingsModal" class="modal">

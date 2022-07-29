@@ -89,7 +89,7 @@
                         v-else
                     ></span>
                 </div>
-                <div v-if="!filteredItems.length" :class="listItemClass(noElementMessage)">
+                <div v-if="!filteredItems?.length" :class="listItemClass(noElementMessage)">
                     {{ noElementMessage }}
                 </div>
                 <div v-if="$slots['list-footer']">
@@ -376,7 +376,7 @@ export default defineComponent({
         },
         currentSelection() {
             //the option which is currently selected
-            return this.isListVisible && this.currentSelectionIndex < this.filteredItems.length
+            return this.isListVisible && this.currentSelectionIndex < this.filteredItems?.length
                 ? this.filteredItems[this.currentSelectionIndex]
                 : undefined
         },
@@ -479,8 +479,8 @@ export default defineComponent({
         },
         onInput(event: Event) {
             //is executed when something is entered in selectInput.
-            if (this.isListVisible && this.currentSelectionIndex >= this.filteredItems.length) {
-                this.currentSelectionIndex = (this.filteredItems.length || 1) - 1
+            if (this.isListVisible && this.currentSelectionIndex >= this.filteredItems?.length) {
+                this.currentSelectionIndex = (this.filteredItems?.length || 1) - 1
             }
             this.updateValue(event)
             this.$emit('onInput', {

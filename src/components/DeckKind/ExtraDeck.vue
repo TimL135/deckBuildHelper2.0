@@ -89,7 +89,7 @@
                                 v-model="nameInput"
                                 :options="
                                     deck.alternativeExtraCards
-                                        .map(e =>
+                                        ?.map(e =>
                                             Object.fromEntries([
                                                 ['name', e.name],
                                                 ['type', e.type],

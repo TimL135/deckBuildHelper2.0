@@ -149,7 +149,7 @@
                             v-model="nameInput"
                             :options="
                                 deck.alternativeCards
-                                    .map(e =>
+                                    ?.map(e =>
                                         Object.fromEntries([
                                             ['name', e.name],
                                             ['type', e.type],
@@ -161,7 +161,7 @@
                             :labelBorder="true"
                             :selectOnBlur="true"
                             :controlInput="false"
-                            :noElementMessage="deck.alternativeCards.length ? nameInput : nameInput ? nameInput : 'no alternative cards'"
+                            :noElementMessage="deck.alternativeCards?.length ? nameInput : nameInput ? nameInput : 'no alternative cards'"
                             class="orange"
                             labelClass="orange"
                             listClass="orange text-dark"
@@ -434,7 +434,7 @@ export default defineComponent({
         alternativeCheck(card) {
             this.nameInput.trim()
             this.type = card.type
-            this.deck.alternativeCards.forEach(card => {
+            this.deck.alternativeCards?.forEach(card => {
                 if (card.name == this.nameInput) {
                     this.type = card.type
                     this.countInput = card.count
@@ -445,7 +445,7 @@ export default defineComponent({
         },
         addCard() {
             this.nameInput.trim()
-            if (this.deck.cards.length > 20) {
+            if (this.deck.cards?.length > 20) {
                 if (this.deck.cards.map(c => c.count).reduce((a, b) => a + b) + parseInt(this.countInput) > 60) {
                     this.deck.alternativeCards = this.deck.alternativeCards.filter(card => card.name != this.nameInput)
                     this.deck.alternativeCards.push({

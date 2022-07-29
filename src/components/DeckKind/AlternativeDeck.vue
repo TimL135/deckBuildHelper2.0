@@ -25,7 +25,7 @@
                 </tr>
             </thead>
             <tbody>
-                <tr v-for="card in deck.alternativeCards.concat(deck.alternativeExtraCards || [])" :key="card.name">
+                <tr v-for="card in deck.alternativeCards?.concat(deck.alternativeExtraCards || [])" :key="card.name">
                     <th style="text-align: left" :class="card.type" @dblclick="searchOnline(card.name)">{{ card.name }}({{ card.count }})</th>
                     <td :class="card.type">
                         <button @click="openCardEditModal(card)" class="me-2" style="background-color: #ffffff00; border: none">
@@ -519,8 +519,7 @@ export default defineComponent({
         },
         sortDeck() {
             this.deck.alternativeCards
-
-                .sort(function (a, b) {
+                ?.sort(function (a, b) {
                     if (a.name < b.name) {
                         return -1
                     }
