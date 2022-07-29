@@ -431,8 +431,8 @@ export default defineComponent({
         alternativeCheck(card) {
             this.nameInput.trim()
             this.type = card.type
-            this.deck.alternativeCards?.forEach(e => {
-                if (e.name == this.nameInput) {
+            this.deck.alternativeCards?.forEach(card => {
+                if (card.name == this.nameInput) {
                     this.type = card.type
                     this.countInput = card.count
                     this.properties = card.properties
