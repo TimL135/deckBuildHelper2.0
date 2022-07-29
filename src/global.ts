@@ -108,6 +108,7 @@ if (!db) {
                 Object.fromEntries([
                     ['name', e.name],
                     ['type', createType(e.type)],
+                    ['src', e.card_images[0].id],
                 ])
             )
             setDB({ timeStamp: Date.now(), data: db })

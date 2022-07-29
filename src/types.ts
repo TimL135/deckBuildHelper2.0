@@ -6,6 +6,7 @@ export interface Card {
     properties: boolean[]
     value: number
     id: string
+    src: string
 }
 export interface ExtraCard {
     name: string
