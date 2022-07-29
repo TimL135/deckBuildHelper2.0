@@ -58,12 +58,17 @@
             <div
                 v-for="(card, index) of handCards"
                 :key="card + index"
-                style="background-color: red; border: 2px solid rgb(12, 12, 12)"
-                :class="findCard(card)?.type"
+                style="border: 2px solid rgb(12, 12, 12)"
                 @click="selectCard(card, 'hand')"
                 @dblclick="searchOnline(findCard(card)?.name)"
             >
-                {{ findCard(card)?.name }}
+                <img
+                    v-if="findCard(card)?.src"
+                    style="height: 5rem"
+                    :src="`https://storage.googleapis.com/ygoprodeck.com/pics_small/${findCard(card)?.src}.jpg`"
+                    alt=""
+                />
+                <div v-else>{{ findCard(card)?.name }}</div>
             </div>
         </div>
         <div v-if="view == 'deck'">
@@ -72,12 +77,17 @@
                 <div
                     v-for="card of allCards"
                     :key="card"
-                    :class="findCard(card)?.type"
                     style="border: 2px solid rgb(12, 12, 12)"
                     @click="selectCard(card, 'deck')"
                     @dblclick="searchOnline(findCard(card)?.name)"
                 >
-                    {{ findCard(card)?.name }}
+                    <img
+                        v-if="findCard(card)?.src"
+                        style="height: 5rem"
+                        :src="`https://storage.googleapis.com/ygoprodeck.com/pics_small/${findCard(card)?.src}.jpg`"
+                        alt=""
+                    />
+                    <div v-else>{{ findCard(card)?.name }}</div>
                 </div>
             </div>
         </div>
@@ -87,12 +97,17 @@
                 <div
                     v-for="card of allExtraCards"
                     :key="card"
-                    :class="findCard(card)?.type"
                     style="border: 2px solid rgb(12, 12, 12)"
                     @click="selectCard(card, 'extradeck')"
                     @dblclick="searchOnline(findCard(card)?.name)"
                 >
-                    {{ findCard(card)?.name }}
+                    <img
+                        v-if="findCard(card)?.src"
+                        style="height: 5rem"
+                        :src="`https://storage.googleapis.com/ygoprodeck.com/pics_small/${findCard(card)?.src}.jpg`"
+                        alt=""
+                    />
+                    <div v-else>{{ findCard(card)?.name }}</div>
                 </div>
             </div>
         </div>
@@ -102,12 +117,17 @@
                 <div
                     v-for="card of graveYard"
                     :key="card"
-                    :class="findCard(card)?.type"
                     style="border: 2px solid rgb(12, 12, 12)"
                     @click="selectCard(card, 'graveyard')"
                     @dblclick="searchOnline(findCard(card)?.name)"
                 >
-                    {{ findCard(card)?.name }}
+                    <img
+                        v-if="findCard(card)?.src"
+                        style="height: 5rem"
+                        :src="`https://storage.googleapis.com/ygoprodeck.com/pics_small/${findCard(card)?.src}.jpg`"
+                        alt=""
+                    />
+                    <div v-else>{{ findCard(card)?.name }}</div>
                 </div>
             </div>
         </div>
@@ -117,12 +137,17 @@
                 <div
                     v-for="card of banish"
                     :key="card"
-                    :class="findCard(card)?.type"
                     style="border: 2px solid rgb(12, 12, 12)"
                     @click="selectCard(card, 'banish')"
                     @dblclick="searchOnline(findCard(card)?.name)"
                 >
-                    {{ findCard(card)?.name }}
+                    <img
+                        v-if="findCard(card)?.src"
+                        style="height: 5rem"
+                        :src="`https://storage.googleapis.com/ygoprodeck.com/pics_small/${findCard(card)?.src}.jpg`"
+                        alt=""
+                    />
+                    <div v-else>{{ findCard(card)?.name }}</div>
                 </div>
             </div>
         </div>
@@ -132,12 +157,17 @@
                 <div
                     v-for="card of selectedSlotValue"
                     :key="card"
-                    :class="findCardByName(card)?.type"
                     style="border: 2px solid rgb(12, 12, 12)"
                     @click="selectCard(findCardByName(card)?.id, selectedFrom)"
                     @dblclick="searchOnline(card)"
                 >
-                    {{ card }}
+                    <img
+                        v-if="findCardByName(card)?.src"
+                        style="height: 5rem"
+                        :src="`https://storage.googleapis.com/ygoprodeck.com/pics_small/${findCard(card)?.src}.jpg`"
+                        alt=""
+                    />
+                    <div v-else>{{ findCardByName(card)?.name }}</div>
                 </div>
             </div>
         </div>

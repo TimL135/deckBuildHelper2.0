@@ -99,7 +99,7 @@ function createType(type: string) {
 }
 export let db = getDB()
 //7 days
-if (db && (db.timeStamp < Date.now() - 6.048e8 || !db.data[0].type)) db = false
+if (db && (db.timeStamp < Date.now() - 6.048e8 || !db.data[0].type || !db.data[0].src)) db = false
 else db = db.data
 if (!db) {
     try {

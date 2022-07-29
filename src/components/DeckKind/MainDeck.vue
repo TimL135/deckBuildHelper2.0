@@ -89,14 +89,10 @@
             <div></div>
             <div>Probability</div>
         </div>
-        <div class="cardTable p-2" v-for="card in deck.cards" :key="card.name" :class="card.type">
+        <div class="cardTable p-2" v-for="card in deck.cards" :key="card.name" :class="card.type" style="border-bottom: 1px solid black">
             <div @dblclick="searchOnline(card.name)">{{ card.name }}({{ card.count }})</div>
             <div>
-                <img
-                    style="height: 5rem"
-                    :src="`https://storage.googleapis.com/ygoprodeck.com/pics_small/${mainCardDB.find(e => e.name == card.name).src}.jpg`"
-                    alt=""
-                />
+                <img style="height: 5rem" :src="`https://storage.googleapis.com/ygoprodeck.com/pics_small/${card.src}.jpg`" alt="" />
             </div>
             <div style="margin-top: -0.5rem">
                 <button @click="openCardEditModal(card.id)" style="background-color: #ffffff00; border: none">
@@ -559,6 +555,7 @@ export default defineComponent({
             this.allCards = []
             for (let card of this.deck.cards) {
                 let count = card.count
+                if (!card.src) card.src = mainCardDB.find(e => e.name == card.name).src
                 for (count; count; count--) {
                     this.allCards.push(card)
                 }

@@ -13,21 +13,28 @@
             style="background-color: gray; border: 2px solid rgb(12, 12, 12)"
             @click="$emit('selectSlot', slot)"
             @dblclick="slot.value.length == 1 && slot.value != slot.name ? searchOnline(slot.value[0]) : null"
-            :class="findCardByName(slot.value[0])?.type"
         >
-            {{
-                slot.name == 'deck'
-                    ? `${slot.name}(${allCards.length})`
-                    : slot.name == 'graveyard'
-                    ? `${slot.name}(${graveYard.length})`
-                    : slot.name == 'extradeck'
-                    ? `${slot.name}(${allExtraCards.length})`
-                    : slot.name == 'banish'
-                    ? `${slot.name}(${banish.length})`
-                    : slot.value.length > 1
-                    ? `${slot.value[0]}(${slot.value.length})`
-                    : slot.value[0]
-            }}
+            <img
+                v-if="findCardByName(slot.value[0])"
+                style="height: 5rem"
+                :src="`https://storage.googleapis.com/ygoprodeck.com/pics_small/${findCardByName(slot.value[0])?.src}.jpg`"
+                alt=""
+            />
+            <div v-else>
+                {{
+                    slot.name == 'deck'
+                        ? `${slot.name}(${allCards.length})`
+                        : slot.name == 'graveyard'
+                        ? `${slot.name}(${graveYard.length})`
+                        : slot.name == 'extradeck'
+                        ? `${slot.name}(${allExtraCards.length})`
+                        : slot.name == 'banish'
+                        ? `${slot.name}(${banish.length})`
+                        : slot.value.length > 1
+                        ? `${slot.value[0]}(${slot.value.length})`
+                        : slot.value[0]
+                }}
+            </div>
         </div>
     </div>
     <div class="enemyField" v-else>
@@ -38,9 +45,16 @@
             style="background-color: gray; border: 2px solid rgb(12, 12, 12)"
             @click="$emit('selectSlot', slot)"
             @dblclick="slot.value.length == 1 && slot.value != slot.name ? searchOnline(slot.value[0]) : null"
-            :class="findCardByName(slot.value[0])?.type"
         >
-            {{ slot.value[0] }}
+            <img
+                v-if="findCardByName(slot.value[0])"
+                style="height: 5rem"
+                :src="`https://storage.googleapis.com/ygoprodeck.com/pics_small/${findCardByName(slot.value[0])?.src}.jpg`"
+                alt=""
+            />
+            <div v-else>
+                {{ slot.value[0] }}
+            </div>
         </div>
     </div>
 </template>
