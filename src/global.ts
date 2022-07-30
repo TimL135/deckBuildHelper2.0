@@ -13,6 +13,7 @@ export function findCard(id: string) {
             count: 1,
             type: 'token',
             id: 'token',
+            src: '',
         }
     return (
         deck.value.cards?.find(c => c.id == id) ||
@@ -28,6 +29,7 @@ export function findCardByName(name: string) {
             count: 1,
             type: 'token',
             id: 'token',
+            src: '',
         }
     return (
         deck.value.cards?.find(c => c.name == name) ||
