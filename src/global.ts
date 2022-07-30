@@ -51,16 +51,6 @@ export function actionToText(action: string) {
     while (action.match(pattern)) {
         action = action.replace(pattern, convert)
     }
-    let counter = 12
-    while (action.match('0')) {
-        let id = undefined
-        while (!findCard(id) && counter <= 16) {
-            id = action.slice(action.indexOf('0'), counter)
-            counter++
-        }
-        action = action.replace(id, findCard(id)?.name)
-    }
-
     return action
 }
 function convert(str, p1, offset, s) {
