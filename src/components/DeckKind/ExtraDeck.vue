@@ -219,7 +219,7 @@ export default defineComponent({
             this.editCardId = this.deck.extraCards.findIndex(c => c.name == name)
             this.type = this.deck.extraCards[this.editCardId].type
             this.nameInput = this.deck.extraCards[this.editCardId].name
-            this.countInput = JSON.stringify(this.deck.extraCards[this.editCardId].count)
+            this.countInput = this.deck.extraCards[this.editCardId].count
             var modal = document.getElementById('extraCardAddEditModal')
             if (modal) modal.style.display = 'block'
         },
@@ -309,7 +309,7 @@ export default defineComponent({
             if (!this.deck) return
             this.counts = [0, 0, 0, 0]
             for (let card of this.deck.extraCards) {
-                if (!card.src) card.src = extraCardDB.find(e => e.name == card.name)?.src || '37469904'
+                if (!card.src) card.src = extraCardDB.find(e => e.name == card.name)?.src
                 switch (card.type) {
                     case 'fusion':
                         this.counts[0] += card.count

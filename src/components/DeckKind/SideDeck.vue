@@ -379,7 +379,7 @@ export default defineComponent({
             this.editAdd = 'edit'
             this.editCardIndex = this.deck.sideCards.findIndex(c => c.name == name)
             this.nameInput = this.deck.sideCards[this.editCardIndex].name
-            this.countInput = JSON.stringify(this.deck.sideCards[this.editCardIndex].count)
+            this.countInput = this.deck.sideCards[this.editCardIndex].count
             this.properties = this.deck.sideCards[this.editCardIndex].properties
             this.value = this.deck.sideCards[this.editCardIndex].value
             this.type = this.deck.sideCards[this.editCardIndex].type
@@ -497,7 +497,7 @@ export default defineComponent({
         uniqueCardDeck() {
             this.allCards = []
             for (let card of this.deck.sideCards) {
-                if (!card.src) card.src = mainCardDB.find(e => e.name == card.name)?.src || '37469904'
+                if (!card.src) card.src = mainCardDB.find(e => e.name == card.name)?.src
                 let count = card.count
                 for (count; count; count--) {
                     this.allCards.push(card)
