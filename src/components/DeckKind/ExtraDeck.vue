@@ -49,7 +49,7 @@
                 <img style="height: 5rem" :src="`https://storage.googleapis.com/ygoprodeck.com/pics_small/${card.src}.jpg`" alt="" />
             </div>
             <div style="margin-top: -0.5rem">
-                <button @click="openExtraCardEditModal(card.id)" style="background-color: #ffffff00; border: none">
+                <button @click="openExtraCardEditModal(card.name)" style="background-color: #ffffff00; border: none">
                     <svg xmlns="http://www.w3.org/2000/svg" class="bi bi-gear" viewBox="0 0 16 16">
                         <path
                             d="M8 4.754a3.246 3.246 0 1 0 0 6.492 3.246 3.246 0 0 0 0-6.492zM5.754 8a2.246 2.246 0 1 1 4.492 0 2.246 2.246 0 0 1-4.492 0z"
