@@ -51,9 +51,9 @@ export function actionToText(action: string) {
     while (action.match(pattern)) {
         action = action.replace(pattern, convert)
     }
+    let counter = 12
     while (action.match('0')) {
         let id = undefined
-        let counter = 12
         while (!findCard(id) && counter <= 16) {
             id = action.slice(action.indexOf('0'), counter)
             counter++
