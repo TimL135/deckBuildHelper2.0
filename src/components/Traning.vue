@@ -366,7 +366,6 @@ export default defineComponent({
         generateAllCards() {
             this.allExtraCards = []
             for (let card of this.deck.extraCards) {
-                if (!card.id) card.id = Math.random().toString().slice(-15)
                 for (let i = card.count; i; i--) {
                     this.allExtraCards.push(card.id)
                 }

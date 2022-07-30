@@ -28,6 +28,9 @@ export function getDeck(): type.Deck {
                 card.id = newId
             }
         }
+        for (const card of deck.extraCards) {
+            if (!card.id) card.id = Math.random().toString().slice(-15)
+        }
     }
     return (deck || 'false') as type.Deck
 }
