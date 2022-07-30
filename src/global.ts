@@ -99,11 +99,11 @@ function createType(type: string) {
 }
 export let db = getDB()
 //7 days
-if (db && (db.timeStamp < Date.now() - 6.048e8 || !db.data[0].type || !db.data[0].src)) db = false
+if (db && (db.timeStamp < Date.now() - 6.048e8 || !db.data[0].type || !db.data[0].src || db.data.length < 12000)) db = false
 else db = db.data
 if (!db) {
     try {
-        axios.get('https://db.ygoprodeck.com/api/v7/cardinfo.php?language=de').then(resp => {
+        axios.get('https://db.ygoprodeck.com/api/v7/cardinfo.php').then(resp => {
             db = resp.data.data.map(e =>
                 Object.fromEntries([
                     ['name', e.name],

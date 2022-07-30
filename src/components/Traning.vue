@@ -164,7 +164,7 @@
                     <img
                         v-if="navigator.onLine && findCardByName(card)?.src"
                         style="height: 5rem"
-                        :src="`https://storage.googleapis.com/ygoprodeck.com/pics_small/${findCard(card)?.src}.jpg`"
+                        :src="`https://storage.googleapis.com/ygoprodeck.com/pics_small/${findCardByName(card)?.src}.jpg`"
                         alt=""
                     />
                     <div v-else>{{ findCardByName(card)?.name }}</div>
