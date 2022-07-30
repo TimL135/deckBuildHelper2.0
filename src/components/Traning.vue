@@ -23,6 +23,21 @@
                     />
                 </svg>
             </div>
+            <div style="grid-area: undo" @click="previousStep()" v-if="log.length > 0">
+                <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    width="16"
+                    height="16"
+                    fill="currentColor"
+                    class="bi bi-caret-left-square"
+                    viewBox="0 0 16 16"
+                >
+                    <path
+                        d="M14 1a1 1 0 0 1 1 1v12a1 1 0 0 1-1 1H2a1 1 0 0 1-1-1V2a1 1 0 0 1 1-1h12zM2 0a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V2a2 2 0 0 0-2-2H2z"
+                    />
+                    <path d="M10.205 12.456A.5.5 0 0 0 10.5 12V4a.5.5 0 0 0-.832-.374l-4.5 4a.5.5 0 0 0 0 .748l4.5 4a.5.5 0 0 0 .537.082z" />
+                </svg>
+            </div>
             <div @click="resetSelect()" style="grid-area: text1">
                 {{ selectedCard ? `selected card: ${findCard(selectedCard)?.name}(${selectedFrom})` : 'no card selected' }}
             </div>
@@ -615,6 +630,108 @@ export default defineComponent({
                 this.cardInputs = []
             }
         },
+
+        previousStep() {
+            let step = []
+            if (this.log[this.log.length - 1]) {
+                step = this.log[this.log.length - 1].split(' ')
+            }
+            let counter = 6
+            while (step.length > 5 && counter) {
+                for (let index in step) {
+                    if (step[index] == 'enemy') {
+                        step[index] += ' '
+                        step[index] += step[parseInt(index) + 1]
+                        step.splice(parseInt(index) + 1, 1)
+                    }
+                }
+                counter--
+            }
+            if (this.showText == 'end') {
+                this.showText = actionToText(step.join(' '))
+                return
+            }
+            let card = findCard(step[0])
+            let slotIndex = this.field.findIndex(e => e.name == step[4])
+            let fieldSlot = this.field.find(e => e.name == step[4])
+            this.log.pop()
+            if (step.length != 5) return
+            switch (step[4]) {
+                case 'deck':
+                    this.allCards.splice(
+                        this.allCards.findIndex(e => e == step[0]),
+                        1
+                    )
+                    break
+                case 'graveyard':
+                    this.graveYard.splice(
+                        this.graveYard.findIndex(e => e == step[0]),
+                        1
+                    )
+                    break
+                case 'banish':
+                    this.banish.splice(
+                        this.banish.findIndex(e => e == step[0]),
+                        1
+                    )
+                    break
+                case 'extradeck':
+                    this.allExtraCards.splice(
+                        this.allExtraCards.findIndex(e => e == step[0]),
+                        1
+                    )
+                    break
+                case 'hand':
+                    this.handCards.splice(
+                        this.handCards.findIndex(e => e == step[0]),
+                        1
+                    )
+                    break
+                default:
+                    if (fieldSlot!.value.length == 1) {
+                        fieldSlot!.value = [fieldSlot!.name]
+                    } else {
+                        fieldSlot!.value.splice(fieldSlot!.value.indexOf(card.name), 1)
+                    }
+                    break
+            }
+            if (step[4].includes('enemy') || step[2].includes('enemy')) {
+                this.playerSite = false
+            } else {
+                this.playerSite = true
+            }
+            switch (step[2]) {
+                case 'deck':
+                    if (card.name != 'token') this.allCards.push(card.id)
+                    break
+                case 'graveyard':
+                    if (card.name != 'token') this.graveYard.push(card.id)
+                    break
+                case 'banish':
+                    if (card.name != 'token') this.banish.push(card.id)
+                    break
+                case 'extradeck':
+                    if (card.name != 'token') this.allExtraCards.push(card.id)
+                    break
+                case 'hand':
+                    if (card.name != 'token') this.handCards.push(card.id)
+                    break
+                case 'token': {
+                    break
+                }
+                default:
+                    if (this.field[slotIndex].value[0] != this.field[slotIndex].name) {
+                        if (card.type == 'xyz') {
+                            this.field[slotIndex].value.unshift(card.name)
+                        } else {
+                            this.field[slotIndex].value.push(card.name)
+                        }
+                    } else {
+                        this.field[this.field.findIndex(e => e.name == step[2])].value[0] = card.name
+                    }
+                    break
+            }
+        },
     },
 })
 </script>
@@ -631,7 +748,7 @@ body {
     grid-template-columns: 1fr 1fr 10fr 1fr 1fr;
     grid-template-areas:
         'switch special text1 . settings'
-        '. target text2 effect .';
+        'undo target text2 effect .';
 }
 .sticky {
     background-color: rgb(12, 12, 12);
