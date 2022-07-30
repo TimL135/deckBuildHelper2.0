@@ -208,6 +208,7 @@ export default defineComponent({
                 if (event.target == document.getElementById('extraCardAddEditModal')) this.closeExtraCardAddEditModal()
             }
             this.editAdd = 'add'
+            this.nameInput = ''
             var modal = document.getElementById('extraCardAddEditModal')
             if (modal) modal.style.display = 'block'
         },
