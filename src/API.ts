@@ -12,26 +12,29 @@ export function setDeck(deck: type.Deck) {
 export function getDeck(): type.Deck {
     const deck = JSON.parse(localStorage.getItem('deck'))
     if (deck) {
-        for (const card of deck.cards) {
-            if (card.id.length != 15) {
+        for (const cardMaindeck of deck.cards.concat(deck.sideCards).concat(deck.alternativeCards)) {
+            if (cardMaindeck.id.length != 15) {
                 const newId = Math.random().toString().slice(-15)
                 for (const combo of deck.combos) {
-                    for (let card of combo.cards) {
-                        if (card == card.id) card = newId
+                    for (const card of combo.cards) {
+                        if (card == cardMaindeck.id) combo.cards[combo.cards.findIndex(e => e == cardMaindeck.id)] = newId
                     }
                 }
                 for (const cardGroup of deck.cardGroups) {
-                    for (let card of cardGroup.cards) {
-                        if (card == card.id) card = newId
+                    for (const card of cardGroup.cards) {
+                        if (card == cardMaindeck.id) {
+                            cardGroup.cards[cardGroup.cards.findIndex(e => e == cardMaindeck.id)] = newId
+                        }
                     }
                 }
-                card.id = newId
+                cardMaindeck.id = newId
             }
         }
-        for (const card of deck.extraCards) {
+        for (const card of deck.extraCards.concat(deck.alternativeExtraCards)) {
             if (!card.id) card.id = Math.random().toString().slice(-15)
         }
     }
+    console.log(deck)
     return (deck || 'false') as type.Deck
 }
 export function setDB(db: any) {
