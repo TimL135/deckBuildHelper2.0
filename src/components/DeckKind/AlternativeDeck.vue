@@ -61,208 +61,198 @@
     <div id="cardAddEditModal" class="modal">
         <div class="modal-content">
             <div class="container">
-                <form @submit.prevent="editAddCard()">
-                    <div>
-                        <SexyInput
-                            @change="typeCheck"
-                            :onSelectItem="typeCheck"
-                            type="select"
-                            placeholder="name"
-                            v-model="nameInput"
-                            :options="db"
-                            :option-projection="e => e.name"
-                            :labelBorder="true"
-                            :selectOnBlur="true"
-                            :controlInput="false"
-                            :noElementMessage="nameInput"
-                            class="orange"
-                            labelClass="orange"
-                            listClass="orange text-dark"
-                            :listItemClass="item => item.type || 'orange text-dark'"
-                            :required="true"
-                        />
+                <div>
+                    <SexyInput
+                        @change="typeCheck"
+                        :onSelectItem="typeCheck"
+                        type="select"
+                        placeholder="name"
+                        v-model="nameInput"
+                        :options="db"
+                        :option-projection="e => e.name"
+                        :labelBorder="true"
+                        :selectOnBlur="true"
+                        :controlInput="false"
+                        :noElementMessage="nameInput"
+                        class="orange"
+                        labelClass="orange"
+                        listClass="orange text-dark"
+                        :listItemClass="item => item.type || 'orange text-dark'"
+                        :required="true"
+                        :error="error.nameInput"
+                    />
+                </div>
+                <div class="mb-3">
+                    <SexyInput
+                        type="number"
+                        placeholder="Quantity"
+                        v-model="countInput"
+                        min="1"
+                        max="3"
+                        class="orange"
+                        labelClass="orange"
+                        listClass="orange text-dark"
+                        :labelBorder="true"
+                        :required="true"
+                        :error="error.countInput"
+                    />
+                </div>
+                <div
+                    v-if="editAdd == 'add' || selectedCard.type == 'monster' || selectedCard.type == 'spell' || selectedCard.type == 'trap'"
+                    class="types"
+                >
+                    <div
+                        @click="type = 'monster'"
+                        style="border: 1px solid rgb(12, 12, 12)"
+                        class="round-start"
+                        :class="type == 'monster' ? 'monster' : 'orange text-dark'"
+                    >
+                        Monster
                     </div>
-                    <div class="mb-3">
-                        <SexyInput
-                            type="number"
-                            placeholder="Quantity"
-                            v-model="countInput"
-                            min="1"
-                            max="3"
-                            class="orange"
-                            labelClass="orange"
-                            listClass="orange text-dark"
-                            :labelBorder="true"
-                            :required="true"
-                        />
+                    <div @click="type = 'spell'" style="border: 1px solid rgb(12, 12, 12)" :class="type == 'spell' ? 'spell' : 'orange text-dark'">
+                        Spell
                     </div>
                     <div
-                        v-if="editAdd == 'add' || selectedCard.type == 'monster' || selectedCard.type == 'spell' || selectedCard.type == 'trap'"
-                        class="types"
+                        @click="type = 'trap'"
+                        style="border: 1px solid rgb(12, 12, 12)"
+                        class="round-end"
+                        :class="type == 'trap' ? 'trap' : 'orange text-dark'"
                     >
-                        <div
-                            @click="type = 'monster'"
-                            style="border: 1px solid rgb(12, 12, 12)"
-                            class="round-start"
-                            :class="type == 'monster' ? 'monster' : 'orange text-dark'"
-                        >
-                            Monster
-                        </div>
-                        <div
-                            @click="type = 'spell'"
-                            style="border: 1px solid rgb(12, 12, 12)"
-                            :class="type == 'spell' ? 'spell' : 'orange text-dark'"
-                        >
-                            Spell
-                        </div>
-                        <div
-                            @click="type = 'trap'"
-                            style="border: 1px solid rgb(12, 12, 12)"
-                            class="round-end"
-                            :class="type == 'trap' ? 'trap' : 'orange text-dark'"
-                        >
-                            Trap
-                        </div>
+                        Trap
+                    </div>
+                </div>
+                <div
+                    class="extraTypes mt-1"
+                    v-if="
+                        editAdd == 'add' ||
+                        selectedCard.type == 'fusion' ||
+                        selectedCard.type == 'synchro' ||
+                        selectedCard.type == 'xyz' ||
+                        selectedCard.type == 'link'
+                    "
+                >
+                    <div
+                        @click="type = 'fusion'"
+                        style="border: 1px solid rgb(12, 12, 12)"
+                        class="round-start"
+                        :class="type == 'fusion' ? 'fusion' : 'orange text-dark'"
+                    >
+                        Fusion
                     </div>
                     <div
-                        class="extraTypes mt-1"
-                        v-if="
-                            editAdd == 'add' ||
-                            selectedCard.type == 'fusion' ||
-                            selectedCard.type == 'synchro' ||
-                            selectedCard.type == 'xyz' ||
-                            selectedCard.type == 'link'
-                        "
+                        @click="type = 'synchro'"
+                        style="border: 1px solid rgb(12, 12, 12)"
+                        :class="type == 'synchro' ? 'synchro' : 'orange text-dark'"
                     >
+                        Synchro
+                    </div>
+                    <div @click="type = 'xyz'" style="border: 1px solid rgb(12, 12, 12)" :class="type == 'xyz' ? 'xyz' : 'orange text-dark'">XYZ</div>
+                    <div
+                        @click="type = 'link'"
+                        style="border: 1px solid rgb(12, 12, 12)"
+                        class="round-end"
+                        :class="type == 'link' ? 'link' : 'orange text-dark'"
+                    >
+                        Link
+                    </div>
+                </div>
+                <div v-if="type == 'monster' || type == 'spell' || type == 'trap'" class="mt-3">
+                    <div class="properties">
                         <div
-                            @click="type = 'fusion'"
+                            @click="properties[0] = !properties[0]"
                             style="border: 1px solid rgb(12, 12, 12)"
                             class="round-start"
-                            :class="type == 'fusion' ? 'fusion' : 'orange text-dark'"
+                            :class="properties[0] ? 'green text-black' : 'orange text-dark'"
                         >
-                            Fusion
+                            Handtrap
                         </div>
                         <div
-                            @click="type = 'synchro'"
+                            @click="properties[1] = !properties[1]"
                             style="border: 1px solid rgb(12, 12, 12)"
-                            :class="type == 'synchro' ? 'synchro' : 'orange text-dark'"
+                            :class="properties[1] ? 'green text-black' : 'orange text-dark'"
                         >
-                            Synchro
-                        </div>
-                        <div @click="type = 'xyz'" style="border: 1px solid rgb(12, 12, 12)" :class="type == 'xyz' ? 'xyz' : 'orange text-dark'">
-                            XYZ
+                            Searcher
                         </div>
                         <div
-                            @click="type = 'link'"
+                            @click="properties[2] = !properties[2]"
+                            style="border: 1px solid rgb(12, 12, 12)"
+                            :class="properties[2] ? 'green text-black' : 'orange text-dark'"
+                        >
+                            Combo Starter
+                        </div>
+                        <div
+                            @click="properties[3] = !properties[3]"
                             style="border: 1px solid rgb(12, 12, 12)"
                             class="round-end"
-                            :class="type == 'link' ? 'link' : 'orange text-dark'"
+                            :class="properties[3] ? 'green text-black' : 'orange text-dark'"
                         >
-                            Link
+                            Negate
                         </div>
                     </div>
-                    <div v-if="type == 'monster' || type == 'spell' || type == 'trap'" class="mt-3">
-                        <div class="properties">
-                            <div
-                                @click="properties[0] = !properties[0]"
-                                style="border: 1px solid rgb(12, 12, 12)"
-                                class="round-start"
-                                :class="properties[0] ? 'green text-black' : 'orange text-dark'"
-                            >
-                                Handtrap
-                            </div>
-                            <div
-                                @click="properties[1] = !properties[1]"
-                                style="border: 1px solid rgb(12, 12, 12)"
-                                :class="properties[1] ? 'green text-black' : 'orange text-dark'"
-                            >
-                                Searcher
-                            </div>
-                            <div
-                                @click="properties[2] = !properties[2]"
-                                style="border: 1px solid rgb(12, 12, 12)"
-                                :class="properties[2] ? 'green text-black' : 'orange text-dark'"
-                            >
-                                Combo Starter
-                            </div>
-                            <div
-                                @click="properties[3] = !properties[3]"
-                                style="border: 1px solid rgb(12, 12, 12)"
-                                class="round-end"
-                                :class="properties[3] ? 'green text-black' : 'orange text-dark'"
-                            >
-                                Negate
-                            </div>
-                        </div>
-                        <div class="properties mt-1">
-                            <div
-                                @click="properties[4] = !properties[4]"
-                                style="border: 1px solid rgb(12, 12, 12)"
-                                class="round-start"
-                                :class="properties[4] ? 'green text-black' : 'orange text-dark'"
-                            >
-                                Once per Turn
-                            </div>
-                            <div
-                                @click="properties[5] = !properties[5]"
-                                style="border: 1px solid rgb(12, 12, 12)"
-                                :class="properties[5] ? 'green text-black' : 'orange text-dark'"
-                            >
-                                Searchable
-                            </div>
-                            <div
-                                @click="properties[6] = !properties[6]"
-                                style="border: 1px solid rgb(12, 12, 12)"
-                                :class="properties[6] ? 'green text-black' : 'orange text-dark'"
-                            >
-                                Combo Piece
-                            </div>
-                            <div
-                                @click="properties[7] = !properties[7]"
-                                style="border: 1px solid rgb(12, 12, 12)"
-                                class="round-end"
-                                :class="properties[7] ? 'green text-black' : 'orange text-dark'"
-                            >
-                                Interaption
-                            </div>
-                        </div>
-                    </div>
-                    <div class="value mt-3">
+                    <div class="properties mt-1">
                         <div
-                            @click="value = -1"
+                            @click="properties[4] = !properties[4]"
                             style="border: 1px solid rgb(12, 12, 12)"
                             class="round-start"
-                            :class="value == -1 ? 'green text-black' : 'orange text-dark'"
+                            :class="properties[4] ? 'green text-black' : 'orange text-dark'"
                         >
-                            -1
+                            Once per Turn
                         </div>
                         <div
-                            @click="value = 0"
+                            @click="properties[5] = !properties[5]"
                             style="border: 1px solid rgb(12, 12, 12)"
-                            :class="value == 0 ? 'green text-black' : 'orange text-dark'"
+                            :class="properties[5] ? 'green text-black' : 'orange text-dark'"
                         >
-                            0
+                            Searchable
                         </div>
                         <div
-                            @click="value = 0.5"
+                            @click="properties[6] = !properties[6]"
                             style="border: 1px solid rgb(12, 12, 12)"
-                            :class="value == 0.5 ? 'green text-black' : 'orange text-dark'"
+                            :class="properties[6] ? 'green text-black' : 'orange text-dark'"
                         >
-                            Maybe +1
+                            Combo Piece
                         </div>
                         <div
-                            @click="value = 1"
+                            @click="properties[7] = !properties[7]"
                             style="border: 1px solid rgb(12, 12, 12)"
                             class="round-end"
-                            :class="value == 1 ? 'green text-black' : 'orange text-dark'"
+                            :class="properties[7] ? 'green text-black' : 'orange text-dark'"
                         >
-                            1
+                            Interaption
                         </div>
                     </div>
+                </div>
+                <div class="value mt-3">
+                    <div
+                        @click="value = -1"
+                        style="border: 1px solid rgb(12, 12, 12)"
+                        class="round-start"
+                        :class="value == -1 ? 'green text-black' : 'orange text-dark'"
+                    >
+                        -1
+                    </div>
+                    <div @click="value = 0" style="border: 1px solid rgb(12, 12, 12)" :class="value == 0 ? 'green text-black' : 'orange text-dark'">
+                        0
+                    </div>
+                    <div
+                        @click="value = 0.5"
+                        style="border: 1px solid rgb(12, 12, 12)"
+                        :class="value == 0.5 ? 'green text-black' : 'orange text-dark'"
+                    >
+                        Maybe +1
+                    </div>
+                    <div
+                        @click="value = 1"
+                        style="border: 1px solid rgb(12, 12, 12)"
+                        class="round-end"
+                        :class="value == 1 ? 'green text-black' : 'orange text-dark'"
+                    >
+                        1
+                    </div>
+                </div>
 
-                    <br />
-                    <button type="submit" class="btn w-100 mt-1 orange round">&#10004;</button>
-                </form>
+                <br />
+                <button type="submit" class="btn w-100 mt-1 orange round" @click="editAddCard()">&#10004;</button>
             </div>
         </div>
     </div>
@@ -327,6 +317,7 @@ export default defineComponent({
             nameInput: '',
             countInput: '',
             editAdd: '',
+            error: {},
 
             selectedCard: {} as type.Card | type.ExtraCard,
         }
@@ -342,6 +333,10 @@ export default defineComponent({
             this.type = card.type
         },
         editAddCard() {
+            this.error = {}
+            if (!this.nameInput) this.error.nameInput = 'enter a name'
+            if (!this.countInput) this.error.countInput = 'enter a amount'
+            if (Object.keys(this.error).length > 0) return
             switch (this.editAdd) {
                 case 'add':
                     this.addCard()
@@ -376,6 +371,7 @@ export default defineComponent({
             window.onclick = event => {
                 if (event.target == document.getElementById('cardAddEditModal')) this.closeCardAddEditModal()
             }
+            this.error = {}
             this.editAdd = 'add'
             var modal = document.getElementById('cardAddEditModal')
             if (modal) modal.style.display = 'block'
@@ -384,6 +380,7 @@ export default defineComponent({
             window.onclick = event => {
                 if (event.target == document.getElementById('cardAddEditModal')) this.closeCardAddEditModal()
             }
+            this.error = {}
             this.selectedCard = card
             this.editAdd = 'edit'
             this.nameInput = card.name

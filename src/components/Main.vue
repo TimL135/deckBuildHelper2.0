@@ -169,6 +169,7 @@ import SideDeck from '@/components/DeckKind/SideDeck.vue'
 import AlternativeDeck from '@/components/DeckKind/AlternativeDeck.vue'
 import SexyInput from '../components/SexyInput.vue'
 import { decks, deck, setHTMLClass, safeDeck } from '@/global'
+import { setDecks } from '@/API'
 import * as type from '@/types'
 export default defineComponent({
     components: { MainDeck, ExtraDeck, SideDeck, AlternativeDeck, SexyInput },
@@ -251,6 +252,7 @@ export default defineComponent({
             }
 
             this.newDeck = ''
+            setDecks(this.decks)
         },
         switchDeck(name: string) {
             this.selectedDeck = name

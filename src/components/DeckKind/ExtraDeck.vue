@@ -95,59 +95,59 @@
         <div id="extraCardAddEditModal" class="modal">
             <div class="modal-content">
                 <div class="container">
-                    <form @submit.prevent="editAddExtraCard">
-                        <div>
-                            <SexyInput
-                                @change="alternativeCheck"
-                                :onSelectItem="alternativeCheck"
-                                type="select"
-                                placeholder="name"
-                                v-model="nameInput"
-                                :options="
-                                    deck.alternativeExtraCards
-                                        ?.map(e =>
-                                            Object.fromEntries([
-                                                ['name', e.name],
-                                                ['type', e.type],
-                                            ])
-                                        )
-                                        .concat(extraCardDB)
-                                "
-                                :option-projection="e => e.name"
-                                :labelBorder="true"
-                                :selectOnBlur="true"
-                                :controlInput="false"
-                                :noElementMessage="deck.alternativeExtraCards?.length ? nameInput : nameInput ? nameInput : 'no alternative cards'"
-                                class="orange"
-                                labelClass="orange"
-                                listClass="orange text-dark"
-                                :listItemClass="item => item.type || 'orange text-dark'"
-                                :required="true"
-                            />
-                        </div>
-                        <div class="mb-3">
-                            <SexyInput
-                                type="number"
-                                placeholder="Quantity"
-                                v-model="countInput"
-                                min="1"
-                                max="3"
-                                class="orange"
-                                labelClass="orange"
-                                listClass="orange text-dark"
-                                :labelBorder="true"
-                                :required="true"
-                            />
-                        </div>
-                        <div class="extraTypes">
-                            <div @click="type = 'fusion'" class="round-start" :class="type == 'fusion' ? 'fusion' : 'orange text-dark'">Fusion</div>
-                            <div @click="type = 'synchro'" :class="type == 'synchro' ? 'synchro' : 'orange text-dark'">Synchro</div>
-                            <div @click="type = 'xyz'" :class="type == 'xyz' ? 'xyz' : 'orange text-dark'">XYZ</div>
-                            <div @click="type = 'link'" class="round-end" :class="type == 'link' ? 'link' : 'orange text-dark'">Link</div>
-                        </div>
-                        <br />
-                        <button type="submit" class="btn w-100 mt-1 orange round">&#10004;</button>
-                    </form>
+                    <div>
+                        <SexyInput
+                            @change="alternativeCheck"
+                            :onSelectItem="alternativeCheck"
+                            type="select"
+                            placeholder="name"
+                            v-model="nameInput"
+                            :options="
+                                deck.alternativeExtraCards
+                                    ?.map(e =>
+                                        Object.fromEntries([
+                                            ['name', e.name],
+                                            ['type', e.type],
+                                        ])
+                                    )
+                                    .concat(extraCardDB)
+                            "
+                            :option-projection="e => e.name"
+                            :labelBorder="true"
+                            :selectOnBlur="true"
+                            :controlInput="false"
+                            :noElementMessage="deck.alternativeExtraCards?.length ? nameInput : nameInput ? nameInput : 'no alternative cards'"
+                            class="orange"
+                            labelClass="orange"
+                            listClass="orange text-dark"
+                            :listItemClass="item => item.type || 'orange text-dark'"
+                            :required="true"
+                            :error="error.nameInput"
+                        />
+                    </div>
+                    <div class="mb-3">
+                        <SexyInput
+                            type="number"
+                            placeholder="Quantity"
+                            v-model="countInput"
+                            min="1"
+                            max="3"
+                            class="orange"
+                            labelClass="orange"
+                            listClass="orange text-dark"
+                            :labelBorder="true"
+                            :required="true"
+                            :error="error.countInput"
+                        />
+                    </div>
+                    <div class="extraTypes">
+                        <div @click="type = 'fusion'" class="round-start" :class="type == 'fusion' ? 'fusion' : 'orange text-dark'">Fusion</div>
+                        <div @click="type = 'synchro'" :class="type == 'synchro' ? 'synchro' : 'orange text-dark'">Synchro</div>
+                        <div @click="type = 'xyz'" :class="type == 'xyz' ? 'xyz' : 'orange text-dark'">XYZ</div>
+                        <div @click="type = 'link'" class="round-end" :class="type == 'link' ? 'link' : 'orange text-dark'">Link</div>
+                    </div>
+                    <br />
+                    <button type="submit" class="btn w-100 mt-1 orange round" @click="editAddExtraCard()">&#10004;</button>
                 </div>
             </div>
         </div>
@@ -211,10 +211,15 @@ export default defineComponent({
             filter: [false, false, false, false],
             types: ['fusion', 'synchro', 'xyz', 'link'],
             counts: [0, 0, 0, 0],
+            error: {},
         }
     },
     methods: {
         editAddExtraCard() {
+            this.error = {}
+            if (!this.nameInput) this.error.nameInput = 'enter a name'
+            if (!this.countInput) this.error.countInput = 'enter a amount'
+            if (Object.keys(this.error).length > 0) return
             switch (this.editAdd) {
                 case 'add':
                     this.addExtraCard()
@@ -228,6 +233,7 @@ export default defineComponent({
             window.onclick = event => {
                 if (event.target == document.getElementById('extraCardAddEditModal')) this.closeExtraCardAddEditModal()
             }
+            this.error = {}
             this.editAdd = 'add'
             this.nameInput = ''
             var modal = document.getElementById('extraCardAddEditModal')
@@ -237,6 +243,7 @@ export default defineComponent({
             window.onclick = event => {
                 if (event.target == document.getElementById('extraCardAddEditModal')) this.closeExtraCardAddEditModal()
             }
+            this.error = {}
             this.editAdd = 'edit'
             this.editCardId = this.deck.extraCards.findIndex(c => c.name == name)
             this.type = this.deck.extraCards[this.editCardId].type
