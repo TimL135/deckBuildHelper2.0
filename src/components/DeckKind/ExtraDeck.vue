@@ -6,23 +6,36 @@
         crossorigin="anonymous"
     />
     <div class="container mt-2">
+        <div class="round mb-1" style="border: 1px solid #ffa107">
+            {{ `Card amount: ${counts.reduce((a, b) => a + b)}` }}
+        </div>
         <div class="d-flex mb-1">
-            <div class="w-25 round-start" style="border: 1px solid #ffa107">
+            <div
+                class="w-25 round-start"
+                style="border: 1px solid #ffa107"
+                @click="filter[0] = !filter[0]"
+                :class="filter[0] ? 'orange text-dark' : ''"
+            >
                 Fusion:
                 <br />
                 {{ counts[0] }}
             </div>
-            <div class="w-25" style="border: 1px solid #ffa107">
+            <div class="w-25" style="border: 1px solid #ffa107" @click="filter[1] = !filter[1]" :class="filter[1] ? 'orange text-dark' : ''">
                 Synchro:
                 <br />
                 {{ counts[1] }}
             </div>
-            <div class="w-25" style="border: 1px solid #ffa107">
+            <div class="w-25" style="border: 1px solid #ffa107" @click="filter[2] = !filter[2]" :class="filter[2] ? 'orange text-dark' : ''">
                 XYZ:
                 <br />
                 {{ counts[2] }}
             </div>
-            <div class="w-25 round-end" style="border: 1px solid #ffa107">
+            <div
+                class="w-25 round-end"
+                style="border: 1px solid #ffa107"
+                @click="filter[3] = !filter[3]"
+                :class="filter[3] ? 'orange text-dark' : ''"
+            >
                 Link:
                 <br />
                 {{ counts[3] }}
@@ -43,7 +56,13 @@
             <div></div>
             <div></div>
         </div>
-        <div class="cardTable p-2" v-for="card in deck.extraCards" :key="card.name" :class="card.type" style="border-bottom: 1px solid black">
+        <div
+            class="cardTable p-2"
+            v-for="card in deck.extraCards.filter(card => filter.every((f, i) => (f ? f && card.type == types[i] : true)))"
+            :key="card.name"
+            :class="card.type"
+            style="border-bottom: 1px solid black"
+        >
             <div @dblclick="searchOnline(card.name)">{{ card.name }}({{ card.count }})</div>
             <div>
                 <img style="height: 5rem" :src="`https://storage.googleapis.com/ygoprodeck.com/pics_small/${card.src}.jpg`" alt="" />
@@ -189,6 +208,8 @@ export default defineComponent({
             editCardId: 0,
             deleteCardId: 0,
             editAdd: '',
+            filter: [false, false, false, false],
+            types: ['fusion', 'synchro', 'xyz', 'link'],
             counts: [0, 0, 0, 0],
         }
     },

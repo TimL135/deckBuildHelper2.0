@@ -191,6 +191,7 @@ export default defineComponent({
     methods: {
         closeDeckSettingsModal() {
             this.deckInput = ''
+            this.newDeck = ''
             let modal = document.getElementById('deckSettingsModal')
             if (modal) modal.style.display = 'none'
         },
@@ -206,7 +207,12 @@ export default defineComponent({
             if (fun == 'delete') {
                 this.decks = this.decks.filter(deck => deck.name != this.deckInput)
                 this.deckInput = ''
+                if (this.selectedDeck == deck) {
+                    this.selectedDeck = ''
+                    this.deck = false
+                }
                 safeDeck(this.deck)
+                this.closeDeckSettingsModal()
             }
             if (fun == 'check') {
                 this.deckInput = deck

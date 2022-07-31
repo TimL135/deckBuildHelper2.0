@@ -29,44 +29,64 @@
             </div>
         </div>
         <div class="d-flex mb-1">
-            <div class="w-25 round-start" style="border: 1px solid #ffa107">
+            <div
+                class="w-25 round-start"
+                style="border: 1px solid #ffa107"
+                @click="filter[0] = !filter[0]"
+                :class="filter[0] ? 'orange text-dark' : ''"
+            >
                 Handtraps:
                 <br />
                 {{ counts[0] }}({{ uniqueCounts[0] }})
             </div>
-            <div class="w-25" style="border: 1px solid #ffa107">
+            <div class="w-25" style="border: 1px solid #ffa107" @click="filter[1] = !filter[1]" :class="filter[1] ? 'orange text-dark' : ''">
                 Seacher:
                 <br />
                 {{ counts[1] }}({{ uniqueCounts[1] }})
             </div>
-            <div class="w-25" style="border: 1px solid #ffa107">
+            <div class="w-25" style="border: 1px solid #ffa107" @click="filter[2] = !filter[2]" :class="filter[2] ? 'orange text-dark' : ''">
                 Combo Starter:
                 <br />
                 {{ counts[2] }}({{ uniqueCounts[2] }})
             </div>
-            <div class="w-25 round-end" style="border: 1px solid #ffa107">
+            <div
+                class="w-25 round-end"
+                style="border: 1px solid #ffa107"
+                @click="filter[3] = !filter[3]"
+                :class="filter[3] ? 'orange text-dark' : ''"
+            >
                 Negate:
                 <br />
                 {{ counts[3] }}({{ uniqueCounts[3] }})
             </div>
         </div>
         <div class="d-flex mb-1">
-            <div class="w-25 round-start" style="border: 1px solid #ffa107">
+            <div
+                class="w-25 round-start"
+                style="border: 1px solid #ffa107"
+                @click="filter[4] = !filter[4]"
+                :class="filter[4] ? 'orange text-dark' : ''"
+            >
                 Once per Turn:
                 <br />
                 {{ counts[4] }}({{ uniqueCounts[4] }})
             </div>
-            <div class="w-25" style="border: 1px solid #ffa107">
+            <div class="w-25" style="border: 1px solid #ffa107" @click="filter[5] = !filter[5]" :class="filter[5] ? 'orange text-dark' : ''">
                 Searchable:
                 <br />
                 {{ counts[5] }}({{ uniqueCounts[5] }})
             </div>
-            <div class="w-25" style="border: 1px solid #ffa107">
+            <div class="w-25" style="border: 1px solid #ffa107" @click="filter[6] = !filter[6]" :class="filter[6] ? 'orange text-dark' : ''">
                 Combo Piece:
                 <br />
                 {{ counts[6] }}({{ uniqueCounts[6] }})
             </div>
-            <div class="w-25 round-end" style="border: 1px solid #ffa107">
+            <div
+                class="w-25 round-end"
+                style="border: 1px solid #ffa107"
+                @click="filter[7] = !filter[7]"
+                :class="filter[7] ? 'orange text-dark' : ''"
+            >
                 Interaption:
                 <br />
                 {{ counts[7] }}({{ uniqueCounts[7] }})
@@ -89,7 +109,13 @@
             <div></div>
             <div>Probability</div>
         </div>
-        <div class="cardTable p-2" v-for="card in deck.cards" :key="card.name" :class="card.type" style="border-bottom: 1px solid black">
+        <div
+            class="cardTable p-2"
+            v-for="card in deck.cards.filter(card => filter.every((f, i) => (f ? f && card.properties[i] : true)))"
+            :key="card.name"
+            :class="card.type"
+            style="border-bottom: 1px solid black"
+        >
             <div @dblclick="searchOnline(card.name)">{{ card.name }}({{ card.count }})</div>
             <div>
                 <img style="height: 5rem" :src="`https://storage.googleapis.com/ygoprodeck.com/pics_small/${card.src}.jpg`" alt="" />
@@ -358,6 +384,7 @@ export default defineComponent({
             type: 'monster' as type.CardType,
 
             properties: [false, false, false, false, false, false, false, false],
+            filter: [false, false, false, false, false, false, false, false],
             counts: [0, 0, 0, 0, 0, 0, 0, 0],
             uniqueCounts: [0, 0, 0, 0, 0, 0, 0, 0],
 

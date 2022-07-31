@@ -34,7 +34,6 @@ export function getDeck(): type.Deck {
             if (!card.id) card.id = Math.random().toString().slice(-15)
         }
     }
-    console.log(deck)
     return (deck || 'false') as type.Deck
 }
 export function setDB(db: any) {
