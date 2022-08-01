@@ -110,6 +110,6 @@ export default defineComponent({
     grid-template-areas:
         'slot11 slot12 slot13 slot14 slot15 slot16 slot17'
         'slot4 slot5 slot6 slot7 slot8 slot9 slot10'
-        'slot3 . slot1 . slot2 . .';
+        'slot3 . slot2 . slot1 . .';
 }
 </style>
