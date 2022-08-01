@@ -108,8 +108,8 @@ export default defineComponent({
     grid-template-columns: repeat(7, 1fr);
     grid-auto-rows: minmax(50px, auto);
     grid-template-areas:
-        'slot3 . slot1 . slot2 . .'
+        'slot11 slot12 slot13 slot14 slot15 slot16 slot17'
         'slot4 slot5 slot6 slot7 slot8 slot9 slot10'
-        'slot11 slot12 slot13 slot14 slot15 slot16 slot17';
+        'slot3 . slot1 . slot2 . .';
 }
 </style>
