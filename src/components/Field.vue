@@ -14,12 +14,15 @@
             @click="$emit('selectSlot', slot)"
             @dblclick="slot.value.length == 1 && slot.value != slot.name ? searchOnline(slot.value[0]) : null"
         >
-            <img
-                v-if="navigator.onLine && findCardByName(slot.value[0])"
-                style="height: 5rem"
-                :src="`https://storage.googleapis.com/ygoprodeck.com/pics_small/${findCardByName(slot.value[0])?.src}.jpg`"
-                alt=""
-            />
+            <div v-if="navigator.onLine && findCardByName(slot.value[0])" :style="slot.def ? 'transform: rotate(-90deg)' : ''">
+                <img
+                    v-if="!slot.hide"
+                    style="height: 5rem"
+                    :src="`https://storage.googleapis.com/ygoprodeck.com/pics_small/${findCardByName(slot.value[0])?.src}.jpg`"
+                    alt=""
+                />
+                <img v-else style="height: 5rem" src="../../public/img/cards/cardBackside.png" alt="" />
+            </div>
             <div v-else>
                 {{
                     slot.name == 'deck'

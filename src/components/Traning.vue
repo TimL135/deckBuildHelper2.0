@@ -77,13 +77,18 @@
                 @click="selectCard(card, 'hand')"
                 @dblclick="searchOnline(findCard(card)?.name)"
             >
-                <img
-                    v-if="navigator.onLine && findCard(card)?.src"
-                    style="height: 5rem"
-                    :src="`https://storage.googleapis.com/ygoprodeck.com/pics_small/${findCard(card)?.src}.jpg`"
-                    alt=""
-                />
-                <div v-else>{{ findCard(card)?.name }}</div>
+                <div v-if="!hide">
+                    <img
+                        v-if="navigator.onLine && findCard(card)?.src"
+                        style="height: 5rem"
+                        :src="`https://storage.googleapis.com/ygoprodeck.com/pics_small/${findCard(card)?.src}.jpg`"
+                        alt=""
+                    />
+                    <div v-else>{{ findCard(card)?.name }}</div>
+                </div>
+                <div v-else>
+                    <img style="height: 5rem" src="../../public/img/cards/cardBackside.png" alt="" />
+                </div>
             </div>
         </div>
         <div v-if="view == 'deck'">
@@ -188,9 +193,25 @@
         </div>
         <div v-if="view == 'special'">
             <div>Special</div>
-            <div class="startHand">
+            <div class="special">
                 <div class="orange text-dark me-1" @click="specialAction('pendel')">pendel</div>
-                <div class="orange text-dark" @click="specialAction('token')">token</div>
+                <div class="orange text-dark me-1" @click="specialAction('token')">token</div>
+                <div class="orange text-dark me-1" @click="specialAction('addCard')">add card</div>
+                <div class="orange text-dark me-1" @click="specialAction('hide')">{{ hide ? 'show' : 'hide' }}</div>
+                <div
+                    class="orange text-dark me-1"
+                    @click="specialAction('set')"
+                    v-if="selectedFrom.includes('monster') || selectedFrom.includes('spell') || selectedFrom.includes('extra')"
+                >
+                    {{ field.find(e => e.name == selectedFrom)?.hide ? 'flip' : 'set' }}
+                </div>
+                <div
+                    class="orange text-dark"
+                    @click="specialAction('pos')"
+                    v-if="selectedFrom.includes('monster') || selectedFrom.includes('spell') || selectedFrom.includes('extra')"
+                >
+                    {{ field.find(e => e.name == selectedFrom)?.def ? 'atk' : 'def' }}
+                </div>
             </div>
         </div>
     </div>
@@ -258,9 +279,41 @@
             </div>
         </div>
     </div>
+    <!-- new modal -->
+    <div id="addCardModal" class="modal">
+        <div class="modal-content">
+            <div class="container">
+                <div class="d-flex justify-content: center mb-1">
+                    <div class="w-100">
+                        <div class="mb-1">
+                            <div>
+                                <SexyInput
+                                    type="select"
+                                    placeholder="name"
+                                    v-model="nameInput"
+                                    :options="db"
+                                    :option-projection="e => e.name"
+                                    :labelBorder="true"
+                                    :selectOnBlur="true"
+                                    :controlInput="false"
+                                    noElementMessage="no card found"
+                                    class="orange"
+                                    labelClass="orange"
+                                    listClass="orange text-dark"
+                                    :listItemClass="item => item.type || 'orange text-dark'"
+                                    :required="true"
+                                    :onSelectItem="addNewCard"
+                                />
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
 </template>
 <script lang="ts">
-import { deck, decks, findCard, findCardByName, searchOnline, actionToText, setHTMLClass, safeDeck, getRandomInt } from '@/global'
+import { deck, decks, findCard, findCardByName, searchOnline, actionToText, setHTMLClass, safeDeck, getRandomInt, db } from '@/global'
 import * as type from '@/types'
 import { defineComponent } from 'vue'
 import SexyInput from './SexyInput.vue'
@@ -268,7 +321,7 @@ import Field from './Field.vue'
 export default defineComponent({
     components: { SexyInput, Field },
     setup() {
-        return { deck, decks, findCard, findCardByName, searchOnline, actionToText, navigator }
+        return { deck, decks, findCard, findCardByName, searchOnline, actionToText, navigator, db }
     },
 
     data() {
@@ -290,6 +343,9 @@ export default defineComponent({
             log: [] as string[],
             logName: '',
             logStartHand: [] as string[],
+
+            nameInput: '',
+            hide: false,
         }
     },
     computed: {
@@ -428,26 +484,29 @@ export default defineComponent({
             this.selectedFrom = from
         },
         addCardToArray(name: 'deck' | 'graveyard' | 'banish' | 'extradeck') {
-            switch (name) {
-                case 'deck':
-                    if (this.selectedCard != 'token') this.allCards.push(this.selectedCard)
-                    this.removeCard(this.selectedCard)
-                    this.sortDeck()
-                    break
-                case 'graveyard':
-                    if (this.selectedCard != 'token') this.graveYard.push(this.selectedCard)
-                    this.removeCard(this.selectedCard)
-                    break
-                case 'banish':
-                    if (this.selectedCard != 'token') this.banish.push(this.selectedCard)
-                    this.removeCard(this.selectedCard)
-                    break
-                case 'extradeck':
-                    if (this.selectedCard != 'token') this.allExtraCards.push(this.selectedCard)
-                    this.removeCard(this.selectedCard)
-                    this.sortExtraDeck()
-                    break
+            if (!this.selectedCard.includes('add')) {
+                switch (name) {
+                    case 'deck':
+                        if (this.selectedCard != 'token') this.allCards.push(this.selectedCard)
+
+                        this.sortDeck()
+                        break
+                    case 'graveyard':
+                        if (this.selectedCard != 'token') this.graveYard.push(this.selectedCard)
+
+                        break
+                    case 'banish':
+                        if (this.selectedCard != 'token') this.banish.push(this.selectedCard)
+
+                        break
+                    case 'extradeck':
+                        if (this.selectedCard != 'token') this.allExtraCards.push(this.selectedCard)
+
+                        this.sortExtraDeck()
+                        break
+                }
             }
+            this.removeCard(this.selectedCard)
         },
         selectSlot(slot: type.Slot) {
             if (this.selectedCard) {
@@ -470,7 +529,7 @@ export default defineComponent({
                         return
                 }
             }
-            if (this.selectedCard) this.log.push(`${this.selectedCard} from ${this.selectedFrom} to ${slot.name}`)
+            if (this.selectedCard && slot.name != this.selectedFrom) this.log.push(`${this.selectedCard} from ${this.selectedFrom} to ${slot.name}`)
             let slotIndex = this.field.findIndex(e => e.name == slot.name)
             if (slot.name == 'deck') {
                 if (this.selectedCard) {
@@ -517,10 +576,12 @@ export default defineComponent({
                     if (this.view == 'slot') this.view = ''
                 }
                 this.selectedCard = findCardByName(slot.value[0])?.id || ''
+                this.view = 'special'
                 this.selectedFrom = slot.name
                 return
             }
             if (this.field[slotIndex].value[0] != this.field[slotIndex].name) {
+                this.view = ''
                 if (findCard(this.selectedCard)!.type == 'xyz') {
                     this.field[slotIndex].value.unshift(findCard(this.selectedCard)!.name)
                 } else {
@@ -565,6 +626,8 @@ export default defineComponent({
                     break
                 case 'token':
                     break
+                case 'add':
+                    break
                 default:
                     if (fieldSlot!.value.length == 1) {
                         fieldSlot!.value = [fieldSlot!.name]
@@ -603,6 +666,7 @@ export default defineComponent({
             this.reset()
         },
         specialAction(special: string) {
+            let slot
             switch (special) {
                 case 'view':
                     if (this.view == 'special') this.view = ''
@@ -617,7 +681,43 @@ export default defineComponent({
                     this.selectedFrom = 'token'
                     this.view = ''
                     break
+                case 'addCard':
+                    this.openAddCardModal()
+                    break
+                case 'hide':
+                    this.hide = !this.hide
+                    break
+                case 'set':
+                    slot = this.field.find(e => e.name == this.selectedFrom)
+                    slot.hide = !slot.hide
+                    if (slot.name.includes('monster')) slot.def = true
+                    break
+                case 'pos':
+                    slot = this.field.find(e => e.name == this.selectedFrom)
+                    slot.def = !slot.def
+                    slot.hide = false
+                    break
             }
+        },
+        openAddCardModal() {
+            window.onclick = event => {
+                if (event.target == document.getElementById('addCardModal')) this.closeAddCardModal()
+            }
+            let modal = document.getElementById('addCardModal')
+            if (modal) modal.style.display = 'block'
+        },
+        closeAddCardModal() {
+            let modal = document.getElementById('addCardModal')
+            if (modal) modal.style.display = 'none'
+        },
+        addNewCard(card) {
+            this.nameInput = ''
+            this.closeAddCardModal()
+            card.id = Math.random().toString().slice(-15) + 'add'
+            if (this.deck.traingsDeck) this.deck.traingsDeck.push(card)
+            else this.deck.traingsDeck = [card]
+            this.selectedCard = card.id
+            this.selectedFrom = 'add'
         },
         switchSite() {
             this.playerSite = !this.playerSite
@@ -761,7 +861,11 @@ body {
     grid-template-columns: repeat(5, 1fr);
     grid-auto-rows: minmax(50px, auto);
 }
-
+.special {
+    display: grid;
+    grid-template-columns: repeat(7, 1fr);
+    grid-auto-rows: minmax(40px, auto);
+}
 .deck {
     display: grid;
     grid-auto-rows: minmax(50px, auto);

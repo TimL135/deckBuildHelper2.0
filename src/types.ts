@@ -27,6 +27,7 @@ export interface Deck {
     sideCards: Card[]
     alternativeCards: Card[]
     alternativeExtraCards: ExtraCard[]
+    traingsDeck: any[]
     logs: Log[]
 }
 export interface Log {
@@ -37,6 +38,8 @@ export interface Log {
 export interface Slot {
     name: string
     value: string
+    hide: boolean
+    def: boolean
 }
 export interface Combo {
     cards: [string | Cardgroup]
