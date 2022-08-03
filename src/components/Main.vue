@@ -132,9 +132,9 @@
                     {{ deckInfo }}
                 </div>
                 <div v-if="deckInput" class="mt-3">
-                    <div class="w-100 orange text-dark round mb-1">Are you sure to delete {{ deckInput }}</div>
+                    <div class="w-100 orange text-dark round round mb-1">Are you sure to delete {{ deckInput }}</div>
                     <div class="deleteModal">
-                        <button type="button" class="btn btn-success me-1" style="grid-area: yes" @click="deleteDeck('delete')">
+                        <button type="button" class="btn btn-success round me-1" style="grid-area: yes" @click="deleteDeck('delete')">
                             <svg
                                 xmlns="http://www.w3.org/2000/svg"
                                 width="16"
@@ -148,7 +148,7 @@
                                 />
                             </svg>
                         </button>
-                        <button type="button" class="btn btn-danger" style="grid-area: no" @click="deleteDeck('cancel')">
+                        <button type="button" class="btn btn-danger round" style="grid-area: no" @click="deleteDeck('cancel')">
                             <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-x-lg" viewBox="0 0 16 16">
                                 <path
                                     d="M2.146 2.854a.5.5 0 1 1 .708-.708L8 7.293l5.146-5.147a.5.5 0 0 1 .708.708L8.707 8l5.147 5.146a.5.5 0 0 1-.708.708L8 8.707l-5.146 5.147a.5.5 0 0 1-.708-.708L7.293 8 2.146 2.854Z"
@@ -207,11 +207,11 @@ export default defineComponent({
         deleteDeck(fun: string, deck?: string) {
             if (fun == 'delete') {
                 this.decks = this.decks.filter(deck => deck.name != this.deckInput)
-                this.deckInput = ''
-                if (this.selectedDeck == deck) {
+                if (this.selectedDeck == this.deckInput) {
                     this.selectedDeck = ''
                     this.deck = false
                 }
+                this.deckInput = ''
                 safeDeck(this.deck)
                 this.closeDeckSettingsModal()
             }
@@ -231,28 +231,34 @@ export default defineComponent({
             }, 3000)
         },
         addNewDeck() {
-            let deck = JSON.parse(this.newDeck.trim()) as type.Deck
-            if (!deck.alternativeCards) return
-            if (!deck.cardGroups) return
-            if (!deck.cards) return
-            if (!deck.combos) return
-            if (!deck.extraCards) return
-            if (!deck.name) return
-            if (!deck.sideCards) return
-            let counter = NaN
-            while (this.decks.some(e => e.name == deck.name + (counter ? counter : ''))) {
-                if (!counter) counter = 1
-                else counter++
-            }
-            deck.name = deck.name + (counter ? counter : '')
-            if (this.decks) {
-                this.decks.push(deck)
-            } else {
-                this.decks = [deck]
-            }
+            try {
+                let deck = JSON.parse(this.newDeck.trim()) as type.Deck
+                if (!deck.alternativeCards) return
+                if (!deck.cardGroups) return
+                if (!deck.cards) return
+                if (!deck.combos) return
+                if (!deck.extraCards) return
+                if (!deck.name) return
+                if (!deck.sideCards) return
+                let counter = NaN
+                while (this.decks.some(e => e.name == deck.name + (counter ? counter : ''))) {
+                    if (!counter) counter = 1
+                    else counter++
+                }
+                deck.name = deck.name + (counter ? counter : '')
+                if (this.decks) {
+                    this.decks.push(deck)
+                } else {
+                    this.decks = [deck]
+                }
 
-            this.newDeck = ''
-            setDecks(this.decks)
+                this.newDeck = ''
+                setDecks(this.decks)
+            } catch {
+                this.selectedDeck = this.newDeck
+                this.newDeck = ''
+                this.loadDeck()
+            }
         },
         switchDeck(name: string) {
             this.selectedDeck = name

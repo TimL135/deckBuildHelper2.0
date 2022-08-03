@@ -37,7 +37,7 @@
         </div>
         <br />
         <div class="d-flex mb-1">
-            <div class="w-100 rounded" style="border: 1px solid #ffa107">Value:{{ value }}</div>
+            <div class="w-100 round" style="border: 1px solid #ffa107">Value:{{ value }}</div>
         </div>
         <div class="d-flex mb-1">
             <div class="w-25 round-start" style="border: 1px solid #ffa107">

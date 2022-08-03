@@ -156,10 +156,10 @@
             <div class="modal-content">
                 <div class="container">
                     <div class="d-flex justify-content: center mb-1">
-                        <div class="w-100 orange text-dark">Are you sure to delete {{ nameInput }}</div>
+                        <div class="w-100 orange text-dark round">Are you sure to delete {{ nameInput }}</div>
                     </div>
                     <div class="deleteModal">
-                        <button type="button" class="btn btn-success me-1" style="grid-area: yes" @click="deleteExtraCard()">
+                        <button type="button" class="btn btn-success round me-1" style="grid-area: yes" @click="deleteExtraCard()">
                             <svg
                                 xmlns="http://www.w3.org/2000/svg"
                                 width="16"
@@ -173,7 +173,7 @@
                                 />
                             </svg>
                         </button>
-                        <button type="button" class="btn btn-danger" style="grid-area: no" @click="closeExtraCardDeleteModal()">
+                        <button type="button" class="btn btn-danger round" style="grid-area: no" @click="closeExtraCardDeleteModal()">
                             <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-x-lg" viewBox="0 0 16 16">
                                 <path
                                     d="M2.146 2.854a.5.5 0 1 1 .708-.708L8 7.293l5.146-5.147a.5.5 0 0 1 .708.708L8.707 8l5.147 5.146a.5.5 0 0 1-.708.708L8 8.707l-5.146 5.147a.5.5 0 0 1-.708-.708L7.293 8 2.146 2.854Z"
@@ -193,7 +193,7 @@ import * as type from '@/types'
 import SexyInput from '../SexyInput.vue'
 export default defineComponent({
     components: { SexyInput },
-    watch: { deck: 'updateDeck' },
+    watch: { deck: 'countExtraCards' },
     setup() {
         return { decks, deck, searchOnline, findCardByName, extraCardDB }
     },
