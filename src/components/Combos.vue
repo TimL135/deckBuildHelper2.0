@@ -149,9 +149,9 @@
                                 listClass="orange text-dark"
                                 :listItemClass="
                                     item =>
-                                        findCardGroupByName(item)
+                                        findCardGroupByName(item.name)
                                             ? 'orange text-dark'
-                                            : findCardByName(item)?.type + ' text-dark' || 'orange text-dark'
+                                            : findCardByName(item.name)?.type + ' text-dark' || 'orange text-dark'
                                 "
                             />
                         </div>
@@ -308,7 +308,7 @@ export default defineComponent({
                 card
                     ? (this.comboCardsType[i] = card.type)
                     : findCardGroupByName(this.comboCards[i])
-                    ? (this.comboCardsType[i] = 'green')
+                    ? (this.comboCardsType[i] = 'orange')
                     : (this.comboCardsType[i] = '')
             }
         },

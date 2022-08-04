@@ -22,8 +22,19 @@
                 :listItemClass="item => findCardByName(item).type"
             />
         </div>
-        <div>
-            <button @click="randomStartHand()" type="button" class="btn orange w-100 mt-1 round">
+        <div class="startHandButtons mt-1">
+            <button @click="simulation()" type="button" class="btn orange round">
+                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-arrow-repeat" viewBox="0 0 16 16">
+                    <path
+                        d="M11.534 7h3.932a.25.25 0 0 1 .192.41l-1.966 2.36a.25.25 0 0 1-.384 0l-1.966-2.36a.25.25 0 0 1 .192-.41zm-11 2h3.932a.25.25 0 0 0 .192-.41L2.692 6.23a.25.25 0 0 0-.384 0L.342 8.59A.25.25 0 0 0 .534 9z"
+                    />
+                    <path
+                        fill-rule="evenodd"
+                        d="M8 3c-1.552 0-2.94.707-3.857 1.818a.5.5 0 1 1-.771-.636A6.002 6.002 0 0 1 13.917 7H12.9A5.002 5.002 0 0 0 8 3zM3.1 9a5.002 5.002 0 0 0 8.757 2.182.5.5 0 1 1 .771.636A6.002 6.002 0 0 1 2.083 9H3.1z"
+                    />
+                </svg>
+            </button>
+            <button @click="randomStartHand()" type="button" class="btn orange round">
                 <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-shuffle" viewBox="0 0 16 16">
                     <path
                         fill-rule="evenodd"
@@ -114,6 +125,16 @@
             </tbody>
         </table>
     </div>
+    <!-- new modal -->
+    <div id="simulationModal" class="modal">
+        <div class="modal-content">
+            <div class="container">
+                <div v-for="result of Object.entries(results)" :key="JSON.stringify(result)" class="orange round mb-1 text-dark">
+                    {{ `${result[1]}% of the hands have ${result[0]} combos` }}
+                </div>
+            </div>
+        </div>
+    </div>
 </template>
 <script lang="ts">
 import { deck, findCard, findCardByName, findCardGroup, findCardGroupByName, searchOnline, setHTMLClass, getRandomInt } from '@/global'
@@ -137,6 +158,7 @@ export default defineComponent({
             value: 0,
             handCards: ['', '', '', '', ''],
             handCardsType: [] as string[],
+            results: [],
         }
     },
     methods: {
@@ -226,6 +248,39 @@ export default defineComponent({
                 }
             }
         },
+        openSimulationModal() {
+            window.onclick = event => {
+                if (event.target == document.getElementById('simulationModal')) this.closeSimulationModal()
+            }
+            let modal = document.getElementById('simulationModal')
+            if (modal) modal.style.display = 'block'
+        },
+        closeSimulationModal() {
+            this.selectedCard = {}
+            let modal = document.getElementById('simulationModal')
+            if (modal) modal.style.display = 'none'
+        },
+        simulation() {
+            this.results = {}
+            for (let i = 0; i < 100; i++) {
+                this.randomStartHand()
+                if (this.results[this.possibleCombos.length]) this.results[this.possibleCombos.length]++
+                else this.results[this.possibleCombos.length] = 1
+            }
+            this.handCards = ['', '', '', '', '']
+            this.handCardsType = []
+            this.counts = [0, 0, 0, 0, 0, 0, 0, 0]
+            this.uniqueCounts = [0, 0, 0, 0, 0, 0, 0, 0]
+            this.value = 0
+            this.openSimulationModal()
+        },
     },
 })
 </script>
+<style lang="scss" scoped>
+.startHandButtons {
+    display: grid;
+    grid-template-columns: 3fr 1fr;
+    column-gap: 0.25rem;
+}
+</style>

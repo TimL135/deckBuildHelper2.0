@@ -73,7 +73,11 @@
         </div>
         <br />
         <div class="deck" v-if="deckView">
-            <div v-for="(card, index) of allCards" :key="card.id + index" @click="openCardSelectModal(card)">
+            <div
+                v-for="(card, index) of allCards.filter(card => filter.every((f, i) => (f ? f && card.type == types[i] : true)))"
+                :key="card.id + index"
+                @click="openCardSelectModal(card)"
+            >
                 <img style="height: 5rem" class="mb-1" :src="`https://storage.googleapis.com/ygoprodeck.com/pics_small/${card.src}.jpg`" alt="" />
             </div>
         </div>
