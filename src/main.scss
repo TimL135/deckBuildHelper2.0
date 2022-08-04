@@ -232,3 +232,17 @@ table {
     display: grid;
     grid-template-columns: auto auto auto auto;
 }
+.addViewButtons{
+    display: grid;
+    grid-template-columns: 3fr 1fr; 
+    column-gap: 0.25rem;
+}
+.deck {
+    display: grid;
+    grid-template-columns: repeat(5, 1fr);
+}
+.selectModal{
+    display: grid;
+    grid-template-columns: auto auto auto;
+    column-gap: 0.25rem;
+}

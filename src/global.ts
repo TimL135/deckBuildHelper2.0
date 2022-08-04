@@ -48,7 +48,7 @@ export function findCardGroupByName(name: string) {
 }
 export function searchOnline(search) {
     if (!search) return
-    window.open(`https://cardcluster.de/card/${search.replaceAll(' ', '-').replaceAll('---', '-')}`, '_newtab')
+    window.open(`https://cardcluster.de/card/${search.replaceAll(' ', '-').replaceAll('---', '-').replaceAll(',', '')}`, '_newtab')
 }
 export function actionToText(action: string) {
     const pattern = /\d{15}/g
