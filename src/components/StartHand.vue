@@ -272,6 +272,7 @@ export default defineComponent({
             this.counts = [0, 0, 0, 0, 0, 0, 0, 0]
             this.uniqueCounts = [0, 0, 0, 0, 0, 0, 0, 0]
             this.value = 0
+            this.possibleCombos = []
             this.openSimulationModal()
         },
     },
