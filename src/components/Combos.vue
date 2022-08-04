@@ -318,9 +318,7 @@ export default defineComponent({
             }
             for (let combo of this.deck.combos) {
                 combo.active = combo.cards.every(card =>
-                    this.deck.cardGroups.map(e => e.id).includes(card)
-                        ? this.deck.cardGroups.find(c => c.id == card)?.active
-                        : this.deck.cards.map(c => c.id).includes(card)
+                    findCardGroup(card) ? this.deck.cardGroups.find(c => c.id == card)?.active : this.deck.cards.map(c => c.id).includes(card)
                 )
             }
         },

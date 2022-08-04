@@ -196,7 +196,7 @@
     </div>
 </template>
 <script lang="ts">
-import { decks, deck, uniqueAllCards, findCard, findCardByName, searchOnline, setHTMLClass, safeDeck } from '@/global'
+import { decks, deck, uniqueAllCards, findCard, findCardByName, searchOnline, setHTMLClass, safeDeck, findCardGroup } from '@/global'
 import { defineComponent } from 'vue'
 import SexyInput from '../components/SexyInput.vue'
 export default defineComponent({
@@ -331,7 +331,7 @@ export default defineComponent({
             }
             for (let combo of this.deck.combos) {
                 combo.active = combo.cards.every(card =>
-                    typeof card === 'object' ? this.deck.cardGroups.find(c => c.id == card.id)?.active : this.deck.cards.map(c => c.id).includes(card)
+                    findCardGroup(card) ? this.deck.cardGroups.find(c => c.id == card)?.active : this.deck.cards.map(c => c.id).includes(card)
                 )
             }
         },
