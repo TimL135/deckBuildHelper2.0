@@ -9,23 +9,23 @@
     <div class="container" style="margin-top: 3vh">
         <div class="header">
             <div>
-                <SexyInput
+                <Select
                     placeholder="deck"
                     v-model="selectedDeck"
-                    type="select"
                     :options="decks"
                     :selectOnBlur="false"
                     :controlInput="false"
                     @selectItem="loadDeck()"
                     :optionProjection="a => a.name"
-                    btnText="&#10004;"
                     :btnAction="loadDeck"
                     class="orange"
                     btnClass="orange"
                     labelClass="orange text-dark"
                     listClass="orange text-dark"
                     :list-item-class="item => 'orange text-dark'"
-                />
+                >
+                    <template v-slot:button>&#10004;</template>
+                </Select>
             </div>
             <button style="background-color: rgb(12, 12, 12); border: none; padding-top: 1.5vh" @click="openDeckSettingsModal()">
                 <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" class="bi bi-gear" viewBox="0 0 16 16" stroke="#ffa107">
@@ -115,8 +115,7 @@
                                 </svg>
                             </div>
                         </div>
-                        <SexyInput
-                            type="text"
+                        <Text
                             placeholder="new deck"
                             v-model="newDeck"
                             class="orange"
@@ -125,7 +124,7 @@
                             btn-class="orange"
                             btn-text="&#10004;"
                             :btn-action="addNewDeck"
-                        />
+                        ></Text>
                     </div>
                 </div>
                 <div v-if="deckInfo" class="orange text-dark round">
@@ -167,12 +166,12 @@ import MainDeck from '@/components/DeckKind/MainDeck.vue'
 import ExtraDeck from '@/components/DeckKind/ExtraDeck.vue'
 import SideDeck from '@/components/DeckKind/SideDeck.vue'
 import AlternativeDeck from '@/components/DeckKind/AlternativeDeck.vue'
-import SexyInput from '../components/SexyInput.vue'
+import * as Inputs from '../components/SexyInputs/index'
 import { decks, deck, setHTMLClass, safeDeck } from '@/global'
 import { setDecks } from '@/API'
 import * as type from '@/types'
 export default defineComponent({
-    components: { MainDeck, ExtraDeck, SideDeck, AlternativeDeck, SexyInput },
+    components: { MainDeck, ExtraDeck, SideDeck, AlternativeDeck, ...Inputs },
     mounted() {
         this.selectedDeck = this.deck.name
         setHTMLClass('Main')

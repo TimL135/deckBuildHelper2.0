@@ -135,10 +135,9 @@
                 <div class="d-flex justify-content: center">
                     <div class="w-100">
                         <div v-for="cardNumber of 5" :key="cardNumber">
-                            <SexyInput
+                            <Select
                                 :placeholder="`${cardNumber}.Card`"
                                 v-model="comboCards[cardNumber - 1]"
-                                type="select"
                                 :class="comboCardsType[cardNumber - 1] || 'orange'"
                                 :label-class="comboCardsType[cardNumber - 1] || 'orange'"
                                 :label-border="true"
@@ -204,9 +203,9 @@ import {
     safeDeck,
 } from '@/global'
 import * as type from '@/types'
-import SexyInput from '../components/SexyInput.vue'
+import * as Inputs from '../components/SexyInputs/index'
 export default defineComponent({
-    components: { SexyInput },
+    components: { ...Inputs },
     setup() {
         return { decks, deck, uniqueAllCards, findCard, findCardByName, findCardGroup, findCardGroupByName, searchOnline }
     },

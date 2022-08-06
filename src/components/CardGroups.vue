@@ -128,19 +128,10 @@
         <div class="modal-content">
             <form @submit.prevent="editAddCard()">
                 <div class="mb-1">
-                    <SexyInput
-                        type="text"
-                        placeholder="name"
-                        v-model="cardGroupNameInput"
-                        :labelBorder="true"
-                        class="orange"
-                        labelClass="orange"
-                        :required="true"
-                    />
+                    <Text placeholder="name" v-model="cardGroupNameInput" :labelBorder="true" class="orange" labelClass="orange" :required="true" />
                 </div>
                 <div>
-                    <SexyInput
-                        type="multiSelect"
+                    <MultiSelect
                         v-model="cardInput"
                         placeholder="cards"
                         :options="deck.cards.map(a => a.name)"
@@ -198,9 +189,9 @@
 <script lang="ts">
 import { decks, deck, uniqueAllCards, findCard, findCardByName, searchOnline, setHTMLClass, safeDeck, findCardGroup } from '@/global'
 import { defineComponent } from 'vue'
-import SexyInput from '../components/SexyInput.vue'
+import * as Inputs from '../components/SexyInputs/index'
 export default defineComponent({
-    components: { SexyInput },
+    components: { ...Inputs },
     setup() {
         return { decks, deck, uniqueAllCards, findCard, findCardByName, searchOnline }
     },

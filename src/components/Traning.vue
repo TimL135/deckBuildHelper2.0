@@ -228,7 +228,7 @@
                             <button @click="changeStartHand()" type="button" class="btn orange w-100 round mt-1">{{ startHand }}</button>
                         </div>
                         <div v-if="startHand == 'custom'">
-                            <SexyInput
+                            <Select
                                 type="multiSelect"
                                 placeholder="cards"
                                 v-model="cardInput"
@@ -255,8 +255,7 @@
                         <div v-if="log.length" class="mt-3">
                             <form @submit.prevent="saveLog()">
                                 <div>
-                                    <SexyInput
-                                        type="text"
+                                    <Text
                                         placeholder="log name"
                                         v-model="logName"
                                         class="orange"
@@ -266,7 +265,9 @@
                                         btn-class="orange"
                                         btn-type="submit"
                                         :required="true"
-                                    />
+                                    >
+                                        <template v-slot:button>save</template>
+                                    </Text>
                                 </div>
                             </form>
                             <div v-for="(action, index) of log" :key="action + index" class="orange text-dark round mt-1">
@@ -287,8 +288,7 @@
                     <div class="w-100">
                         <div class="mb-1">
                             <div>
-                                <SexyInput
-                                    type="select"
+                                <Select
                                     placeholder="name"
                                     v-model="nameInput"
                                     :options="db"
@@ -316,10 +316,10 @@
 import { deck, decks, findCard, findCardByName, searchOnline, actionToText, setHTMLClass, safeDeck, getRandomInt, db } from '@/global'
 import * as type from '@/types'
 import { defineComponent } from 'vue'
-import SexyInput from './SexyInput.vue'
+import * as Inputs from '../components/SexyInputs/index'
 import Field from './Field.vue'
 export default defineComponent({
-    components: { SexyInput, Field },
+    components: { ...Inputs, Field },
     setup() {
         return { deck, decks, findCard, findCardByName, searchOnline, actionToText, navigator, db }
     },
@@ -856,11 +856,7 @@ body {
     position: sticky;
     top: 0;
 }
-.startHand {
-    display: grid;
-    grid-template-columns: repeat(5, 1fr);
-    grid-auto-rows: minmax(50px, auto);
-}
+
 .special {
     display: grid;
     grid-template-columns: repeat(7, 1fr);

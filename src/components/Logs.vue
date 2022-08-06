@@ -188,7 +188,6 @@ import * as type from '@/types'
 import Field from './Field.vue'
 import { defineComponent } from 'vue'
 import NoSleep from 'nosleep.js'
-// import SexyInput from './SexyInput.vue'
 export default defineComponent({
     components: { Field },
     setup() {

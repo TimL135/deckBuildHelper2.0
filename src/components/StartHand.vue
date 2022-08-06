@@ -7,11 +7,10 @@
     />
 
     <div class="container" style="margin-top: 3vh">
-        <div v-for="cardNumber of 5" :key="cardNumber">
-            <SexyInput
+        <!-- <div v-for="cardNumber of 5" :key="cardNumber">
+            <Select
                 :placeholder="`${cardNumber}.Card`"
                 v-model="handCards[cardNumber - 1]"
-                type="select"
                 :class="handCardsType[cardNumber - 1] || 'orange'"
                 :label-class="handCardsType[cardNumber - 1] || 'orange'"
                 @change="countCard()"
@@ -21,6 +20,16 @@
                 listClass="orange text-dark"
                 :listItemClass="item => findCardByName(item).type"
             />
+        </div> -->
+        <div class="startHand">
+            <div v-for="(card, index) of handCards" :key="card + index" @dblclick="searchOnline(card)">
+                <img
+                    v-if="findCardByName(card)?.src"
+                    style="height: 5rem"
+                    :src="`https://storage.googleapis.com/ygoprodeck.com/pics_small/${findCardByName(card)?.src}.jpg`"
+                    alt=""
+                />
+            </div>
         </div>
         <div class="startHandButtons mt-1">
             <button @click="simulation()" type="button" class="btn orange round">
@@ -140,9 +149,9 @@
 import { deck, findCard, findCardByName, findCardGroup, findCardGroupByName, searchOnline, setHTMLClass, getRandomInt } from '@/global'
 import * as type from '@/types'
 import { defineComponent } from 'vue'
-import SexyInput from '../components/SexyInput.vue'
+import * as Inputs from '../components/SexyInputs/index'
 export default defineComponent({
-    components: { SexyInput },
+    components: { ...Inputs },
     setup() {
         return { deck, findCard, findCardByName, findCardGroup, findCardGroupByName, searchOnline }
     },

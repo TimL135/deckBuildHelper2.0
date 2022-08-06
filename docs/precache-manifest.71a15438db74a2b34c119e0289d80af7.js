@@ -8,16 +8,16 @@ self.__precacheManifest = (self.__precacheManifest || []).concat([
     "url": "/deckBuildHelper2.0/img/cards/cardBackside.png"
   },
   {
-    "revision": "6a39cd50b3774e0842e9a02bac7fe2d8",
+    "revision": "a2685cfdd8e83ad25f169305641ecf21",
     "url": "/deckBuildHelper2.0/index.html"
   },
   {
-    "revision": "9d68d9bf1a66350c357d",
-    "url": "/deckBuildHelper2.0/js/app.26cc29b4.js"
+    "revision": "90de320a57d430408c56",
+    "url": "/deckBuildHelper2.0/js/app.744aed3b.js"
   },
   {
-    "revision": "883cc092bb0c123534c2",
-    "url": "/deckBuildHelper2.0/js/chunk-vendors.9e7f1e3b.js"
+    "revision": "3064b502548126c1cb8b",
+    "url": "/deckBuildHelper2.0/js/chunk-vendors.2dc734fe.js"
   },
   {
     "revision": "0328b1f49adee7f877ec6161288a62f7",

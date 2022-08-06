@@ -181,10 +181,9 @@
             <div class="modal-content">
                 <div class="container">
                     <div>
-                        <SexyInput
+                        <Select
                             @change="alternativeCheck"
                             :onSelectItem="alternativeCheck"
-                            type="select"
                             placeholder="name"
                             v-model="nameInput"
                             :options="
@@ -211,8 +210,7 @@
                         />
                     </div>
                     <div class="mb-3">
-                        <SexyInput
-                            type="number"
+                        <Number
                             placeholder="Quantity"
                             v-model="countInput"
                             min="1"
@@ -275,9 +273,9 @@
 import { defineComponent } from 'vue'
 import { decks, deck, searchOnline, safeDeck, findCardByName, extraCardDB } from '@/global'
 import * as type from '@/types'
-import SexyInput from '../SexyInput.vue'
+import * as Inputs from '../../components/SexyInputs/index'
 export default defineComponent({
-    components: { SexyInput },
+    components: { ...Inputs },
     watch: { deck: 'countExtraCards' },
     setup() {
         return { decks, deck, searchOnline, findCardByName, extraCardDB }
