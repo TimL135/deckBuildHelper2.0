@@ -122,9 +122,10 @@
                             label-class="orange"
                             :label-border="true"
                             btn-class="orange"
-                            btn-text="&#10004;"
                             :btn-action="addNewDeck"
-                        ></Text>
+                        >
+                            <template v-slot:button>&#10004;</template>
+                        </Text>
                     </div>
                 </div>
                 <div v-if="deckInfo" class="orange text-dark round">
