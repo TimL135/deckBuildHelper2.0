@@ -8,7 +8,11 @@
   <div class="container" style="margin-top: 3vh">
     <div>Banned</div>
     <div class="deck">
-      <div v-for="card of allCards.filter((e) => e.max == 0)" :key="card.name">
+      <div
+        v-for="card of allCards.filter((e) => e.max == 0)"
+        :key="card.name"
+        @dblclick="searchOnline(card?.name)"
+      >
         <img
           v-if="navigator.onLine && card?.src"
           style="height: 5rem"
@@ -22,7 +26,11 @@
     </div>
     <div>Limited</div>
     <div class="deck">
-      <div v-for="card of allCards.filter((e) => e.max == 1)" :key="card.name">
+      <div
+        v-for="card of allCards.filter((e) => e.max == 1)"
+        :key="card.name"
+        @dblclick="searchOnline(card?.name)"
+      >
         <img
           v-if="navigator.onLine && card?.src"
           style="height: 5rem"
@@ -36,7 +44,11 @@
     </div>
     <div>Semi-Limited</div>
     <div class="deck">
-      <div v-for="card of allCards.filter((e) => e.max == 2)" :key="card.name">
+      <div
+        v-for="card of allCards.filter((e) => e.max == 2)"
+        :key="card.name"
+        @dblclick="searchOnline(card?.name)"
+      >
         <img
           v-if="navigator.onLine && card?.src"
           style="height: 5rem"
@@ -51,7 +63,7 @@
   </div>
 </template>
 <script lang="ts">
-import { banList, findCard } from "../global";
+import { banList, findCard, searchOnline } from "../global";
 import { defineComponent } from "vue";
 export default defineComponent({
   setup() {
@@ -59,6 +71,7 @@ export default defineComponent({
       banList,
       navigator,
       findCard,
+      searchOnline,
     };
   },
   data() {
