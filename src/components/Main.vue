@@ -27,13 +27,9 @@
           <template v-slot:button>&#10004;</template>
         </Select>
       </div>
-      <div>
+      <div style="margin-top: 1.5vh">
         <Button
-          style="
-            background-color: rgb(12, 12, 12);
-            border: none;
-            padding-top: 1.5vh;
-          "
+          style="background-color: rgb(12, 12, 12); border: none"
           @click="openDeckSettingsModal()"
         >
           <template v-slot:button>

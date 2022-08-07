@@ -126,10 +126,6 @@ span {
 svg {
     width: 25px;
     height: 25px;
-    @media (max-width: 768px) {
-        width: 5.5vw;
-        height: 5.5vh;
-    }
 }
 .btn {
     border-color: #000 !important;
