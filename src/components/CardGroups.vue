@@ -272,7 +272,7 @@
           <div>
             <Button
               type="button"
-              class="btn btn-success me-1"
+              class="agree"
               style="grid-area: yes"
               @click="deleteCardGroup()"
             >
@@ -295,7 +295,7 @@
           <div>
             <Button
               type="button"
-              class="btn btn-danger round"
+              class="disAgree"
               style="grid-area: no"
               @click="closeCardGroupDeleteModal()"
             >

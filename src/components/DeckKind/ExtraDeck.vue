@@ -122,7 +122,7 @@
         v-for="(card, index) of allCards.filter((card) =>
           filter.every((f, i) => (f ? f && card.type == types[i] : true))
         )"
-        :key="card.id + index"
+        :key="card.id"
         @click="openCardSelectModal(card)"
       >
         <img
@@ -391,7 +391,7 @@
             <div>
               <Button
                 type="button"
-                class="btn btn-success round me-1"
+                class="agree round me-1"
                 style="grid-area: yes"
                 @click="deleteExtraCard()"
               >
@@ -414,7 +414,7 @@
             <div>
               <Button
                 type="button"
-                class="btn btn-danger round"
+                class="disAgree"
                 style="grid-area: no"
                 @click="closeExtraCardDeleteModal()"
               >

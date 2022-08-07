@@ -155,6 +155,12 @@ svg {
     background-color: transparent;
     color: #000;
 }
+.agree{
+    background-color: #157347 !important;
+}
+.disAgree{
+   background-color: #dc3545 !important; 
+}
 .orange {
     background-color: #ffa107 !important;
 }
@@ -211,6 +217,7 @@ table {
     display: grid;
     grid-template-columns: auto auto;
     grid-template-areas: 'yes no ';
+    column-gap: 0.25rem;
 }
 .properties{
     display: grid;

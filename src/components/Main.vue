@@ -169,7 +169,7 @@
             <div>
               <Button
                 type="button"
-                class="btn btn-success round me-1"
+                class="agree round me-1"
                 style="grid-area: yes"
                 @click="deleteDeck('delete')"
               >
@@ -192,7 +192,7 @@
             <div>
               <Button
                 type="button"
-                class="btn btn-danger round"
+                class="disAgree"
                 style="grid-area: no"
                 @click="deleteDeck('cancel')"
               >
@@ -288,8 +288,16 @@ export default defineComponent({
         this.deckInfo = "";
       }, 3000);
     },
-    addNewDeck() {
+    tryParse(string: string) {
       try {
+        JSON.parse(string);
+        return true;
+      } catch {
+        return false;
+      }
+    },
+    addNewDeck() {
+      if (this.tryParse(this.newDeck)) {
         let deck = JSON.parse(this.newDeck.trim()) as type.Deck;
         if (!deck.alternativeCards) return;
         if (!deck.cardGroups) return;
@@ -299,12 +307,15 @@ export default defineComponent({
         if (!deck.name) return;
         if (!deck.sideCards) return;
         let counter = NaN;
-        while (
-          this.decks.some((e) => e.name == deck.name + (counter ? counter : ""))
-        ) {
-          if (!counter) counter = 1;
-          else counter++;
-        }
+        if (typeof this.decks == "object")
+          while (
+            this.decks.some(
+              (e) => e.name == deck.name + (counter ? counter : "")
+            )
+          ) {
+            if (!counter) counter = 1;
+            else counter++;
+          }
         deck.name = deck.name + (counter ? counter : "");
         if (this.decks) {
           this.decks.push(deck);
@@ -314,7 +325,9 @@ export default defineComponent({
 
         this.newDeck = "";
         setDecks(this.decks);
-      } catch {
+        this.selectedDeck = deck.name;
+        this.loadDeck();
+      } else {
         this.selectedDeck = this.newDeck;
         this.newDeck = "";
         this.loadDeck();

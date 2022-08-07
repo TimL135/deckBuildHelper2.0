@@ -478,7 +478,7 @@
           <div>
             <Button
               type="button"
-              class="btn btn-success round me-1"
+              class="agree round me-1"
               style="grid-area: yes"
               @click="deleteCard(deleteCardId)"
             >
@@ -501,7 +501,7 @@
           <div>
             <Button
               type="button"
-              class="btn btn-danger round round"
+              class="disAgree round"
               style="grid-area: no"
               @click="closeCardDeleteModal()"
             >

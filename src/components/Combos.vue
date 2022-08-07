@@ -261,7 +261,7 @@
           <div>
             <Button
               type="button"
-              class="btn btn-success round me-1"
+              class="agree round me-1"
               style="grid-area: yes"
               @click="deleteCombo()"
             >
@@ -284,7 +284,7 @@
           <div>
             <Button
               type="button"
-              class="btn btn-danger round"
+              class="disAgree"
               style="grid-area: no"
               @click="closeComboDeleteModal()"
             >
