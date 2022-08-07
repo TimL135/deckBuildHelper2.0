@@ -5,6 +5,7 @@ import Combos from "../components/Combos.vue";
 import CardGroups from "../components/CardGroups.vue";
 import Traning from "../components/Traning.vue";
 import Logs from "../components/Logs.vue";
+import BanList from "../components/BanList.vue";
 const routes: Array<RouteRecordRaw> = [
   {
     path: "/",
@@ -35,6 +36,11 @@ const routes: Array<RouteRecordRaw> = [
     path: "/Logs",
     name: "Logs",
     component: Logs,
+  },
+  {
+    path: "/BanList",
+    name: "BanList",
+    component: BanList,
   },
 ];
 

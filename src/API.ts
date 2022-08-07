@@ -42,3 +42,9 @@ export function setDB(db: any) {
 export function getDB(): any {
   return JSON.parse(localStorage.getItem("db") || "false") as string[];
 }
+export function setBanList(banList: any) {
+  localStorage.setItem("banList", JSON.stringify(banList));
+}
+export function getBanList(): any {
+  return JSON.parse(localStorage.getItem("banList") || "false") as string[];
+}

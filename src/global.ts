@@ -1,4 +1,13 @@
-import { getDeck, getDecks, setDeck, setDecks, setDB, getDB } from "./API";
+import {
+  getDeck,
+  getDecks,
+  setDeck,
+  setDecks,
+  setDB,
+  getDB,
+  getBanList,
+  setBanList,
+} from "./API";
 import { ref } from "vue";
 import * as type from "./types";
 import axios from "axios";
@@ -145,5 +154,40 @@ if (db.length) {
         mainCardDB.push(card);
         break;
     }
+  }
+}
+function createMax(max: string) {
+  if (max.includes("Semi-Limited")) return 2;
+  if (max.includes("Limited")) return 1;
+  if (max.includes("Banned")) return 0;
+}
+export let banList = getBanList();
+//7 days
+if (
+  banList &&
+  (banList.timeStamp < Date.now() - 6.048e8 ||
+    !banList.data[0].type ||
+    !banList.data[0].src)
+)
+  banList = false;
+else banList = banList.data;
+if (!banList) {
+  try {
+    axios
+      .get("https://db.ygoprodeck.com/api/v7/cardinfo.php?banlist=tcg")
+      .then((resp) => {
+        banList = resp.data.data.map((e) =>
+          Object.fromEntries([
+            ["name", e.name],
+            ["type", createType(e.type)],
+            ["src", e.id],
+            ["max", createMax(e.banlist_info.ban_tcg)],
+          ])
+        );
+        setBanList({ timeStamp: Date.now(), data: banList });
+      });
+  } catch {
+    if (getBanList()) banList = getBanList().data;
+    else banList = [];
   }
 }
