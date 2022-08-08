@@ -52,7 +52,7 @@
         </Button>
       </div>
     </div>
-    <div class="mt-3" style="min-height: 1.5rem">
+    <div class="mt-3" style="font-size: 2rem; min-height: 3.5rem">
       {{ number ? `${selectedSign} ${number}` : "" }}
     </div>
     <div class="calculator mt-3">
@@ -61,7 +61,7 @@
           <Button
             class="round text-dark border-0 h-100"
             :class="selectedSign == sign ? 'green ' : ' orange'"
-            @click="selectedSign = sign"
+            @click="changeSign(sign)"
           >
             <template v-slot:button>{{ sign }}</template>
           </Button>
@@ -111,6 +111,11 @@
         </div>
       </div>
     </div>
+    <div v-if="log.length">
+      <Button class="orange text-dark round border-0 mt-3" @dblclick="undo()">
+        <template v-slot:button>Undo</template>
+      </Button>
+    </div>
   </div>
 </template>
 <script lang="ts">
@@ -125,6 +130,7 @@ export default defineComponent({
       number: "",
       selectedSign: "-",
       turn: 1,
+      log: [],
     };
   },
   methods: {
@@ -139,6 +145,12 @@ export default defineComponent({
     },
     addNumber(x: string) {
       this.number += x;
+      if (this.selectedSign == "/") this.number = "2";
+    },
+    changeSign(sign: "+" | "-" | "/") {
+      if (this.selectedSign == "/") this.clearNumber();
+      this.selectedSign = sign;
+      if (sign == "/") this.number = "2";
     },
     clearNumber() {
       this.number = "";
@@ -147,15 +159,34 @@ export default defineComponent({
       switch (this.selectedSign) {
         case "+":
           this[player] += parseInt(this.number);
+          this.log.push(`${player} + ${this.number}`);
           break;
         case "-":
           this[player] -= this.number;
+          this.log.push(`${player} - ${this.number}`);
           break;
         case "/":
           this[player] = Math.ceil(this[player] / this.number);
+          this.log.push(`${player} / ${this.number}`);
           break;
       }
       this.clearNumber();
+    },
+    undo() {
+      if (this.log.length == 0) return;
+      let step = this.log.splice(-1, 1)[0];
+      step = step.split(" ");
+      switch (step[1]) {
+        case "+":
+          this[step[0]] -= parseInt(step[2]);
+          break;
+        case "-":
+          this[step[0]] += parseInt(step[2]);
+          break;
+        case "/":
+          this[step[0]] *= parseInt(step[2]);
+          break;
+      }
     },
   },
 });
