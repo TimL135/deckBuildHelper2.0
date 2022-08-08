@@ -121,8 +121,16 @@
 <script lang="ts">
 import { defineComponent } from "vue";
 import * as Inputs from "../components/SexyInputs/index";
+import NoSleep from "nosleep.js";
 export default defineComponent({
   components: { ...Inputs },
+  mounted() {
+    this.noSleep = new NoSleep();
+    this.noSleep.enable();
+  },
+  unmounted() {
+    this.noSleep.disable();
+  },
   data() {
     return {
       player1: 8000,
@@ -131,6 +139,7 @@ export default defineComponent({
       selectedSign: "-",
       turn: 1,
       log: [],
+      noSleep: "" as any,
     };
   },
   methods: {
