@@ -292,7 +292,7 @@
             <Select
               @change="alternativeCheck"
               :onSelectItem="alternativeCheck"
-              placeholder="name"
+              :placeholder="banListStatus ? banListStatus : 'name'"
               v-model="nameInput"
               :options="
                 deck.alternativeExtraCards
@@ -327,8 +327,8 @@
             <Number
               placeholder="Quantity"
               v-model="countInput"
-              min="1"
-              max="3"
+              :min="maxCount ? 1 : 0"
+              :max="maxCount"
               class="orange"
               labelClass="orange"
               listClass="orange text-dark"
@@ -449,6 +449,7 @@ import {
   safeDeck,
   findCardByName,
   extraCardDB,
+  banList,
 } from "../../global";
 import * as type from "../../types";
 import * as Inputs from "../../components/SexyInputs/index";
@@ -456,7 +457,7 @@ export default defineComponent({
   components: { ...Inputs },
   watch: { deck: "countExtraCards" },
   setup() {
-    return { decks, deck, searchOnline, findCardByName, extraCardDB };
+    return { decks, deck, searchOnline, findCardByName, extraCardDB, banList };
   },
   mounted() {
     this.countExtraCards();
@@ -476,13 +477,16 @@ export default defineComponent({
       error: {},
       deckView: true,
       selectedCard: {},
+      maxCount: 3,
+      banListStatus: "",
     };
   },
   methods: {
     editAddExtraCard() {
       this.error = {};
       if (!this.nameInput) this.error.nameInput = "enter a name";
-      if (!this.countInput) this.error.countInput = "enter a amount";
+      if (this.countInput === 0) this.error.countInput = "this card is banned";
+      else if (!this.countInput) this.error.countInput = "enter a amount";
       if (Object.keys(this.error).length > 0) return;
       switch (this.editAdd) {
         case "add":
@@ -554,7 +558,21 @@ export default defineComponent({
       if (modal) modal.style.display = "none";
     },
     alternativeCheck(card) {
+      this.maxCount = 3;
       this.nameInput.trim();
+      this.banListStatus = "";
+      let map = {
+        0: "Banned",
+        1: "Limited",
+        2: "Semi-Limited",
+      };
+      banList?.forEach((card) => {
+        if (card.name == this.nameInput) {
+          if (this.countInput > card.max) this.countInput = card.max;
+          this.maxCount = card.max;
+          this.banListStatus = map[card.max];
+        }
+      });
       this.type = card.type;
       this.deck.alternativeExtraCards.forEach((card) => {
         if (card.name == this.nameInput) {

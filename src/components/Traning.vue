@@ -329,8 +329,7 @@
               </div>
             </div>
             <div v-if="startHand == 'custom'">
-              <Select
-                type="multiSelect"
+              <MultiSelect
                 placeholder="cards"
                 v-model="cardInput"
                 :options="allCardsSelect.map((e) => findCard(e)?.name)"

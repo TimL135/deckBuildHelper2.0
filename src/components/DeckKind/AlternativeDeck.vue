@@ -167,7 +167,7 @@
           <Select
             @change="typeCheck"
             :onSelectItem="typeCheck"
-            placeholder="name"
+            :placeholder="banListStatus ? banListStatus : 'name'"
             v-model="nameInput"
             :options="db"
             :option-projection="(e) => e.name"
@@ -187,8 +187,8 @@
           <Number
             placeholder="Quantity"
             v-model="countInput"
-            min="1"
-            max="3"
+            :min="maxCount ? 1 : 0"
+            :max="maxCount"
             class="orange"
             labelClass="orange"
             listClass="orange text-dark"
@@ -536,6 +536,7 @@ import {
   safeDeck,
   findCardByName,
   db,
+  banList,
 } from "../../global";
 import * as type from "../../types";
 import * as Inputs from "../../components/SexyInputs/index";
@@ -543,7 +544,15 @@ export default defineComponent({
   components: { ...Inputs },
   watch: { deck: "updateDeck" },
   setup() {
-    return { decks, deck, uniqueAllCards, searchOnline, findCardByName, db };
+    return {
+      decks,
+      deck,
+      uniqueAllCards,
+      searchOnline,
+      findCardByName,
+      db,
+      banList,
+    };
   },
   mounted() {
     this.updateDeck();
@@ -571,6 +580,8 @@ export default defineComponent({
       error: {},
       deckView: true,
       selectedCard: {} as type.Card | type.ExtraCard,
+      maxCount: 3,
+      banListStatus: "",
     };
   },
   methods: {
@@ -581,12 +592,28 @@ export default defineComponent({
       }
     },
     typeCheck(card) {
+      this.maxCount = 3;
+      this.nameInput.trim();
+      this.banListStatus = "";
+      let map = {
+        0: "Banned",
+        1: "Limited",
+        2: "Semi-Limited",
+      };
+      banList?.forEach((card) => {
+        if (card.name == this.nameInput) {
+          if (this.countInput > card.max) this.countInput = card.max;
+          this.maxCount = card.max;
+          this.banListStatus = map[card.max];
+        }
+      });
       this.type = card.type;
     },
     editAddCard() {
       this.error = {};
       if (!this.nameInput) this.error.nameInput = "enter a name";
-      if (!this.countInput) this.error.countInput = "enter a amount";
+      if (this.countInput === 0) this.error.countInput = "this card is banned";
+      else if (!this.countInput) this.error.countInput = "enter a amount";
       if (Object.keys(this.error).length > 0) return;
       switch (this.editAdd) {
         case "add":
