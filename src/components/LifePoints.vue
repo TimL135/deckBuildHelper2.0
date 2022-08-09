@@ -148,6 +148,7 @@ export default defineComponent({
       this.player2 = 8000;
       this.turn = 1;
       this.log = [];
+      this.number = "";
     },
     changeTurn(x: number) {
       this.turn += x;
@@ -180,6 +181,7 @@ export default defineComponent({
           this.log.push(`${player} / ${this.number}`);
           break;
       }
+      this.selectedSign = "-";
       this.clearNumber();
     },
     undo() {
