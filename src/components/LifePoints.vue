@@ -147,6 +147,7 @@ export default defineComponent({
       this.player1 = 8000;
       this.player2 = 8000;
       this.turn = 1;
+      this.log = [];
     },
     changeTurn(x: number) {
       this.turn += x;
