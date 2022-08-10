@@ -22,6 +22,14 @@ export default defineConfig({
         short_name: "deckHelper2.5",
         start_url: "/deckBuildHelper2.0/",
         display: "standalone",
+        icons: [
+          {
+            src: "/public/img/cards/cardBackside.png",
+            sizes: "453x453",
+            type: "image/png",
+            purpose: "maskable any",
+          },
+        ],
       },
     }),
   ],
