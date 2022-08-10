@@ -24,8 +24,8 @@ export default defineConfig({
         display: "standalone",
         icons: [
           {
-            src: "/public/img/icons/msapplication-icon-144x144",
-            sizes: "453x453",
+            src: "/public/img/icons/msapplication-icon-144x144.png",
+            sizes: "144x144",
             type: "image/png",
             purpose: "maskable any",
           },
