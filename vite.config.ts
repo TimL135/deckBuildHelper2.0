@@ -10,10 +10,14 @@ export default defineConfig({
   plugins: [
     vue(),
     VitePWA({
+      strategies: "generateSW",
+      srcDir: "src",
+      filename: "sw.ts",
       registerType: "autoUpdate",
       includeAssets: ["favicon.svg"],
       workbox: {
         globPatterns: ["**/*.{js,css,html,svg,png,woff2}"],
+        swDest: "sw.js",
       },
       manifest: {
         background_color: "#000000",
