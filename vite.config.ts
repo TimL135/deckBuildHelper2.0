@@ -12,7 +12,7 @@ export default defineConfig({
     VitePWA({
       strategies: "generateSW",
       srcDir: "src",
-      filename: "sw.ts",
+      filename: "sw.js",
       registerType: "autoUpdate",
       includeAssets: ["favicon.svg"],
       workbox: {
@@ -26,6 +26,13 @@ export default defineConfig({
         short_name: "deckHelper2.5",
         start_url: "/",
         display: "standalone",
+        icons: [
+          {
+            src: "/public/img/icons",
+            type: "image/png",
+            purpose: "maskable any",
+          },
+        ],
       },
     }),
   ],
@@ -36,5 +43,5 @@ export default defineConfig({
   server: {
     host: true,
   },
-  base: "./",
+  base: "./deckBuildHelper2.0",
 });
