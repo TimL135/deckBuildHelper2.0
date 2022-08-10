@@ -20,7 +20,7 @@ export default defineConfig({
         theme_color: "#7E1F86",
         name: "deckBuilderHelper2.5",
         short_name: "deckHelper2.5",
-        start_url: "/deckBuildHelper2.0/",
+        start_url: "/",
         display: "standalone",
         icons: [
           {
@@ -40,5 +40,5 @@ export default defineConfig({
   server: {
     host: true,
   },
-  base: "./deckBuildHelper2.0/",
+  base: "./",
 });
