@@ -24,10 +24,21 @@ export default defineConfig({
         display: "standalone",
         icons: [
           {
-            src: "/public/img/icons/msapplication-icon-144x144.png",
-            sizes: "144x144",
+            src: "/android-chrome-192x192.png",
+            sizes: "192x192",
             type: "image/png",
-            purpose: "maskable any",
+          },
+          {
+            src: "/android-chrome-256x256.png",
+            sizes: "256x256",
+            type: "image/png",
+            purpose: "any",
+          },
+          {
+            src: "/android-chrome-512x512.png",
+            sizes: "512x512",
+            type: "image/png",
+            purpose: "maskable",
           },
         ],
       },
