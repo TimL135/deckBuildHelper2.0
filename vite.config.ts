@@ -40,5 +40,5 @@ export default defineConfig({
   server: {
     host: true,
   },
-  base: "./",
+  base: "./deckBuildHelper2.0/",
 });
