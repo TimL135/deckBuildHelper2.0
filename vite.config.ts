@@ -27,7 +27,7 @@ export default defineConfig({
             src: "/public/img/icons/msapplication-icon-144x144.png",
             sizes: "144x144",
             type: "image/png",
-            purpose: "maskable any",
+            purpose: "any",
           },
         ],
       },
@@ -40,5 +40,5 @@ export default defineConfig({
   server: {
     host: true,
   },
-  base: "./deckBuildHelper2.0/",
+  base: "./",
 });
