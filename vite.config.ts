@@ -24,7 +24,7 @@ export default defineConfig({
         display: "standalone",
         icons: [
           {
-            src: "/public/img/icons/msapplication-icon-144x144.png",
+            src: "/deckBuildHelper2.0/public/img/icons/msapplication-icon-144x144.png",
             sizes: "144x144",
             type: "image/png",
             purpose: "any",
