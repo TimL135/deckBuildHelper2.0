@@ -20,8 +20,16 @@ export default defineConfig({
         theme_color: "#7E1F86",
         name: "deckBuilderHelper2.5",
         short_name: "deckHelper2.5",
-        start_url: "/",
+        start_url: "/deckBuildHelper2.0/",
         display: "standalone",
+        icons: [
+          {
+            src: "/public/img/icons/msapplication-icon-144x144",
+            sizes: "453x453",
+            type: "image/png",
+            purpose: "maskable any",
+          },
+        ],
       },
     }),
   ],
