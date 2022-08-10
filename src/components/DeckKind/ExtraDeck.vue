@@ -307,7 +307,7 @@
               :option-projection="(e) => e.name"
               :labelBorder="true"
               :selectOnBlur="true"
-              :controlInput="false"
+              :controlInput="true"
               :noElementMessage="
                 deck.alternativeExtraCards?.length
                   ? nameInput
@@ -336,34 +336,6 @@
               :required="true"
               :error="error.countInput"
             />
-          </div>
-          <div class="extraTypes">
-            <div
-              @click="type = 'fusion'"
-              class="round-start"
-              :class="type == 'fusion' ? 'fusion' : 'orange text-dark'"
-            >
-              Fusion
-            </div>
-            <div
-              @click="type = 'synchro'"
-              :class="type == 'synchro' ? 'synchro' : 'orange text-dark'"
-            >
-              Synchro
-            </div>
-            <div
-              @click="type = 'xyz'"
-              :class="type == 'xyz' ? 'xyz' : 'orange text-dark'"
-            >
-              XYZ
-            </div>
-            <div
-              @click="type = 'link'"
-              class="round-end"
-              :class="type == 'link' ? 'link' : 'orange text-dark'"
-            >
-              Link
-            </div>
           </div>
           <br />
           <div>
@@ -473,7 +445,7 @@ export default defineComponent({
       editAdd: "",
       filter: [false, false, false, false],
       types: ["fusion", "synchro", "xyz", "link"],
-      counts: [0, 0, 0, 0],
+      counts: [0, 0, 0, 0, 0, 0, 0, 0],
       error: {},
       deckView: true,
       selectedCard: {},

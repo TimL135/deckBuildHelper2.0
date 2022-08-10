@@ -173,7 +173,7 @@
             :option-projection="(e) => e.name"
             :labelBorder="true"
             :selectOnBlur="true"
-            :controlInput="false"
+            :controlInput="true"
             :noElementMessage="nameInput"
             class="orange"
             labelClass="orange"
@@ -196,80 +196,6 @@
             :required="true"
             :error="error.countInput"
           />
-        </div>
-        <div
-          v-if="
-            editAdd == 'add' ||
-            selectedCard.type == 'monster' ||
-            selectedCard.type == 'spell' ||
-            selectedCard.type == 'trap'
-          "
-          class="types"
-        >
-          <div
-            @click="type = 'monster'"
-            style="border: 1px solid rgb(12, 12, 12)"
-            class="round-start"
-            :class="type == 'monster' ? 'monster' : 'orange text-dark'"
-          >
-            Monster
-          </div>
-          <div
-            @click="type = 'spell'"
-            style="border: 1px solid rgb(12, 12, 12)"
-            :class="type == 'spell' ? 'spell' : 'orange text-dark'"
-          >
-            Spell
-          </div>
-          <div
-            @click="type = 'trap'"
-            style="border: 1px solid rgb(12, 12, 12)"
-            class="round-end"
-            :class="type == 'trap' ? 'trap' : 'orange text-dark'"
-          >
-            Trap
-          </div>
-        </div>
-        <div
-          class="extraTypes mt-1"
-          v-if="
-            editAdd == 'add' ||
-            selectedCard.type == 'fusion' ||
-            selectedCard.type == 'synchro' ||
-            selectedCard.type == 'xyz' ||
-            selectedCard.type == 'link'
-          "
-        >
-          <div
-            @click="type = 'fusion'"
-            style="border: 1px solid rgb(12, 12, 12)"
-            class="round-start"
-            :class="type == 'fusion' ? 'fusion' : 'orange text-dark'"
-          >
-            Fusion
-          </div>
-          <div
-            @click="type = 'synchro'"
-            style="border: 1px solid rgb(12, 12, 12)"
-            :class="type == 'synchro' ? 'synchro' : 'orange text-dark'"
-          >
-            Synchro
-          </div>
-          <div
-            @click="type = 'xyz'"
-            style="border: 1px solid rgb(12, 12, 12)"
-            :class="type == 'xyz' ? 'xyz' : 'orange text-dark'"
-          >
-            XYZ
-          </div>
-          <div
-            @click="type = 'link'"
-            style="border: 1px solid rgb(12, 12, 12)"
-            class="round-end"
-            :class="type == 'link' ? 'link' : 'orange text-dark'"
-          >
-            Link
-          </div>
         </div>
         <div
           v-if="type == 'monster' || type == 'spell' || type == 'trap'"
@@ -336,7 +262,39 @@
               class="round-end"
               :class="properties[7] ? 'green text-black' : 'orange text-dark'"
             >
-              Interaption
+              Interruption
+            </div>
+          </div>
+          <div class="properties mt-1">
+            <div
+              @click="properties[8] = !properties[8]"
+              style="border: 1px solid rgb(12, 12, 12)"
+              class="round-start"
+              :class="properties[8] ? 'green text-black' : 'orange text-dark'"
+            >
+              Break
+            </div>
+            <div
+              @click="properties[9] = !properties[9]"
+              style="border: 1px solid rgb(12, 12, 12)"
+              :class="properties[9] ? 'green text-black' : 'orange text-dark'"
+            >
+              Protect
+            </div>
+            <div
+              @click="properties[10] = !properties[10]"
+              style="border: 1px solid rgb(12, 12, 12)"
+              :class="properties[10] ? 'green text-black' : 'orange text-dark'"
+            >
+              Extender
+            </div>
+            <div
+              @click="properties[11] = !properties[11]"
+              style="border: 1px solid rgb(12, 12, 12)"
+              class="round-end"
+              :class="properties[11] ? 'green text-black' : 'orange text-dark'"
+            >
+              Destory
             </div>
           </div>
         </div>
@@ -567,9 +525,22 @@ export default defineComponent({
       deckNumber: 0,
       type: "monster" as type.CardType | type.ExtraCardType,
 
-      properties: [false, false, false, false, false, false, false, false],
-      counts: [0, 0, 0, 0, 0, 0, 0, 0],
-      uniqueCounts: [0, 0, 0, 0, 0, 0, 0, 0],
+      properties: [
+        false,
+        false,
+        false,
+        false,
+        false,
+        false,
+        false,
+        false,
+        false,
+        false,
+        false,
+        false,
+      ],
+      counts: [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+      uniqueCounts: [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
 
       deleteCardId: 0,
       deleteFrom: "",
@@ -835,6 +806,13 @@ export default defineComponent({
         this.counts = [0, 0, 0, 0, 0, 0, 0, 0];
         this.uniqueCounts = [0, 0, 0, 0, 0, 0, 0, 0];
         for (let card of this.deck.alternativeCards) {
+          if (card.properties.length == 8)
+            card.properties = card.properties.concat([
+              false,
+              false,
+              false,
+              false,
+            ]);
           this.deckNumber += card.count;
           for (let c in this.counts) {
             if (card.properties[c]) this.counts[c] += card.count;

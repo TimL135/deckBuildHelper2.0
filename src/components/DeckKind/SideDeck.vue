@@ -89,9 +89,51 @@
         @click="filter[7] = !filter[7]"
         :class="filter[7] ? 'orange text-dark' : ''"
       >
-        Interaption:
+        Interruption:
         <br />
         {{ counts[7] }}({{ uniqueCounts[7] }})
+      </div>
+    </div>
+    <div class="d-flex mb-1">
+      <div
+        class="w-25 round-start"
+        style="border: 1px solid #ffa107"
+        @click="filter[8] = !filter[8]"
+        :class="filter[8] ? 'orange text-dark' : ''"
+      >
+        Break
+        <br />
+        {{ counts[8] }}({{ uniqueCounts[8] }})
+      </div>
+      <div
+        class="w-25"
+        style="border: 1px solid #ffa107"
+        @click="filter[9] = !filter[9]"
+        :class="filter[9] ? 'orange text-dark' : ''"
+      >
+        Protect
+        <br />
+        {{ counts[9] }}({{ uniqueCounts[9] }})
+      </div>
+      <div
+        class="w-25"
+        style="border: 1px solid #ffa107"
+        @click="filter[10] = !filter[10]"
+        :class="filter[10] ? 'orange text-dark' : ''"
+      >
+        Extender
+        <br />
+        {{ counts[10] }}({{ uniqueCounts[10] }})
+      </div>
+      <div
+        class="w-25 round-end"
+        style="border: 1px solid #ffa107"
+        @click="filter[11] = !filter[11]"
+        :class="filter[11] ? 'orange text-dark' : ''"
+      >
+        Destory
+        <br />
+        {{ counts[11] }}({{ uniqueCounts[11] }})
       </div>
     </div>
     <br />
@@ -350,7 +392,7 @@
             :option-projection="(e) => e.name"
             :labelBorder="true"
             :selectOnBlur="true"
-            :controlInput="false"
+            :controlInput="true"
             :noElementMessage="
               deck.alternativeCards?.length
                 ? nameInput
@@ -379,31 +421,6 @@
             :required="true"
             :error="error.countInput"
           />
-        </div>
-        <div class="types">
-          <div
-            @click="type = 'monster'"
-            style="border: 1px solid rgb(12, 12, 12)"
-            class="round-start"
-            :class="type == 'monster' ? 'monster' : 'orange text-dark'"
-          >
-            Monster
-          </div>
-          <div
-            @click="type = 'spell'"
-            style="border: 1px solid rgb(12, 12, 12)"
-            :class="type == 'spell' ? 'spell' : 'orange text-dark'"
-          >
-            Spell
-          </div>
-          <div
-            @click="type = 'trap'"
-            style="border: 1px solid rgb(12, 12, 12)"
-            class="round-end"
-            :class="type == 'trap' ? 'trap' : 'orange text-dark'"
-          >
-            Trap
-          </div>
         </div>
         <div class="properties mt-3">
           <div
@@ -466,9 +483,42 @@
             class="round-end"
             :class="properties[7] ? 'green text-black' : 'orange text-dark'"
           >
-            Interaption
+            Interruption
           </div>
         </div>
+        <div class="properties mt-1">
+          <div
+            @click="properties[8] = !properties[8]"
+            style="border: 1px solid rgb(12, 12, 12)"
+            class="round-start"
+            :class="properties[8] ? 'green text-black' : 'orange text-dark'"
+          >
+            Break
+          </div>
+          <div
+            @click="properties[9] = !properties[9]"
+            style="border: 1px solid rgb(12, 12, 12)"
+            :class="properties[9] ? 'green text-black' : 'orange text-dark'"
+          >
+            Protect
+          </div>
+          <div
+            @click="properties[10] = !properties[10]"
+            style="border: 1px solid rgb(12, 12, 12)"
+            :class="properties[10] ? 'green text-black' : 'orange text-dark'"
+          >
+            Extender
+          </div>
+          <div
+            @click="properties[11] = !properties[11]"
+            style="border: 1px solid rgb(12, 12, 12)"
+            class="round-end"
+            :class="properties[11] ? 'green text-black' : 'orange text-dark'"
+          >
+            Destory
+          </div>
+        </div>
+
         <div class="value mt-3">
           <div
             @click="value = -1"
@@ -614,10 +664,36 @@ export default defineComponent({
       deckNumber: 0,
       type: "monster" as type.CardType,
 
-      properties: [false, false, false, false, false, false, false, false],
-      filter: [false, false, false, false, false, false, false, false],
-      counts: [0, 0, 0, 0, 0, 0, 0, 0],
-      uniqueCounts: [0, 0, 0, 0, 0, 0, 0, 0],
+      properties: [
+        false,
+        false,
+        false,
+        false,
+        false,
+        false,
+        false,
+        false,
+        false,
+        false,
+        false,
+        false,
+      ],
+      filter: [
+        false,
+        false,
+        false,
+        false,
+        false,
+        false,
+        false,
+        false,
+        false,
+        false,
+        false,
+        false,
+      ],
+      counts: [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+      uniqueCounts: [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
 
       editCardIndex: 0,
       deleteCardId: 0,
@@ -824,6 +900,10 @@ export default defineComponent({
         false,
         false,
         false,
+        false,
+        false,
+        false,
+        false,
       ];
       this.value = 0;
       this.editCardIndex = 0;
@@ -843,9 +923,16 @@ export default defineComponent({
     countCard() {
       if (this.deck.sideCards) {
         this.deckNumber = 0;
-        this.counts = [0, 0, 0, 0, 0, 0, 0, 0];
-        this.uniqueCounts = [0, 0, 0, 0, 0, 0, 0, 0];
+        this.counts = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0];
+        this.uniqueCounts = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0];
         for (let card of this.deck.sideCards) {
+          if (card.properties.length == 8)
+            card.properties = card.properties.concat([
+              false,
+              false,
+              false,
+              false,
+            ]);
           this.deckNumber += card.count;
           for (let c in this.counts) {
             if (card.properties[c]) this.counts[c] += card.count;
