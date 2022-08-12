@@ -322,9 +322,7 @@ export default defineComponent({
         } else {
           this.decks = [deck];
         }
-
         this.newDeck = "";
-        setDecks(this.decks);
         this.selectedDeck = deck.name;
         this.loadDeck();
       } else {
@@ -381,8 +379,8 @@ export default defineComponent({
               ];
           }
         }
-        safeDeck(this.deck);
       }
+      safeDeck(this.deck);
       this.selectedDeckKind = "mainDeck";
     },
   },

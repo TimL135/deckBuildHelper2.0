@@ -345,144 +345,19 @@
     </div>
   </div>
   <!-- new modal -->
-  <div id="cardSelectModal" class="modal">
-    <div class="modal-content">
-      <div class="container">
-        <div class="orange round text-dark mb-1">{{ selectedCard.name }}</div>
-        <div class="selectModal">
-          <div>
-            <Button
-              @click="openCardDeleteModal(selectedCard)"
-              class="orange round border-0"
-            >
-              <template v-slot:button>
-                <svg
-                  xmlns="http://www.w3.org/2000/svg"
-                  class="bi bi-trash"
-                  viewBox="0 0 16 16"
-                >
-                  <path
-                    d="M5.5 5.5A.5.5 0 0 1 6 6v6a.5.5 0 0 1-1 0V6a.5.5 0 0 1 .5-.5zm2.5 0a.5.5 0 0 1 .5.5v6a.5.5 0 0 1-1 0V6a.5.5 0 0 1 .5-.5zm3 .5a.5.5 0 0 0-1 0v6a.5.5 0 0 0 1 0V6z"
-                  />
-                  <path
-                    fill-rule="evenodd"
-                    d="M14.5 3a1 1 0 0 1-1 1H13v9a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V4h-.5a1 1 0 0 1-1-1V2a1 1 0 0 1 1-1H6a1 1 0 0 1 1-1h2a1 1 0 0 1 1 1h3.5a1 1 0 0 1 1 1v1zM4.118 4 4 4.059V13a1 1 0 0 0 1 1h6a1 1 0 0 0 1-1V4.059L11.882 4H4.118zM2.5 3V2h11v1h-11z"
-                  />
-                </svg>
-              </template>
-            </Button>
-          </div>
-          <div>
-            <Button
-              @click="
-                () => {
-                  searchOnline(selectedCard?.name);
-                  closeCardSelectModal();
-                }
-              "
-              class="orange round border-0"
-            >
-              <template v-slot:button>
-                <svg
-                  xmlns="http://www.w3.org/2000/svg"
-                  width="16"
-                  height="16"
-                  fill="currentColor"
-                  class="bi bi-search"
-                  viewBox="0 0 16 16"
-                >
-                  <path
-                    d="M11.742 10.344a6.5 6.5 0 1 0-1.397 1.398h-.001c.03.04.062.078.098.115l3.85 3.85a1 1 0 0 0 1.415-1.414l-3.85-3.85a1.007 1.007 0 0 0-.115-.1zM12 6.5a5.5 5.5 0 1 1-11 0 5.5 5.5 0 0 1 11 0z"
-                  />
-                </svg>
-              </template>
-            </Button>
-          </div>
-          <div>
-            <Button
-              @click="openCardEditModal(selectedCard)"
-              class="orange round border-0"
-            >
-              <template v-slot:button>
-                <svg
-                  xmlns="http://www.w3.org/2000/svg"
-                  class="bi bi-gear"
-                  viewBox="0 0 16 16"
-                >
-                  <path
-                    d="M8 4.754a3.246 3.246 0 1 0 0 6.492 3.246 3.246 0 0 0 0-6.492zM5.754 8a2.246 2.246 0 1 1 4.492 0 2.246 2.246 0 0 1-4.492 0z"
-                  />
-                  <path
-                    d="M9.796 1.343c-.527-1.79-3.065-1.79-3.592 0l-.094.319a.873.873 0 0 1-1.255.52l-.292-.16c-1.64-.892-3.433.902-2.54 2.541l.159.292a.873.873 0 0 1-.52 1.255l-.319.094c-1.79.527-1.79 3.065 0 3.592l.319.094a.873.873 0 0 1 .52 1.255l-.16.292c-.892 1.64.901 3.434 2.541 2.54l.292-.159a.873.873 0 0 1 1.255.52l.094.319c.527 1.79 3.065 1.79 3.592 0l.094-.319a.873.873 0 0 1 1.255-.52l.292.16c1.64.893 3.434-.902 2.54-2.541l-.159-.292a.873.873 0 0 1 .52-1.255l.319-.094c1.79-.527 1.79-3.065 0-3.592l-.319-.094a.873.873 0 0 1-.52-1.255l.16-.292c.893-1.64-.902-3.433-2.541-2.54l-.292.159a.873.873 0 0 1-1.255-.52l-.094-.319zm-2.633.283c.246-.835 1.428-.835 1.674 0l.094.319a1.873 1.873 0 0 0 2.693 1.115l.291-.16c.764-.415 1.6.42 1.184 1.185l-.159.292a1.873 1.873 0 0 0 1.116 2.692l.318.094c.835.246.835 1.428 0 1.674l-.319.094a1.873 1.873 0 0 0-1.115 2.693l.16.291c.415.764-.42 1.6-1.185 1.184l-.291-.159a1.873 1.873 0 0 0-2.693 1.116l-.094.318c-.246.835-1.428.835-1.674 0l-.094-.319a1.873 1.873 0 0 0-2.692-1.115l-.292.16c-.764.415-1.6-.42-1.184-1.185l.159-.291A1.873 1.873 0 0 0 1.945 8.93l-.319-.094c-.835-.246-.835-1.428 0-1.674l.319-.094A1.873 1.873 0 0 0 3.06 4.377l-.16-.292c-.415-.764.42-1.6 1.185-1.184l.292.159a1.873 1.873 0 0 0 2.692-1.115l.094-.319z"
-                  />
-                </svg>
-              </template>
-            </Button>
-          </div>
-        </div>
-      </div>
-    </div>
-  </div>
+  <CardSelectModal
+    :selectedCard="selectedCard"
+    :openCardEditModal="openCardEditModal"
+    :closeCardSelectModal="closeCardSelectModal"
+    :openCardDeleteModal="openCardDeleteModal"
+  ></CardSelectModal>
   <!-- new modal -->
-  <div id="cardDeleteModal" class="modal">
-    <div class="modal-content">
-      <div class="container">
-        <div class="d-flex justify-content: center mb-1">
-          <div class="w-100 orange text-dark round">
-            Are you sure to delete {{ nameInput }}
-          </div>
-        </div>
-        <div class="deleteModal">
-          <div>
-            <Button
-              type="button"
-              class="agree round me-1"
-              style="grid-area: yes"
-              @click="deleteCard(deleteCardId)"
-            >
-              <template v-slot:button>
-                <svg
-                  xmlns="http://www.w3.org/2000/svg"
-                  width="16"
-                  height="16"
-                  fill="currentColor"
-                  class="bi bi-check-lg"
-                  viewBox="0 0 16 16"
-                >
-                  <path
-                    d="M12.736 3.97a.733.733 0 0 1 1.047 0c.286.289.29.756.01 1.05L7.88 12.01a.733.733 0 0 1-1.065.02L3.217 8.384a.757.757 0 0 1 0-1.06.733.733 0 0 1 1.047 0l3.052 3.093 5.4-6.425a.247.247 0 0 1 .02-.022Z"
-                  />
-                </svg>
-              </template>
-            </Button>
-          </div>
-          <div>
-            <Button
-              type="button"
-              class="disAgree round"
-              style="grid-area: no"
-              @click="closeCardDeleteModal()"
-            >
-              <template v-slot:button>
-                <svg
-                  xmlns="http://www.w3.org/2000/svg"
-                  width="16"
-                  height="16"
-                  fill="currentColor"
-                  class="bi bi-x-lg"
-                  viewBox="0 0 16 16"
-                >
-                  <path
-                    d="M2.146 2.854a.5.5 0 1 1 .708-.708L8 7.293l5.146-5.147a.5.5 0 0 1 .708.708L8.707 8l5.147 5.146a.5.5 0 0 1-.708.708L8 8.707l-5.146 5.147a.5.5 0 0 1-.708-.708L7.293 8 2.146 2.854Z"
-                  />
-                </svg>
-              </template>
-            </Button>
-          </div>
-        </div>
-      </div>
-    </div>
-  </div>
+  <DeleteCardModal
+    :deleteCardId="deleteCardId"
+    :nameInput="nameInput"
+    :closeModal="closeCardDeleteModal"
+    :deleteCard="deleteCard"
+  ></DeleteCardModal>
 </template>
 <script lang="ts">
 import { defineComponent } from "vue";
@@ -493,13 +368,14 @@ import {
   searchOnline,
   safeDeck,
   findCardByName,
-  db,
-  banList,
 } from "../../global";
+import { db, banList } from "../../API";
 import * as type from "../../types";
 import * as Inputs from "../../components/SexyInputs/index";
+import DeleteCardModal from "./DeleteCardModal.vue";
+import CardSelectModal from "./CardSelectModal.vue";
 export default defineComponent({
-  components: { ...Inputs },
+  components: { ...Inputs, DeleteCardModal, CardSelectModal },
   watch: { deck: "updateDeck" },
   setup() {
     return {

@@ -63,7 +63,8 @@
   </div>
 </template>
 <script lang="ts">
-import { banList, findCard, searchOnline } from "../global";
+import { findCard, searchOnline } from "../global";
+import { banList } from "../API";
 import { defineComponent } from "vue";
 export default defineComponent({
   setup() {

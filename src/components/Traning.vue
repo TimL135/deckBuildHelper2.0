@@ -429,8 +429,8 @@ import {
   setHTMLClass,
   safeDeck,
   getRandomInt,
-  db,
 } from "../global";
+import { db } from "../API";
 import * as type from "../types";
 import { defineComponent } from "vue";
 import * as Inputs from "../components/SexyInputs/index";

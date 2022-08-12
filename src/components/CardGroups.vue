@@ -330,7 +330,7 @@ import {
   searchOnline,
   setHTMLClass,
   safeDeck,
-  findCardGroup,
+  checkComboCardGroups,
 } from "../global";
 import { defineComponent } from "vue";
 import * as Inputs from "../components/SexyInputs/index";
@@ -441,7 +441,7 @@ export default defineComponent({
       this.deck.cardGroups[this.editCardGroupIndex].name =
         this.cardGroupNameInput;
       this.closeCardGroupAddEditModal();
-      this.checkComboCardGroups();
+      checkComboCardGroups();
       this.inputReset();
       this.checkCardInputs();
       safeDeck(this.deck);
@@ -483,20 +483,6 @@ export default defineComponent({
         card
           ? (this.cardInputTypes[i] = card.type)
           : (this.cardInputTypes[i] = "");
-      }
-    },
-    checkComboCardGroups() {
-      for (let cardGroup of this.deck.cardGroups) {
-        cardGroup.active = cardGroup.cards.some((cardId) =>
-          this.deck.cards.map((c) => c.id).includes(cardId)
-        );
-      }
-      for (let combo of this.deck.combos) {
-        combo.active = combo.cards.every((card) =>
-          findCardGroup(card)
-            ? this.deck.cardGroups.find((c) => c.id == card)?.active
-            : this.deck.cards.map((c) => c.id).includes(card)
-        );
       }
     },
   },

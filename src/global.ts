@@ -1,16 +1,6 @@
-import {
-  getDeck,
-  getDecks,
-  setDeck,
-  setDecks,
-  setDB,
-  getDB,
-  getBanList,
-  setBanList,
-} from "./API";
+import { getDeck, getDecks, setDeck, setDecks } from "./API";
 import { ref } from "vue";
 import * as type from "./types";
-import axios from "axios";
 export const decks = ref(getDecks());
 export const deck = ref(getDeck());
 export const uniqueAllCards = ref([
@@ -100,94 +90,17 @@ export function safeDeck(safedDeck: type.Deck) {
 export function getRandomInt(max: number) {
   return Math.floor(Math.random() * max);
 }
-function createType(type: string) {
-  if (type.includes("XYZ")) return "xyz";
-  if (type.includes("Fusion")) return "fusion";
-  if (type.includes("Synchro")) return "synchro";
-  if (type.includes("Link")) return "link";
-  if (type.includes("Monster")) return "monster";
-  if (type.includes("Spell")) return "spell";
-  if (type.includes("Trap")) return "trap";
-}
-export let db = getDB();
-//7 days
-if (
-  db &&
-  (db.timeStamp < Date.now() - 6.048e8 ||
-    !db.data[0].type ||
-    !db.data[0].src ||
-    db.data.length < 12000)
-)
-  db = false;
-else db = db.data;
-if (!db) {
-  try {
-    axios.get("https://db.ygoprodeck.com/api/v7/cardinfo.php").then((resp) => {
-      db = resp.data.data.map((e) =>
-        Object.fromEntries([
-          ["name", e.name],
-          ["type", createType(e.type)],
-          ["src", e.card_images[0].id],
-        ])
-      );
-      setDB({ timeStamp: Date.now(), data: db });
-    });
-  } catch {
-    if (getDB()) db = getDB().data;
-    else db = [];
+export function checkComboCardGroups() {
+  for (let cardGroup of deck.value.cardGroups) {
+    cardGroup.active = cardGroup.cards.some((cardId) =>
+      deck.value.cards.map((c) => c.id).includes(cardId)
+    );
   }
-}
-export const mainCardDB = [];
-export const extraCardDB = [];
-if (db.length) {
-  for (const card of db) {
-    switch (card.type) {
-      case "link":
-      case "xyz":
-      case "fusion":
-      case "synchro":
-        extraCardDB.push(card);
-        break;
-      case "monster":
-      case "spell":
-      case "trap":
-        mainCardDB.push(card);
-        break;
-    }
-  }
-}
-function createMax(max: string) {
-  if (max.includes("Semi-Limited")) return 2;
-  if (max.includes("Limited")) return 1;
-  if (max.includes("Banned")) return 0;
-}
-export let banList = getBanList();
-//7 days
-if (
-  banList &&
-  (banList.timeStamp < Date.now() - 6.048e8 ||
-    !banList.data[0].type ||
-    !banList.data[0].src)
-)
-  banList = false;
-else banList = banList.data;
-if (!banList) {
-  try {
-    axios
-      .get("https://db.ygoprodeck.com/api/v7/cardinfo.php?banlist=tcg")
-      .then((resp) => {
-        banList = resp.data.data.map((e) =>
-          Object.fromEntries([
-            ["name", e.name],
-            ["type", createType(e.type)],
-            ["src", e.id],
-            ["max", createMax(e.banlist_info.ban_tcg)],
-          ])
-        );
-        setBanList({ timeStamp: Date.now(), data: banList });
-      });
-  } catch {
-    if (getBanList()) banList = getBanList().data;
-    else banList = [];
+  for (let combo of deck.value.combos) {
+    combo.active = combo.cards.every((card) =>
+      findCardGroup(card)
+        ? deck.value.cardGroups.find((c) => c.id == card)?.active
+        : deck.value.cards.map((c) => c.id).includes(card)
+    );
   }
 }

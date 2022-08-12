@@ -322,6 +322,7 @@ import {
   searchOnline,
   setHTMLClass,
   safeDeck,
+  checkComboCardGroups,
 } from "../global";
 import * as type from "../types";
 import * as Inputs from "../components/SexyInputs/index";
@@ -430,7 +431,7 @@ export default defineComponent({
             break;
         }
       }
-      this.checkComboCardGroups();
+      checkComboCardGroups();
       safeDeck(this.deck);
       this.closeComboAddEditModal();
     },
@@ -451,20 +452,6 @@ export default defineComponent({
           : findCardGroupByName(this.comboCards[i])
           ? (this.comboCardsType[i] = "orange")
           : (this.comboCardsType[i] = "");
-      }
-    },
-    checkComboCardGroups() {
-      for (let cardGroup of this.deck.cardGroups) {
-        cardGroup.active = cardGroup.cards.some((cardId) =>
-          this.deck.cards.map((c) => c.id).includes(cardId)
-        );
-      }
-      for (let combo of this.deck.combos) {
-        combo.active = combo.cards.every((card) =>
-          findCardGroup(card)
-            ? this.deck.cardGroups.find((c) => c.id == card)?.active
-            : this.deck.cards.map((c) => c.id).includes(card)
-        );
       }
     },
   },
