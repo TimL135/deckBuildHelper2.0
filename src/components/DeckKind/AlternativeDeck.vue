@@ -81,7 +81,7 @@
         <img
           style="height: 5rem"
           class="mb-1"
-          :src="`https://storage.googleapis.com/ygoprodeck.com/pics_small/${card.src}.jpg`"
+          :src="`https://storage.googleapis.com/ygoprodeck.com/pics_small/${card.id}.jpg`"
           alt=""
         />
       </div>
@@ -107,7 +107,7 @@
         <div>
           <img
             style="height: 5rem"
-            :src="`https://storage.googleapis.com/ygoprodeck.com/pics_small/${card.src}.jpg`"
+            :src="`https://storage.googleapis.com/ygoprodeck.com/pics_small/${card.id}.jpg`"
             alt=""
           />
         </div>
@@ -577,7 +577,7 @@ export default defineComponent({
             count: parseInt(this.countInput),
             properties: this.properties,
             value: this.value,
-            id: Math.random().toString().slice(-15),
+            id: db.find((e) => e.name == this.nameInput)?.id,
           });
         }
       } else {
@@ -591,7 +591,7 @@ export default defineComponent({
               name: this.nameInput,
               type: this.type,
               count: parseInt(this.countInput),
-              id: Math.random().toString().slice(-15),
+              id: db.find((e) => e.name == this.nameInput)?.id,
             });
           }
         } else {
@@ -600,7 +600,7 @@ export default defineComponent({
               name: this.nameInput,
               type: this.type,
               count: parseInt(this.countInput),
-              id: Math.random().toString().slice(-15),
+              id: db.find((e) => e.name == this.nameInput)?.src,
             },
           ];
         }
@@ -706,14 +706,10 @@ export default defineComponent({
       for (let card of this.deck.alternativeCards.concat(
         this.deck.alternativeExtraCards
       )) {
-        if (!card.src) card.src = db.find((e) => e.name == card.name)?.src;
         let count = card.count;
         for (count; count; count--) {
           this.allCards.push(card);
         }
-      }
-      for (let card of this.deck.alternativeExtraCards) {
-        if (!card.src) card.src = db.find((e) => e.name == card.name).src;
       }
       this.uniqueAllCards = [
         ...new Set(this.deck.alternativeCards.filter((c) => c.name)),

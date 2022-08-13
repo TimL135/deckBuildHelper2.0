@@ -6,14 +6,12 @@ export interface Card {
   properties: boolean[];
   value: number;
   id: string;
-  src: string;
 }
 export interface ExtraCard {
   name: string;
   type: ExtraCardType;
   count: number;
   id: string;
-  src: string;
 }
 export type CardType = "monster" | "spell" | "trap";
 export type ExtraCardType = "fusion" | "synchro" | "xyz" | "link";
@@ -32,8 +30,10 @@ export interface Deck {
 }
 export interface Log {
   name: string;
+  active: boolean;
   startHand: string[];
   log: string[];
+  missingCards: string[];
 }
 export interface Slot {
   name: string;

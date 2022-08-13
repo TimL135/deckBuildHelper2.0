@@ -20,7 +20,7 @@
           v-if="!slot.hide"
           style="height: 5rem"
           :src="`https://storage.googleapis.com/ygoprodeck.com/pics_small/${
-            findCardByName(slot.value[0])?.src
+            findCardByName(slot.value[0])?.id
           }.jpg`"
           alt=""
         />
@@ -69,7 +69,7 @@
         v-if="navigator.onLine && findCardByName(slot.value[0])"
         style="height: 5rem"
         :src="`https://storage.googleapis.com/ygoprodeck.com/pics_small/${
-          findCardByName(slot.value[0])?.src
+          findCardByName(slot.value[0])?.id
         }.jpg`"
         alt=""
       />

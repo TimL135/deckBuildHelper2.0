@@ -91,7 +91,7 @@
         <img
           style="height: 5rem"
           class="mb-1"
-          :src="`https://storage.googleapis.com/ygoprodeck.com/pics_small/${card.src}.jpg`"
+          :src="`https://storage.googleapis.com/ygoprodeck.com/pics_small/${card.id}.jpg`"
           alt=""
         />
       </div>
@@ -117,7 +117,7 @@
         <div>
           <img
             style="height: 5rem"
-            :src="`https://storage.googleapis.com/ygoprodeck.com/pics_small/${card.src}.jpg`"
+            :src="`https://storage.googleapis.com/ygoprodeck.com/pics_small/${card.id}.jpg`"
             alt=""
           />
         </div>
@@ -422,7 +422,7 @@ export default defineComponent({
             count: parseInt(this.primitives.countInput),
             properties: this.properties,
             value: this.primitives.value,
-            id: Math.random().toString().slice(-15),
+            id: mainCardDB.find((e) => e.name == this.primitives.nameInput)?.id,
           });
           safeDeck(this.deck);
           this.closeCardAddEditModal();
@@ -444,7 +444,7 @@ export default defineComponent({
             count: this.primitives.countInput,
             properties: this.properties,
             value: this.primitives.value,
-            id: Math.random().toString(36).slice(),
+            id: mainCardDB.find((e) => e.name == this.primitives.nameInput)?.id,
           });
         }
         this.uniqueCardDeck();
@@ -537,8 +537,6 @@ export default defineComponent({
     uniqueCardDeck() {
       this.allCards = [];
       for (let card of this.deck.sideCards) {
-        if (!card.src)
-          card.src = mainCardDB.find((e) => e.name == card.name)?.src;
         let count = card.count;
         for (count; count; count--) {
           this.allCards.push(card);

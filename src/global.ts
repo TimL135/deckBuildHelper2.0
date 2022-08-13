@@ -1,4 +1,4 @@
-import { getDeck, getDecks, setDeck, setDecks } from "./API";
+import { getDeck, getDecks, setDeck, setDecks, db } from "./API";
 import { ref } from "vue";
 import * as type from "./types";
 export const decks = ref(getDecks());
@@ -7,6 +7,13 @@ export const uniqueAllCards = ref([
   ...new Set(deck.value.cards?.filter((c) => c.name)),
 ]);
 
+export function checkCardinDeck(id: string) {
+  return (
+    deck.value.cards?.find((c) => c.id == id) ||
+    deck.value.extraCards?.find((c) => c.id == id)
+  );
+}
+
 export function findCard(id: string) {
   if (id == "token")
     return {
@@ -14,16 +21,17 @@ export function findCard(id: string) {
       count: 1,
       type: "token",
       id: "token",
-      src: "",
     };
   return (
     deck.value.cards?.find((c) => c.id == id) ||
     deck.value.alternativeCards?.find((c) => c.id == id) ||
     deck.value.extraCards?.find((c) => c.id == id) ||
     deck.value.alternativeExtraCards?.find((c) => c.id == id) ||
-    deck.value.traingsDeck?.find((c) => c.id == id)
+    deck.value.traingsDeck?.find((c) => c.id == id) ||
+    db?.find((c) => c.id == id)
   );
 }
+
 export function findCardByName(name: string) {
   if (name == "token")
     return {
@@ -31,14 +39,14 @@ export function findCardByName(name: string) {
       count: 1,
       type: "token",
       id: "token",
-      src: "",
     };
   return (
     deck.value.cards?.find((c) => c.name == name) ||
     deck.value.alternativeCards?.find((c) => c.name == name) ||
     deck.value.extraCards?.find((c) => c.name == name) ||
     deck.value.alternativeExtraCards?.find((c) => c.name == name) ||
-    deck.value.traingsDeck?.find((c) => c.name == name)
+    deck.value.traingsDeck?.find((c) => c.name == name) ||
+    db?.find((c) => c.name == name)
   );
 }
 export function findCardGroup(id: string) {
@@ -58,10 +66,8 @@ export function searchOnline(search) {
   );
 }
 export function actionToText(action: string) {
-  const pattern = /\d{15}/g;
-  while (action.match(pattern)) {
-    action = action.replace(pattern, convert);
-  }
+  const pattern = /\b\d+/g;
+  action = action.replaceAll(pattern, convert);
   return action;
 }
 function convert(str, p1, offset, s) {

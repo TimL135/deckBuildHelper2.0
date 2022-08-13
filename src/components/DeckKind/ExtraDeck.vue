@@ -128,7 +128,7 @@
         <img
           style="height: 5rem"
           class="mb-1"
-          :src="`https://storage.googleapis.com/ygoprodeck.com/pics_small/${card.src}.jpg`"
+          :src="`https://storage.googleapis.com/ygoprodeck.com/pics_small/${card.id}.jpg`"
           alt=""
         />
       </div>
@@ -154,7 +154,7 @@
         <div>
           <img
             style="height: 5rem"
-            :src="`https://storage.googleapis.com/ygoprodeck.com/pics_small/${card.src}.jpg`"
+            :src="`https://storage.googleapis.com/ygoprodeck.com/pics_small/${card.id}.jpg`"
             alt=""
           />
         </div>
@@ -448,7 +448,7 @@ export default defineComponent({
           name: this.nameInput,
           type: this.type,
           count: parseInt(this.countInput),
-          id: Math.random().toString().slice(-15),
+          id: extraCardDB.find((e) => e.name == this.nameInput)?.id,
         });
         safeDeck(this.deck);
         this.closeExtraCardAddEditModal();
@@ -458,7 +458,7 @@ export default defineComponent({
         name: this.nameInput,
         count: parseInt(this.countInput),
         type: this.type as type.ExtraCardType,
-        id: Math.random().toString().slice(-15),
+        id: extraCardDB.find((e) => e.name == this.nameInput)?.id,
       });
       this.countExtraCards();
       this.sortDeck();
@@ -510,8 +510,6 @@ export default defineComponent({
         for (count; count; count--) {
           this.allCards.push(card);
         }
-        if (!card.src)
-          card.src = extraCardDB.find((e) => e.name == card.name)?.src;
         switch (card.type) {
           case "fusion":
             this.counts[0] += card.count;

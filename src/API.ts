@@ -10,31 +10,39 @@ export function setDeck(deck: type.Deck) {
   localStorage.setItem("deck", JSON.stringify(deck));
 }
 export function getDeck(): type.Deck {
-  // const deck = JSON.parse(localStorage.getItem('deck'))
-  // if (deck) {
-  //     for (const cardMaindeck of deck.cards.concat(deck.sideCards).concat(deck.alternativeCards)) {
-  //         if (cardMaindeck.id.length != 15) {
-  //             const newId = Math.random().toString().slice(-15)
-  //             for (const combo of deck.combos) {
-  //                 for (const card of combo.cards) {
-  //                     if (card == cardMaindeck.id) combo.cards[combo.cards.findIndex(e => e == cardMaindeck.id)] = newId
-  //                 }
-  //             }
-  //             for (const cardGroup of deck.cardGroups) {
-  //                 for (const card of cardGroup.cards) {
-  //                     if (card == cardMaindeck.id) {
-  //                         cardGroup.cards[cardGroup.cards.findIndex(e => e == cardMaindeck.id)] = newId
-  //                     }
-  //                 }
-  //             }
-  //             cardMaindeck.id = newId
-  //         }
-  //     }
-  //     for (const card of deck.extraCards.concat(deck.alternativeExtraCards)) {
-  //         if (!card.id) card.id = Math.random().toString().slice(-15)
-  //     }
-  // }
-  return JSON.parse(localStorage.getItem("deck") || "false") as type.Deck;
+  const deck = JSON.parse(localStorage.getItem("deck"));
+  if (deck) {
+    for (const cardMaindeck of deck.cards
+      .concat(deck.sideCards)
+      .concat(deck.alternativeCards)) {
+      if (cardMaindeck.src && cardMaindeck.id != cardMaindeck.src) {
+        const newId = cardMaindeck.src;
+        console.log(newId);
+        for (const combo of deck.combos) {
+          for (const card of combo.cards) {
+            if (card == cardMaindeck.id)
+              combo.cards[combo.cards.findIndex((e) => e == cardMaindeck.id)] =
+                newId;
+          }
+        }
+        for (const cardGroup of deck.cardGroups) {
+          for (const card of cardGroup.cards) {
+            if (card == cardMaindeck.id) {
+              cardGroup.cards[
+                cardGroup.cards.findIndex((e) => e == cardMaindeck.id)
+              ] = newId;
+            }
+          }
+        }
+        cardMaindeck.id = newId;
+        console.log(deck);
+      }
+    }
+    for (const card of deck.extraCards.concat(deck.alternativeExtraCards)) {
+      if (card.id != card.src) card.id = card.src;
+    }
+  }
+  return (deck || false) as type.Deck;
 }
 export function setDB(db: any) {
   localStorage.setItem("db", JSON.stringify(db));
@@ -61,11 +69,11 @@ function createType(type: string) {
 export let db = getDB();
 //7 days
 if (
-  db &&
-  (db.timeStamp < Date.now() - 6.048e8 ||
-    !db.data[0].type ||
-    !db.data[0].src ||
-    db.data.length < 12000)
+  (db &&
+    (db.timeStamp < Date.now() - 6.048e8 ||
+      !db.data[0].type ||
+      db.data.length < 12000)) ||
+  !db.data[0].id
 )
   db = false;
 else db = db.data;
@@ -76,7 +84,7 @@ if (!db) {
         Object.fromEntries([
           ["name", e.name],
           ["type", createType(e.type)],
-          ["src", e.card_images[0].id],
+          ["id", e.card_images[0].id],
         ])
       );
       setDB({ timeStamp: Date.now(), data: db });
@@ -116,7 +124,7 @@ if (
   banList &&
   (banList.timeStamp < Date.now() - 6.048e8 ||
     !banList.data[0].type ||
-    !banList.data[0].src)
+    !banList.data[0].id)
 )
   banList = false;
 else banList = banList.data;
@@ -129,7 +137,7 @@ if (!banList) {
           Object.fromEntries([
             ["name", e.name],
             ["type", createType(e.type)],
-            ["src", e.id],
+            ["id", e.id],
             ["max", createMax(e.banlist_info.ban_tcg)],
           ])
         );

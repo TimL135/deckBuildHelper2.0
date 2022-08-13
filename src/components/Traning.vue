@@ -132,10 +132,10 @@
       >
         <div v-if="!hide">
           <img
-            v-if="navigator.onLine && findCard(card)?.src"
+            v-if="navigator.onLine"
             style="height: 5rem"
             :src="`https://storage.googleapis.com/ygoprodeck.com/pics_small/${
-              findCard(card)?.src
+              findCard(card)?.id
             }.jpg`"
             alt=""
           />
@@ -161,10 +161,10 @@
           @dblclick="searchOnline(findCard(card)?.name)"
         >
           <img
-            v-if="navigator.onLine && findCard(card)?.src"
+            v-if="navigator.onLine"
             style="height: 5rem"
             :src="`https://storage.googleapis.com/ygoprodeck.com/pics_small/${
-              findCard(card)?.src
+              findCard(card)?.id
             }.jpg`"
             alt=""
           />
@@ -183,10 +183,10 @@
           @dblclick="searchOnline(findCard(card)?.name)"
         >
           <img
-            v-if="navigator.onLine && findCard(card)?.src"
+            v-if="navigator.onLine"
             style="height: 5rem"
             :src="`https://storage.googleapis.com/ygoprodeck.com/pics_small/${
-              findCard(card)?.src
+              findCard(card)?.idd
             }.jpg`"
             alt=""
           />
@@ -205,10 +205,10 @@
           @dblclick="searchOnline(findCard(card)?.name)"
         >
           <img
-            v-if="navigator.onLine && findCard(card)?.src"
+            v-if="navigator.onLine"
             style="height: 5rem"
             :src="`https://storage.googleapis.com/ygoprodeck.com/pics_small/${
-              findCard(card)?.src
+              findCard(card)?.id
             }.jpg`"
             alt=""
           />
@@ -227,10 +227,10 @@
           @dblclick="searchOnline(findCard(card)?.name)"
         >
           <img
-            v-if="navigator.onLine && findCard(card)?.src"
+            v-if="navigator.onLine"
             style="height: 5rem"
             :src="`https://storage.googleapis.com/ygoprodeck.com/pics_small/${
-              findCard(card)?.src
+              findCard(card)?.id
             }.jpg`"
             alt=""
           />
@@ -249,10 +249,10 @@
           @dblclick="searchOnline(card)"
         >
           <img
-            v-if="navigator.onLine && findCardByName(card)?.src"
+            v-if="navigator.onLine"
             style="height: 5rem"
             :src="`https://storage.googleapis.com/ygoprodeck.com/pics_small/${
-              findCardByName(card)?.src
+              findCardByName(card)?.id
             }.jpg`"
             alt=""
           />

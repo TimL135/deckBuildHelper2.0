@@ -28,10 +28,10 @@
         @dblclick="searchOnline(card)"
       >
         <img
-          v-if="findCardByName(card)?.src"
+          v-if="findCardByName(card)?.id"
           style="height: 5rem"
           :src="`https://storage.googleapis.com/ygoprodeck.com/pics_small/${
-            findCardByName(card)?.src
+            findCardByName(card)?.id
           }.jpg`"
           alt=""
         />

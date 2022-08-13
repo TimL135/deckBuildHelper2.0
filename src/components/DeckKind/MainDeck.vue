@@ -91,7 +91,7 @@ import ShowPropertiesVue from "./ShowProperties.vue";
         <img
           style="height: 5rem"
           class="mb-1"
-          :src="`https://storage.googleapis.com/ygoprodeck.com/pics_small/${card.src}.jpg`"
+          :src="`https://storage.googleapis.com/ygoprodeck.com/pics_small/${card.id}.jpg`"
           alt=""
         />
       </div>
@@ -118,7 +118,7 @@ import ShowPropertiesVue from "./ShowProperties.vue";
         <div>
           <img
             style="height: 5rem"
-            :src="`https://storage.googleapis.com/ygoprodeck.com/pics_small/${card.src}.jpg`"
+            :src="`https://storage.googleapis.com/ygoprodeck.com/pics_small/${card.id}.jpg`"
             alt=""
           />
         </div>
@@ -439,7 +439,7 @@ export default defineComponent({
             count: parseInt(this.primitives.countInput),
             properties: this.properties,
             value: this.primitives.value,
-            id: Math.random().toString().slice(-15),
+            id: mainCardDB.find((e) => e.name == this.primitives.nameInput)?.id,
           });
           safeDeck(this.deck);
           this.closeCardAddEditModal();
@@ -461,7 +461,8 @@ export default defineComponent({
             id:
               this.deck.alternativeCards.find(
                 (c) => c.name == this.primitives.nameInput
-              )?.id || Math.random().toString().slice(-15),
+              )?.id ||
+              mainCardDB.find((e) => e.name == this.primitives.nameInput)?.id,
           });
           this.deck.alternativeCards = this.deck.alternativeCards.filter(
             (card) => card.name != this.primitives.nameInput
@@ -565,8 +566,6 @@ export default defineComponent({
       this.allCards = [];
       for (let card of this.deck.cards) {
         let count = card.count;
-        if (!card.src)
-          card.src = mainCardDB.find((e) => e.name == card.name)?.src;
         for (count; count; count--) {
           this.allCards.push(card);
         }

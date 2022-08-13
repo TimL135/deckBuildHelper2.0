@@ -114,15 +114,14 @@
           v-for="(card, index) of handCards"
           :key="card + index"
           style="border: 2px solid rgb(12, 12, 12)"
-          @click="selectCard(card, 'hand')"
           @dblclick="searchOnline(findCard(card)?.name)"
         >
           <div>
             <img
-              v-if="navigator.onLine && findCard(card)?.src"
+              v-if="navigator.onLine"
               style="height: 5rem"
               :src="`https://storage.googleapis.com/ygoprodeck.com/pics_small/${
-                findCard(card)?.src
+                findCard(card)?.id
               }.jpg`"
               alt=""
             />
@@ -132,8 +131,19 @@
       </div>
     </div>
     <div v-else>
+      <div>active logs</div>
       <div
-        v-for="log of deck.logs"
+        v-for="log of deck.logs.filter((e) => e.active)"
+        :key="JSON.stringify(log)"
+        @click="openLogModal(log)"
+        class="orange text-dark round mb-1"
+      >
+        {{ log.name }}
+      </div>
+
+      <div>not active logs</div>
+      <div
+        v-for="log of deck.logs.filter((e) => !e.active)"
         :key="JSON.stringify(log)"
         @click="openLogModal(log)"
         class="orange text-dark round mb-1"
@@ -151,7 +161,7 @@
           <div></div>
           <div></div>
           <div class="w-100">{{ selectedLog.name }}</div>
-          <div @click="startPlayLog()">
+          <div @click="startPlayLog()" v-if="selectedLog.active">
             <svg
               xmlns="http://www.w3.org/2000/svg"
               width="16"
@@ -168,6 +178,7 @@
               />
             </svg>
           </div>
+          <div v-else></div>
           <div class="orange round" @click="deleteLog('check')">
             <svg
               xmlns="http://www.w3.org/2000/svg"
@@ -239,24 +250,63 @@
             </div>
           </div>
         </div>
-        <div class="startHand mb-3 mt-1">
-          <div
-            v-for="(card, index) of selectedLog.startHand"
-            :key="card + index"
-            style="background-color: red"
-            class="me-1"
-            :class="findCard(card)?.type"
-            @dblclick="searchOnline(findCard(card)?.name)"
-          >
-            {{ findCard(card)?.name }}
+        <div v-if="selectedLog.active">
+          <div>start hand</div>
+
+          <div class="startHand mb-3 mt-1">
+            <div
+              v-for="(card, index) of selectedLog.startHand"
+              :key="card + index"
+              :style="findCard(card) ? '' : 'background-color: red'"
+              class="me-1"
+              :class="navigator.onLine ? '' : findCard(card)?.type"
+              @dblclick="searchOnline(findCard(card)?.name)"
+            >
+              <div>
+                <img
+                  v-if="navigator.onLine"
+                  style="height: 5rem"
+                  :src="`https://storage.googleapis.com/ygoprodeck.com/pics_small/${
+                    findCard(card)?.id
+                  }.jpg`"
+                  alt=""
+                />
+                <div v-else>{{ findCard(card)?.name }}</div>
+              </div>
+            </div>
           </div>
         </div>
-        <div
-          v-for="(action, index) of selectedLog.log"
-          :key="action + index"
-          class="orange text-dark round mb-1"
-        >
-          {{ actionToText(action) }}
+        <div v-else>
+          <div>missing cards</div>
+          <div class="startHand mb-3 mt-1">
+            <div
+              v-for="(card, index) of selectedLog.missingCards"
+              :key="card + index"
+              :style="findCard(card) ? '' : 'background-color: red'"
+              class="me-1"
+              :class="navigator.onLine ? '' : findCard(card)?.type"
+              @dblclick="searchOnline(findCard(card)?.name)"
+            >
+              <div>
+                <img
+                  v-if="navigator.onLine"
+                  style="height: 5rem"
+                  :src="`https://storage.googleapis.com/ygoprodeck.com/pics_small/${
+                    findCard(card)?.id
+                  }.jpg`"
+                  alt=""
+                />
+                <div v-else>{{ findCard(card)?.name }}</div>
+              </div>
+            </div>
+          </div>
+          <div
+            v-for="(action, index) of selectedLog.log"
+            :key="action + index"
+            class="orange text-dark round mb-1"
+          >
+            {{ actionToText(action) }}
+          </div>
         </div>
       </div>
     </div>
@@ -272,6 +322,7 @@ import {
   actionToText,
   setHTMLClass,
   safeDeck,
+  checkCardinDeck,
 } from "../global";
 import * as type from "../types";
 import Field from "./Field.vue";
@@ -294,6 +345,7 @@ export default defineComponent({
   mounted() {
     setHTMLClass("Logs");
     this.noSleep = new NoSleep();
+    this.checkLogs();
   },
   unmounted() {
     this.noSleep.disable();
@@ -349,6 +401,28 @@ export default defineComponent({
       }
       if (fun == "cancel") {
         this.logDeleteCheck = "";
+      }
+    },
+    convert(str, p1, offset, s) {
+      return checkCardinDeck(str)?.name;
+    },
+    checkLogs() {
+      const pattern = /\b\d+/g;
+      for (let log of this.deck.logs) {
+        log.active = !log.log.some((e) =>
+          e.replaceAll(pattern, this.convert).includes("undefined")
+        );
+        if (!log.active) {
+          for (let action of log.log.filter(
+            (e) => e.includes("draw") || e.includes("deck")
+          )) {
+            action = action.match(pattern).join("");
+            if (!checkCardinDeck(action)) {
+              if (log.missingCards) log.missingCards.push(action);
+              else log.missingCards = [action];
+            }
+          }
+        }
       }
     },
     startPlayLog() {
