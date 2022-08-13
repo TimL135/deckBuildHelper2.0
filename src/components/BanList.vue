@@ -16,7 +16,7 @@
         <img
           v-if="navigator.onLine && card?.src"
           style="height: 5rem"
-          :src="`https://storage.googleapis.com/ygoprodeck.com/pics_small/${card?.src}.jpg`"
+          :src="`https://storage.googleapis.com/ygoprodeck.com/pics_small/${card?.id}.jpg`"
           alt=""
         />
         <div v-else :class="card?.type">
@@ -34,7 +34,7 @@
         <img
           v-if="navigator.onLine && card?.src"
           style="height: 5rem"
-          :src="`https://storage.googleapis.com/ygoprodeck.com/pics_small/${card?.src}.jpg`"
+          :src="`https://storage.googleapis.com/ygoprodeck.com/pics_small/${card?.id}.jpg`"
           alt=""
         />
         <div v-else :class="card?.type">
@@ -52,7 +52,7 @@
         <img
           v-if="navigator.onLine && card?.src"
           style="height: 5rem"
-          :src="`https://storage.googleapis.com/ygoprodeck.com/pics_small/${card?.src}.jpg`"
+          :src="`https://storage.googleapis.com/ygoprodeck.com/pics_small/${card?.id}.jpg`"
           alt=""
         />
         <div v-else :class="card?.type">
