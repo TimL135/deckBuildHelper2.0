@@ -8,6 +8,27 @@ import ShowPropertiesVue from "./ShowProperties.vue";
   />
 
   <div class="container mt-2">
+    <div class="d-flex mb-1">
+      <div class="col-4 round-start" style="border: 1px solid #ffa107">
+        Card amount:
+        <br />
+        {{ deckNumber }}
+      </div>
+      <div class="col-4" style="border: 1px solid #ffa107">
+        <div>
+          Deckrating:
+          <br />
+          {{ deckRating }}
+        </div>
+      </div>
+      <div class="col-4 round-end" style="border: 1px solid #ffa107">
+        <div>
+          Deckvalue average:
+          <br />
+          {{ deckValue }}
+        </div>
+      </div>
+    </div>
     <ShowProperties
       :filter="filter"
       :uniqueCounts="uniqueCounts"
