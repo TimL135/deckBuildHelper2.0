@@ -14,7 +14,7 @@
         @dblclick="searchOnline(card?.name)"
       >
         <img
-          v-if="navigator.onLine && card?.src"
+          v-if="navigator.onLine && card?.id"
           style="height: 5rem"
           :src="`https://storage.googleapis.com/ygoprodeck.com/pics_small/${card?.id}.jpg`"
           alt=""
@@ -32,7 +32,7 @@
         @dblclick="searchOnline(card?.name)"
       >
         <img
-          v-if="navigator.onLine && card?.src"
+          v-if="navigator.onLine && card?.id"
           style="height: 5rem"
           :src="`https://storage.googleapis.com/ygoprodeck.com/pics_small/${card?.id}.jpg`"
           alt=""
@@ -50,7 +50,7 @@
         @dblclick="searchOnline(card?.name)"
       >
         <img
-          v-if="navigator.onLine && card?.src"
+          v-if="navigator.onLine && card?.id"
           style="height: 5rem"
           :src="`https://storage.googleapis.com/ygoprodeck.com/pics_small/${card?.id}.jpg`"
           alt=""
