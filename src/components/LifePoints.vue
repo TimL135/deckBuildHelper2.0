@@ -1,6 +1,6 @@
 <template>
   <div class="container" style="margin-top: 3vh">
-    <div class="orange text-dark round" @dblclick="reset()">reset</div>
+    <div class="orange text-dark round" @click="makeClick('reset')">reset</div>
     <div class="showTurn mt-3">
       <div @click="changeTurn(-1)">
         <svg
@@ -112,10 +112,16 @@
       </div>
     </div>
     <div v-if="log.length">
-      <Button class="orange text-dark round border-0 mt-3" @dblclick="undo()">
+      <Button
+        class="orange text-dark round border-0 mt-3"
+        @click="makeClick('undo')"
+      >
         <template v-slot:button>Undo</template>
       </Button>
     </div>
+  </div>
+  <div class="alert alert-danger footer" role="alert" v-if="singleClick">
+    click again to confirm
   </div>
 </template>
 <script lang="ts">
@@ -140,9 +146,40 @@ export default defineComponent({
       turn: 1,
       log: [],
       noSleep: "" as any,
+      singleClick: false,
+      singleClickTimer: "",
+      selectedClick: "",
     };
   },
   methods: {
+    makeClick(mode: string) {
+      if (!this.selectedClick) {
+        this.selectedClick = mode;
+      } else {
+        if (this.selectedClick != mode) {
+          this.singleClick = false;
+          return;
+        }
+      }
+      this.singleClick = !this.singleClick;
+      if (!this.singleClickTimer) {
+        this.singleClickTimer = setTimeout(() => {
+          this.singleClick = false;
+          this.selectedClick = "";
+          this.singleClickTimer = "";
+        }, 1000);
+      } else {
+        this.selectedClick = "";
+        switch (mode) {
+          case "undo":
+            this.undo();
+            break;
+          case "reset":
+            this.reset();
+            break;
+        }
+      }
+    },
     reset() {
       this.player1 = 8000;
       this.player2 = 8000;
@@ -167,6 +204,7 @@ export default defineComponent({
       this.number = "";
     },
     calculate(player: "player1" | "player2") {
+      if (!this.number) return;
       switch (this.selectedSign) {
         case "+":
           this[player] += parseInt(this.number);
@@ -235,5 +273,12 @@ export default defineComponent({
   grid-template-columns: 1fr;
   row-gap: 0.25rem;
   grid-auto-rows: minmax(75px, auto);
+}
+.footer {
+  position: fixed;
+  left: 0;
+  bottom: 0;
+  width: 100%;
+  text-align: center;
 }
 </style>
