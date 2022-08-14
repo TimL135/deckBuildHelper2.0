@@ -619,7 +619,7 @@ export default defineComponent({
       this.selectedFrom = from;
     },
     addCardToArray(name: "deck" | "graveyard" | "banish" | "extradeck") {
-      if (!this.selectedCard.includes("add")) {
+      if (findCard(this.selectedCard).properties) {
         switch (name) {
           case "deck":
             if (this.selectedCard != "token")
@@ -885,9 +885,7 @@ export default defineComponent({
     addNewCard(card) {
       this.nameInput = "";
       this.closeAddCardModal();
-      card.id = Math.random().toString().slice(-15) + "add";
-      if (this.deck.traingsDeck) this.deck.traingsDeck.push(card);
-      else this.deck.traingsDeck = [card];
+      card.id = card.id;
       this.selectedCard = card.id;
       this.selectedFrom = "add";
     },
