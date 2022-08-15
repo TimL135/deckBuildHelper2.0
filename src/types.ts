@@ -13,6 +13,12 @@ export interface ExtraCard {
   count: number;
   id: string;
 }
+export interface OwnCard {
+  name: string;
+  count: number;
+  id: string;
+}
+
 export type CardType = "monster" | "spell" | "trap";
 export type ExtraCardType = "fusion" | "synchro" | "xyz" | "link";
 

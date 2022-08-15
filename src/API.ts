@@ -44,6 +44,12 @@ export function getDeck(): type.Deck {
   }
   return (deck || false) as type.Deck;
 }
+export function setOwnCards(ownCards: any) {
+  localStorage.setItem("ownCards", JSON.stringify(ownCards));
+}
+export function getOwnCards(): any {
+  return JSON.parse(localStorage.getItem("ownCards") || "false") as string[];
+}
 export function setDB(db: any) {
   localStorage.setItem("db", JSON.stringify(db));
 }

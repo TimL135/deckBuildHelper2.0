@@ -124,7 +124,7 @@
             class="round-start"
             :class="properties[8] ? 'green text-black' : 'orange text-dark'"
           >
-            Break
+            Brick
           </div>
           <div
             @click="properties[9] = !properties[9]"

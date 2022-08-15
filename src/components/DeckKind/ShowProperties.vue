@@ -90,7 +90,7 @@
       @click="filter[8] = !filter[8]"
       :class="filter[8] ? 'orange text-dark' : ''"
     >
-      Break:
+      Brick:
       <br />
       {{ counts[8] }}({{ uniqueCounts[8] }})
     </div>
