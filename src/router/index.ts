@@ -7,6 +7,7 @@ import Traning from "../components/Traning.vue";
 import Logs from "../components/Logs.vue";
 import BanList from "../components/BanList.vue";
 import LifePoints from "../components/LifePoints.vue";
+import OwnCards from "../components/OwnCards.vue";
 const routes: Array<RouteRecordRaw> = [
   {
     path: "/",
@@ -47,6 +48,11 @@ const routes: Array<RouteRecordRaw> = [
     path: "/LifePoints",
     name: "LifePoints",
     component: LifePoints,
+  },
+  {
+    path: "/OwnCards",
+    name: "OwnCards",
+    component: OwnCards,
   },
 ];
 

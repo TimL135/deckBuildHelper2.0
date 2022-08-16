@@ -1,8 +1,20 @@
-import { getDeck, getDecks, setDeck, setDecks, db } from "./API";
+import {
+  getDeck,
+  getDecks,
+  setDeck,
+  setDecks,
+  db,
+  getOwnCards,
+  setOwnCards,
+} from "./API";
 import { ref } from "vue";
 import * as type from "./types";
 export const decks = ref(getDecks());
 export const deck = ref(getDeck());
+export const OwnCards = ref(getOwnCards() || []);
+export function safeOwnCards() {
+  setOwnCards(OwnCards.value);
+}
 export const uniqueAllCards = ref([
   ...new Set(deck.value.cards?.filter((c) => c.name)),
 ]);
@@ -61,7 +73,9 @@ export function searchOnline(search) {
     `https://cardcluster.de/card/${search
       .replaceAll(" ", "-")
       .replaceAll("---", "-")
-      .replaceAll(",", "")}`,
+      .replaceAll(",", "")
+      .replaceAll(`"`, "")}`,
+
     "_newtab"
   );
 }

@@ -17,6 +17,7 @@ export interface OwnCard {
   name: string;
   count: number;
   id: string;
+  type: CardType | ExtraCardType;
 }
 
 export type CardType = "monster" | "spell" | "trap";
