@@ -114,7 +114,7 @@ import ShowPropertiesVue from "./ShowProperties.vue";
     <div class="deck" v-if="deckView">
       <div
         v-for="(card, index) of showMissingCards
-          ? missingCards.filter((v, i, a) => a.indexOf(v) === i)
+          ? missingCards
           : allCards.filter((card) =>
               filter.every((f, i) => (f ? f && card.properties[i] : true))
             )"
@@ -139,7 +139,7 @@ import ShowPropertiesVue from "./ShowProperties.vue";
       <div
         class="cardTable p-2"
         v-for="card in showMissingCards
-          ? missingCards
+          ? missingCards.filter((v, i, a) => a.indexOf(v) === i)
           : deck.cards.filter((card) =>
               filter.every((f, i) => (f ? f && card.properties[i] : true))
             )"
@@ -160,7 +160,7 @@ import ShowPropertiesVue from "./ShowProperties.vue";
         <div style="margin-top: -0.5rem">
           <div>
             <Button
-              @click="openCardEditModal(card.id)"
+              @click="openCardEditModal(card)"
               style="background-color: #ffffff00; border: none"
             >
               <template v-slot:button>
@@ -181,7 +181,7 @@ import ShowPropertiesVue from "./ShowProperties.vue";
           </div>
           <div>
             <Button
-              @click="openCardDeleteModal(card.name)"
+              @click="openCardDeleteModal(card)"
               style="background-color: #ffffff00; border: none"
             >
               <template v-slot:button>

@@ -11,37 +11,36 @@ export function setDeck(deck: type.Deck) {
 }
 export function getDeck(): type.Deck {
   const deck = JSON.parse(localStorage.getItem("deck"));
-  if (deck) {
-    for (const cardMaindeck of deck.cards
-      .concat(deck.sideCards)
-      .concat(deck.alternativeCards)) {
-      if (cardMaindeck.src && cardMaindeck.id != cardMaindeck.src) {
-        const newId = cardMaindeck.src;
-        console.log(newId);
-        for (const combo of deck.combos) {
-          for (const card of combo.cards) {
-            if (card == cardMaindeck.id)
-              combo.cards[combo.cards.findIndex((e) => e == cardMaindeck.id)] =
-                newId;
-          }
-        }
-        for (const cardGroup of deck.cardGroups) {
-          for (const card of cardGroup.cards) {
-            if (card == cardMaindeck.id) {
-              cardGroup.cards[
-                cardGroup.cards.findIndex((e) => e == cardMaindeck.id)
-              ] = newId;
-            }
-          }
-        }
-        cardMaindeck.id = newId;
-        console.log(deck);
-      }
-    }
-    for (const card of deck.extraCards.concat(deck.alternativeExtraCards)) {
-      if (card.id != card.src) card.id = card.src;
-    }
-  }
+  // if (deck) {
+  //   for (const cardMaindeck of deck.cards
+  //     .concat(deck.sideCards)
+  //     .concat(deck.alternativeCards)) {
+  //     if (cardMaindeck.src && cardMaindeck.id != cardMaindeck.src) {
+  //       const newId = cardMaindeck.src;
+  //       console.log(newId);
+  //       for (const combo of deck.combos) {
+  //         for (const card of combo.cards) {
+  //           if (card == cardMaindeck.id)
+  //             combo.cards[combo.cards.findIndex((e) => e == cardMaindeck.id)] =
+  //               newId;
+  //         }
+  //       }
+  //       for (const cardGroup of deck.cardGroups) {
+  //         for (const card of cardGroup.cards) {
+  //           if (card == cardMaindeck.id) {
+  //             cardGroup.cards[
+  //               cardGroup.cards.findIndex((e) => e == cardMaindeck.id)
+  //             ] = newId;
+  //           }
+  //         }
+  //       }
+  //       cardMaindeck.id = newId;
+  //     }
+  //   }
+  //   for (const card of deck.extraCards.concat(deck.alternativeExtraCards)) {
+  //     if (card.id != card.src) card.id = card.src;
+  //   }
+  // }
   return (deck || false) as type.Deck;
 }
 export function setOwnCards(ownCards: any) {

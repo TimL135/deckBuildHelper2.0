@@ -177,7 +177,7 @@
         <div style="margin-top: -0.5rem">
           <div>
             <Button
-              @click="openExtraCardEditModal(card.name)"
+              @click="openExtraCardEditModal(card)"
               style="background-color: #ffffff00; border: none"
             >
               <template v-slot:button>
@@ -198,7 +198,7 @@
           </div>
           <div>
             <Button
-              @click="openExtraCardDeleteModal(card.name)"
+              @click="openExtraCardDeleteModal(card)"
               style="background-color: #ffffff00; border: none"
             >
               <template v-slot:button>
