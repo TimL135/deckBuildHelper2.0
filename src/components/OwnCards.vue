@@ -103,7 +103,7 @@
           <Select
             :placeholder="'name'"
             v-model="primitives.nameInput"
-            :options="db"
+            :options="db.concat(germandb)"
             :option-projection="(e) => e.name"
             :labelBorder="true"
             :selectOnBlur="true"
@@ -155,7 +155,7 @@
 </template>
 <script lang="ts">
 import { findCard, searchOnline, ownCards, safeOwnCards } from "../global";
-import { setOwnCards, db } from "../API";
+import { germandb, db } from "../API";
 import { defineComponent } from "vue";
 import * as type from "../types";
 import * as Inputs from "./SexyInputs/index";
@@ -178,6 +178,7 @@ export default defineComponent({
       db,
       findCard,
       searchOnline,
+      germandb,
     };
   },
   data() {
