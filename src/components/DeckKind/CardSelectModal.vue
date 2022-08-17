@@ -2,7 +2,14 @@
   <div id="cardSelectModal" class="modal">
     <div class="modal-content">
       <div class="container">
-        <div class="orange round text-dark mb-1">{{ selectedCard.name }}</div>
+        <div class="orange round text-dark mb-1">
+          {{
+            showConfirmModal
+              ? selectedCard.name
+              : `you have ${selectedCard.count} ${selectedCard.name}`
+          }}
+        </div>
+
         <div class="selectModal">
           <div>
             <Button

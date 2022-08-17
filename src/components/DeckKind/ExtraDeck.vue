@@ -10,9 +10,14 @@
       <div class="col-6 round-start" style="border: 1px solid #ffa107">
         {{ `Card amount: ${counts.reduce((a, b) => a + b)}` }}
       </div>
-      <div class="col-6 round-end" style="border: 1px solid #ffa107">
+      <div
+        class="col-6 round-end"
+        style="border: 1px solid #ffa107"
+        :class="showMissingCards ? 'green text-dark' : ''"
+        @click="showMissingCards = !showMissingCards"
+      >
         Missing cards:
-        {{ missingCardsAmount }}
+        {{ missingCards.length }}
       </div>
     </div>
 
@@ -126,9 +131,11 @@
     <br />
     <div class="deck" v-if="deckView">
       <div
-        v-for="(card, index) of allCards.filter((card) =>
-          filter.every((f, i) => (f ? f && card.type == types[i] : true))
-        )"
+        v-for="(card, index) of showMissingCards
+          ? missingCards
+          : allCards.filter((card) =>
+              filter.every((f, i) => (f ? f && card.type == types[i] : true))
+            )"
         :key="card.id"
         @click="openCardSelectModal(card)"
       >
@@ -148,9 +155,11 @@
       </div>
       <div
         class="cardTable p-2"
-        v-for="card in deck.extraCards.filter((card) =>
-          filter.every((f, i) => (f ? f && card.type == types[i] : true))
-        )"
+        v-for="card in showMissingCards
+          ? missingCards.filter((v, i, a) => a.indexOf(v) === i)
+          : deck.extraCards.filter((card) =>
+              filter.every((f, i) => (f ? f && card.type == types[i] : true))
+            )"
         :key="card.name"
         :class="card.type"
         style="border-bottom: 1px solid black"
@@ -355,22 +364,23 @@ export default defineComponent({
       maxCount: 3,
       banListStatus: "",
       selectedAmount: 0,
+      showMissingCards: false,
     };
   },
   computed: {
-    missingCardsAmount() {
-      let number = 0;
+    missingCards() {
+      let cards = [];
       for (let card of this.deck.extraCards) {
         let ownCard = this.ownCards.find((e) => e.id == card.id);
         if (ownCard) {
           if (card.count - ownCard.count > 0) {
-            number += card.count - ownCard.count;
+            for (let i = card.count - ownCard.count; i; i--) cards.push(card);
           }
         } else {
-          number += card.count;
+          for (let i = card.count; i; i--) cards.push(card);
         }
       }
-      return number;
+      return cards;
     },
   },
   methods: {

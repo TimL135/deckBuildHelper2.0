@@ -25,10 +25,28 @@
         </template>
       </Button>
     </div>
+    <div>
+      <Select
+        :placeholder="'search'"
+        v-model="searchName"
+        :options="ownCards"
+        :option-projection="(e) => e.name"
+        :labelBorder="true"
+        :selectOnBlur="true"
+        :controlInput="true"
+        noElementMessage="card not found"
+        class="orange"
+        labelClass="orange"
+        listClass="orange text-dark"
+        :listItemClass="(item) => item.type || 'orange text-dark'"
+        :required="true"
+        :onSelectItem="openCardSelectModal"
+      />
+    </div>
     <div>1</div>
     <div class="deck">
       <div
-        v-for="card of ownCards.filter((e) => e.count == 1)"
+        v-for="card of ownCards.filter((e) => e.count == 1).filter((e) => e.id)"
         :key="card.name"
         @click="openCardSelectModal(card)"
       >
@@ -183,6 +201,7 @@ export default defineComponent({
   },
   data() {
     return {
+      searchName: "",
       selectedCard: {},
       selectedAmount: 0,
       editAdd: "",
@@ -192,6 +211,7 @@ export default defineComponent({
         nameInput: "",
         countInput: "",
       },
+      searchedId: "",
     };
   },
   mounted() {},
@@ -314,7 +334,6 @@ export default defineComponent({
       safeOwnCards();
       this.closeCardAddEditModal();
     },
-
     editCard() {
       this.primitives.nameInput.trim();
       this.ownCards[this.editCardIndex] = {
@@ -336,6 +355,10 @@ export default defineComponent({
       this.ownCards.splice(cardIndex, 1);
       safeOwnCards();
       this.closeCardDeleteModal();
+    },
+    searchId(card) {
+      this.searchedId = this.ownCards.find((e) => e.id == card.id).id || "";
+      console.log(this.searchedId);
     },
   },
 });

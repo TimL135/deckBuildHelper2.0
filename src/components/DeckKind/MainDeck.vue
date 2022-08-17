@@ -28,10 +28,15 @@ import ShowPropertiesVue from "./ShowProperties.vue";
           {{ deckValue }}
         </div>
       </div>
-      <div class="col-3 round-end" style="border: 1px solid #ffa107">
+      <div
+        class="col-3 round-end"
+        style="border: 1px solid #ffa107"
+        :class="showMissingCards ? 'green text-dark' : ''"
+        @click="showMissingCards = !showMissingCards"
+      >
         Missing cards:
         <br />
-        {{ missingCardsAmount }}
+        {{ missingCards?.length }}
       </div>
     </div>
     <ShowProperties
@@ -108,9 +113,11 @@ import ShowPropertiesVue from "./ShowProperties.vue";
     <br />
     <div class="deck" v-if="deckView">
       <div
-        v-for="(card, index) of allCards.filter((card) =>
-          filter.every((f, i) => (f ? f && card.properties[i] : true))
-        )"
+        v-for="(card, index) of showMissingCards
+          ? missingCards.filter((v, i, a) => a.indexOf(v) === i)
+          : allCards.filter((card) =>
+              filter.every((f, i) => (f ? f && card.properties[i] : true))
+            )"
         :key="card.id + index"
         @click="openCardSelectModal(card)"
       >
@@ -131,9 +138,11 @@ import ShowPropertiesVue from "./ShowProperties.vue";
       </div>
       <div
         class="cardTable p-2"
-        v-for="card in deck.cards.filter((card) =>
-          filter.every((f, i) => (f ? f && card.properties[i] : true))
-        )"
+        v-for="card in showMissingCards
+          ? missingCards
+          : deck.cards.filter((card) =>
+              filter.every((f, i) => (f ? f && card.properties[i] : true))
+            )"
         :key="card.name"
         :class="card.type"
         style="border-bottom: 1px solid black"
@@ -338,7 +347,6 @@ export default defineComponent({
       ],
       counts: [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
       uniqueCounts: [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-
       editCardIndex: 0,
       deleteCardId: "",
 
@@ -347,22 +355,23 @@ export default defineComponent({
       selectedCard: {},
 
       selectedAmount: 0,
+      showMissingCards: false,
     };
   },
   computed: {
-    missingCardsAmount() {
-      let number = 0;
+    missingCards() {
+      let cards = [];
       for (let card of this.deck.cards) {
         let ownCard = this.ownCards.find((e) => e.id == card.id);
         if (ownCard) {
           if (card.count - ownCard.count > 0) {
-            number += card.count - ownCard.count;
+            for (let i = card.count - ownCard.count; i; i--) cards.push(card);
           }
         } else {
-          number += card.count;
+          for (let i = card.count; i; i--) cards.push(card);
         }
       }
-      return number;
+      return cards;
     },
   },
   methods: {
