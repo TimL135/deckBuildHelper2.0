@@ -28,7 +28,7 @@
     <div>1</div>
     <div class="deck">
       <div
-        v-for="card of OwnCards.filter((e) => e.count == 1)"
+        v-for="card of ownCards.filter((e) => e.count == 1)"
         :key="card.name"
         @click="openCardSelectModal(card)"
       >
@@ -46,7 +46,7 @@
     <div>2</div>
     <div class="deck">
       <div
-        v-for="card of OwnCards.filter((e) => e.count == 2)"
+        v-for="card of ownCards.filter((e) => e.count == 2)"
         :key="card.name"
         @click="openCardSelectModal(card)"
       >
@@ -64,7 +64,7 @@
     <div>3 or more</div>
     <div class="deck">
       <div
-        v-for="card of OwnCards.filter((e) => e.count >= 3)"
+        v-for="card of ownCards.filter((e) => e.count >= 3)"
         :key="card.name"
         @click="openCardSelectModal(card)"
       >
@@ -86,6 +86,7 @@
     :openCardEditModal="openCardEditModal"
     :closeCardSelectModal="closeCardSelectModal"
     :openCardDeleteModal="openCardDeleteModal"
+    :showConfirmModal="false"
   ></CardSelectModal>
   <!-- new modal -->
   <DeleteCardModal
@@ -145,68 +146,15 @@
     </div>
   </div>
   <!-- new modal -->
-  <div id="confirmModal" class="modal">
-    <div class="modal-content">
-      <div class="container">
-        <div class="orange round text-dark mb-1">
-          {{
-            `you have ${selectedCard.count}x ${selectedCard.name} add ${selectedAmount} more`
-          }}
-        </div>
-        <div class="deleteModal">
-          <div>
-            <Button
-              type="button"
-              class="agree"
-              style="grid-area: yes"
-              @click="addCopy()"
-            >
-              <template v-slot:button>
-                <svg
-                  xmlns="http://www.w3.org/2000/svg"
-                  width="16"
-                  height="16"
-                  fill="currentColor"
-                  class="bi bi-check-lg"
-                  viewBox="0 0 16 16"
-                >
-                  <path
-                    d="M12.736 3.97a.733.733 0 0 1 1.047 0c.286.289.29.756.01 1.05L7.88 12.01a.733.733 0 0 1-1.065.02L3.217 8.384a.757.757 0 0 1 0-1.06.733.733 0 0 1 1.047 0l3.052 3.093 5.4-6.425a.247.247 0 0 1 .02-.022Z"
-                  />
-                </svg>
-              </template>
-            </Button>
-          </div>
-          <div>
-            <Button
-              type="button"
-              class="disAgree"
-              style="grid-area: no"
-              @click="closeConfirmModal()"
-            >
-              <template v-slot:button>
-                <svg
-                  xmlns="http://www.w3.org/2000/svg"
-                  width="16"
-                  height="16"
-                  fill="currentColor"
-                  class="bi bi-x-lg"
-                  viewBox="0 0 16 16"
-                >
-                  <path
-                    d="M2.146 2.854a.5.5 0 1 1 .708-.708L8 7.293l5.146-5.147a.5.5 0 0 1 .708.708L8.707 8l5.147 5.146a.5.5 0 0 1-.708.708L8 8.707l-5.146 5.147a.5.5 0 0 1-.708-.708L7.293 8 2.146 2.854Z"
-                  />
-                </svg>
-              </template>
-            </Button>
-          </div>
-        </div>
-      </div>
-    </div>
-  </div>
+  <OwnCardsModal
+    :closeModal="closeConfirmModal"
+    :addCopy="addCopy"
+    :selectedCard="selectedCard"
+    :selectedAmount="selectedAmount"
+  ></OwnCardsModal>
 </template>
 <script lang="ts">
-import { findCard, searchOnline, OwnCards, safeOwnCards } from "../global";
+import { findCard, searchOnline, ownCards, safeOwnCards } from "../global";
 import { setOwnCards, db } from "../API";
 import { defineComponent } from "vue";
 import * as type from "../types";
@@ -214,17 +162,19 @@ import * as Inputs from "./SexyInputs/index";
 import DefaultCardInputModal from "./DeckKind/DefaultCardInputModal.vue";
 import DeleteCardModal from "./DeckKind/DeleteCardModal.vue";
 import CardSelectModal from "./DeckKind/CardSelectModal.vue";
+import OwnCardsModal from "./OwnCardsModal.vue";
 export default defineComponent({
   components: {
     ...Inputs,
     DefaultCardInputModal,
     DeleteCardModal,
     CardSelectModal,
+    OwnCardsModal,
   },
   setup() {
     return {
       navigator,
-      OwnCards,
+      ownCards,
       db,
       findCard,
       searchOnline,
@@ -249,15 +199,15 @@ export default defineComponent({
       this.selectedCard = card;
       this.selectedAmount = number;
       window.onclick = (event) => {
-        if (event.target == document.getElementById("confirmModal"))
+        if (event.target == document.getElementById("ownCardsModal"))
           this.closeCardSelectModal();
       };
-      let modal = document.getElementById("confirmModal");
+      let modal = document.getElementById("ownCardsModal");
       if (modal) modal.style.display = "block";
     },
     closeConfirmModal() {
       this.selectedCard = {};
-      let modal = document.getElementById("confirmModal");
+      let modal = document.getElementById("ownCardsModal");
       if (modal) modal.style.display = "none";
     },
     openCardSelectModal(card: type.Card) {
@@ -281,7 +231,7 @@ export default defineComponent({
         if (event.target == document.getElementById("cardDeleteModal"))
           this.closeCardDeleteModal();
       };
-      this.deleteCardId = this.OwnCards.findIndex((c) => c.id == card.id);
+      this.deleteCardId = this.ownCards.findIndex((c) => c.id == card.id);
       this.primitives.nameInput = card.name;
       let modal = document.getElementById("cardDeleteModal");
       if (modal) modal.style.display = "block";
@@ -308,7 +258,7 @@ export default defineComponent({
         if (event.target == document.getElementById("cardAddEditModal"))
           this.closeCardAddEditModal();
       };
-      this.editCardIndex = this.OwnCards.findIndex((c) => c.id == card.id);
+      this.editCardIndex = this.ownCards.findIndex((c) => c.id == card.id);
       this.primitives.error = {};
       this.editAdd = "edit";
       this.primitives.nameInput = card.name;
@@ -339,20 +289,21 @@ export default defineComponent({
       }
     },
     addCopy() {
-      this.OwnCards.find((e) => e.name == this.selectedCard.name).count +=
+      this.ownCards.find((e) => e.name == this.selectedCard.name).count +=
         this.selectedAmount;
+      safeOwnCards();
       this.closeConfirmModal();
     },
     addCard() {
       this.primitives.nameInput.trim();
-      let card = this.OwnCards.find((e) => e.name == this.primitives.nameInput);
+      let card = this.ownCards.find((e) => e.name == this.primitives.nameInput);
       let number = this.primitives.countInput;
       if (card) {
         this.closeCardAddEditModal();
         this.openConfirmModal(card, number);
         return;
       }
-      this.OwnCards.push({
+      this.ownCards.push({
         name: this.primitives.nameInput,
         count: parseInt(this.primitives.countInput),
         id: db.find((e) => e.name == this.primitives.nameInput)?.id,
@@ -365,11 +316,11 @@ export default defineComponent({
 
     editCard() {
       this.primitives.nameInput.trim();
-      this.OwnCards[this.editCardIndex] = {
+      this.ownCards[this.editCardIndex] = {
         name: this.primitives.nameInput,
         type: this.type,
         count: parseInt(this.primitives.countInput),
-        id: this.OwnCards[this.editCardIndex].id,
+        id: this.ownCards[this.editCardIndex].id,
       };
       safeOwnCards();
       this.closeCardAddEditModal();
@@ -381,7 +332,7 @@ export default defineComponent({
       this.primitives.countInput = "";
     },
     deleteCard(cardIndex: number) {
-      this.OwnCards.splice(cardIndex, 1);
+      this.ownCards.splice(cardIndex, 1);
       safeOwnCards();
       this.closeCardDeleteModal();
     },

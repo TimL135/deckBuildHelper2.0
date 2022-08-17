@@ -9,24 +9,29 @@ import ShowPropertiesVue from "./ShowProperties.vue";
 
   <div class="container mt-2">
     <div class="d-flex mb-1">
-      <div class="col-4 round-start" style="border: 1px solid #ffa107">
+      <div class="col-3 round-start" style="border: 1px solid #ffa107">
         Card amount:
         <br />
         {{ deckNumber }}
       </div>
-      <div class="col-4" style="border: 1px solid #ffa107">
+      <div class="col-3" style="border: 1px solid #ffa107">
         <div>
           Deckrating:
           <br />
           {{ deckRating }}
         </div>
       </div>
-      <div class="col-4 round-end" style="border: 1px solid #ffa107">
+      <div class="col-3" style="border: 1px solid #ffa107">
         <div>
           Deckvalue average:
           <br />
           {{ deckValue }}
         </div>
+      </div>
+      <div class="col-3 round-end" style="border: 1px solid #ffa107">
+        Missing cards:
+        <br />
+        {{ missingCardsAmount }}
       </div>
     </div>
     <ShowProperties
@@ -215,6 +220,7 @@ import ShowPropertiesVue from "./ShowProperties.vue";
     :openCardEditModal="openCardEditModal"
     :closeCardSelectModal="closeCardSelectModal"
     :openCardDeleteModal="openCardDeleteModal"
+    :openConfirmModal="openConfirmModal"
   ></CardSelectModal>
   <!-- new modal -->
   <DefaultCardInputModal
@@ -233,6 +239,13 @@ import ShowPropertiesVue from "./ShowProperties.vue";
     :closeModal="closeCardDeleteModal"
     :deleteCard="deleteCard"
   ></DeleteCardModal>
+  <!-- new modal -->
+  <OwnCardsModal
+    :closeModal="closeConfirmModal"
+    :addCopy="addCopy"
+    :selectedCard="selectedCard"
+    :selectedAmount="selectedAmount"
+  ></OwnCardsModal>
 </template>
 <script lang="ts">
 import { defineComponent } from "vue";
@@ -244,6 +257,8 @@ import {
   findCardByName,
   safeDeck,
   checkComboCardGroups,
+  ownCards,
+  safeOwnCards,
 } from "../../global";
 import { mainCardDB, banList } from "../../API";
 import * as type from "../../types";
@@ -252,6 +267,7 @@ import ShowProperties from "./ShowProperties.vue";
 import DefaultCardInputModal from "./DefaultCardInputModal.vue";
 import DeleteCardModal from "./DeleteCardModal.vue";
 import CardSelectModal from "./CardSelectModal.vue";
+import OwnCardsModal from "../OwnCardsModal.vue";
 export default defineComponent({
   components: {
     ...Inputs,
@@ -259,6 +275,7 @@ export default defineComponent({
     DefaultCardInputModal,
     DeleteCardModal,
     CardSelectModal,
+    OwnCardsModal,
   },
   watch: { deck: "updateDeck" },
   setup() {
@@ -267,6 +284,8 @@ export default defineComponent({
       deck,
       uniqueAllCards,
       mainCardDB,
+      ownCards,
+      safeOwnCards,
       searchOnline,
       findCardByName,
     };
@@ -326,7 +345,25 @@ export default defineComponent({
       editAdd: "",
       deckView: true,
       selectedCard: {},
+
+      selectedAmount: 0,
     };
+  },
+  computed: {
+    missingCardsAmount() {
+      let number = 0;
+      for (let card of this.deck.cards) {
+        let ownCard = this.ownCards.find((e) => e.id == card.id);
+        if (ownCard) {
+          if (card.count - ownCard.count > 0) {
+            number += card.count - ownCard.count;
+          }
+        } else {
+          number += card.count;
+        }
+      }
+      return number;
+    },
   },
   methods: {
     updateDeck() {
@@ -354,6 +391,40 @@ export default defineComponent({
           break;
       }
     },
+    openConfirmModal(card: type.Card, number: number) {
+      this.closeCardSelectModal();
+      let ownCard = this.ownCards.find((e) => e.id == card.id);
+      this.selectedCard = ownCard || { name: card.name, count: 0, id: card.id };
+      this.selectedAmount = number;
+      window.onclick = (event) => {
+        if (event.target == document.getElementById("ownCardsModal"))
+          this.closeConfirmModal();
+      };
+      let modal = document.getElementById("ownCardsModal");
+      if (modal) modal.style.display = "block";
+    },
+    closeConfirmModal() {
+      this.selectedCard = {};
+      let modal = document.getElementById("ownCardsModal");
+      if (modal) modal.style.display = "none";
+    },
+    addCopy(card) {
+      let ownCard = this.ownCards.find((e) => e.name == card.name);
+      if (ownCard) {
+        ownCard.count += this.selectedAmount;
+      } else {
+        card = this.deck.cards.find((e) => e.name == card.name);
+        this.ownCards.push({
+          name: card.name,
+          count: card.count,
+          id: card.id,
+          type: card.type,
+        });
+      }
+      safeOwnCards();
+      this.closeConfirmModal();
+    },
+
     openCardSelectModal(card: type.Card) {
       this.selectedCard = card;
       window.onclick = (event) => {

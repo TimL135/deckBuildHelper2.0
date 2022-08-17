@@ -6,9 +6,16 @@
     crossorigin="anonymous"
   />
   <div class="container mt-2">
-    <div class="round mb-1" style="border: 1px solid #ffa107">
-      {{ `Card amount: ${counts.reduce((a, b) => a + b)}` }}
+    <div class="row g-0 mb-1">
+      <div class="col-6 round-start" style="border: 1px solid #ffa107">
+        {{ `Card amount: ${counts.reduce((a, b) => a + b)}` }}
+      </div>
+      <div class="col-6 round-end" style="border: 1px solid #ffa107">
+        Missing cards:
+        {{ missingCardsAmount }}
+      </div>
     </div>
+
     <div class="d-flex mb-1">
       <div
         class="w-25 round-start"
@@ -212,6 +219,7 @@
     :openCardEditModal="openExtraCardEditModal"
     :closeCardSelectModal="closeCardSelectModal"
     :openCardDeleteModal="openExtraCardDeleteModal"
+    :openConfirmModal="openConfirmModal"
   ></CardSelectModal>
   <!-- new modal -->
   <div id="extraCardAddEditModal" class="modal">
@@ -286,6 +294,13 @@
     :closeModal="closeExtraCardDeleteModal"
     :deleteCard="deleteExtraCard"
   ></DeleteCardModal>
+  <!-- new modal -->
+  <OwnCardsModal
+    :closeModal="closeConfirmModal"
+    :addCopy="addCopy"
+    :selectedCard="selectedCard"
+    :selectedAmount="selectedAmount"
+  ></OwnCardsModal>
 </template>
 <script lang="ts">
 import { defineComponent } from "vue";
@@ -295,17 +310,29 @@ import {
   searchOnline,
   safeDeck,
   findCardByName,
+  ownCards,
+  safeOwnCards,
 } from "../../global";
 import { extraCardDB, banList } from "../../API";
 import * as type from "../../types";
 import * as Inputs from "../../components/SexyInputs/index";
 import DeleteCardModal from "./DeleteCardModal.vue";
 import CardSelectModal from "./CardSelectModal.vue";
+import OwnCardsModal from "../OwnCardsModal.vue";
 export default defineComponent({
-  components: { ...Inputs, DeleteCardModal, CardSelectModal },
+  components: { ...Inputs, DeleteCardModal, CardSelectModal, OwnCardsModal },
   watch: { deck: "countExtraCards" },
   setup() {
-    return { decks, deck, searchOnline, findCardByName, extraCardDB, banList };
+    return {
+      decks,
+      deck,
+      searchOnline,
+      findCardByName,
+      extraCardDB,
+      banList,
+      ownCards,
+      safeOwnCards,
+    };
   },
   mounted() {
     this.countExtraCards();
@@ -327,9 +354,59 @@ export default defineComponent({
       selectedCard: {},
       maxCount: 3,
       banListStatus: "",
+      selectedAmount: 0,
     };
   },
+  computed: {
+    missingCardsAmount() {
+      let number = 0;
+      for (let card of this.deck.extraCards) {
+        let ownCard = this.ownCards.find((e) => e.id == card.id);
+        if (ownCard) {
+          if (card.count - ownCard.count > 0) {
+            number += card.count - ownCard.count;
+          }
+        } else {
+          number += card.count;
+        }
+      }
+      return number;
+    },
+  },
   methods: {
+    openConfirmModal(card: type.Card, number: number) {
+      this.closeCardSelectModal();
+      let ownCard = this.ownCards.find((e) => e.id == card.id);
+      this.selectedCard = ownCard || { name: card.name, count: 0, id: card.id };
+      this.selectedAmount = number;
+      window.onclick = (event) => {
+        if (event.target == document.getElementById("ownCardsModal"))
+          this.closeConfirmModal();
+      };
+      let modal = document.getElementById("ownCardsModal");
+      if (modal) modal.style.display = "block";
+    },
+    closeConfirmModal() {
+      this.selectedCard = {};
+      let modal = document.getElementById("ownCardsModal");
+      if (modal) modal.style.display = "none";
+    },
+    addCopy(card) {
+      let ownCard = this.ownCards.find((e) => e.name == card.name);
+      if (ownCard) {
+        ownCard.count += this.selectedAmount;
+      } else {
+        card = this.deck.extraCards.find((e) => e.name == card.name);
+        this.ownCards.push({
+          name: card.name,
+          count: card.count,
+          id: card.id,
+          type: card.type,
+        });
+      }
+      safeOwnCards();
+      this.closeConfirmModal();
+    },
     editAddExtraCard() {
       this.error = {};
       if (!this.nameInput) this.error.nameInput = "enter a name";

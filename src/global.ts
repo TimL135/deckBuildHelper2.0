@@ -11,9 +11,9 @@ import { ref } from "vue";
 import * as type from "./types";
 export const decks = ref(getDecks());
 export const deck = ref(getDeck());
-export const OwnCards = ref(getOwnCards() || []);
+export const ownCards = ref(getOwnCards() || []);
 export function safeOwnCards() {
-  setOwnCards(OwnCards.value);
+  setOwnCards(ownCards.value);
 }
 export const uniqueAllCards = ref([
   ...new Set(deck.value.cards?.filter((c) => c.name)),

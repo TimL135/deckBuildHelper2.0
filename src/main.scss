@@ -245,9 +245,11 @@ table {
     grid-template-columns: repeat(6, 1fr);
 }
 .selectModal{
-    display: grid;
-    grid-template-columns: auto auto auto;
+    display: flex;
     column-gap: 0.25rem;
+ div{
+    width: 100%;
+ }
 }
 .startHand {
     display: grid;
