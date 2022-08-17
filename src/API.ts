@@ -56,6 +56,12 @@ export function setDB(db: any) {
 export function getDB(): any {
   return JSON.parse(localStorage.getItem("db") || "false") as string[];
 }
+export function setGermanDB(germandb: any) {
+  localStorage.setItem("germandb", JSON.stringify(germandb));
+}
+export function getGermanDB(): any {
+  return JSON.parse(localStorage.getItem("germandb") || "false") as string[];
+}
 export function setBanList(banList: any) {
   localStorage.setItem("banList", JSON.stringify(banList));
 }
@@ -75,11 +81,11 @@ function createType(type: string) {
 export let db = getDB();
 //7 days
 if (
-  (db &&
-    (db.timeStamp < Date.now() - 6.048e8 ||
-      !db.data[0].type ||
-      db.data.length < 12000)) ||
-  !db.data[0].id
+  db &&
+  (db.timeStamp < Date.now() - 6.048e8 ||
+    !db.data[0].type ||
+    db.data.length < 12000 ||
+    !db.data[0].id)
 )
   db = false;
 else db = db.data;
@@ -100,10 +106,41 @@ if (!db) {
     else db = [];
   }
 }
+export let germandb = getGermanDB();
+//7 days
+if (
+  germandb &&
+  (germandb.timeStamp < Date.now() - 6.048e8 ||
+    !germandb.data[0].type ||
+    germandb.data.length < 11000 ||
+    !germandb.data[0].id)
+)
+  germandb = false;
+else germandb = germandb.data;
+if (!germandb) {
+  try {
+    axios
+      .get("https://db.ygoprodeck.com/api/v7/cardinfo.php?language=de")
+      .then((resp) => {
+        germandb = resp.data.data.map((e) =>
+          Object.fromEntries([
+            ["name", e.name],
+            ["type", createType(e.type)],
+            ["id", e.card_images[0].id],
+          ])
+        );
+        setGermanDB({ timeStamp: Date.now(), data: germandb });
+      });
+  } catch {
+    if (getGermanDB()) germandb = getGermanDB().data;
+    else germandb = [];
+  }
+}
 export const mainCardDB = [];
 export const extraCardDB = [];
-if (db.length) {
-  for (const card of db) {
+console.log(germandb);
+if (db.length > 1 && germandb.length > 1) {
+  for (const card of db.concat(germandb)) {
     switch (card.type) {
       case "link":
       case "xyz":

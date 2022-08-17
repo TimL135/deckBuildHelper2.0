@@ -169,7 +169,7 @@
             :onSelectItem="typeCheck"
             :placeholder="banListStatus ? banListStatus : 'name'"
             v-model="nameInput"
-            :options="db"
+            :options="db.concat(germandb)"
             :option-projection="(e) => e.name"
             :labelBorder="true"
             :selectOnBlur="true"
@@ -369,7 +369,7 @@ import {
   safeDeck,
   findCardByName,
 } from "../../global";
-import { db, banList } from "../../API";
+import { db, germandb, banList } from "../../API";
 import * as type from "../../types";
 import * as Inputs from "../../components/SexyInputs/index";
 import DeleteCardModal from "./DeleteCardModal.vue";
@@ -386,6 +386,7 @@ export default defineComponent({
       findCardByName,
       db,
       banList,
+      germandb,
     };
   },
   mounted() {
