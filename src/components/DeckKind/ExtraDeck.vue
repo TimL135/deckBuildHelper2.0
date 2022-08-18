@@ -13,7 +13,7 @@
       <div
         class="col-6 round-end"
         style="border: 1px solid #ffa107"
-        :class="showMissingCards ? 'green text-dark' : ''"
+        :class="showMissingCards ? 'orange text-dark' : ''"
         @click="showMissingCards = !showMissingCards"
       >
         Missing cards:
