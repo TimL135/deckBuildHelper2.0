@@ -58,7 +58,7 @@
             <Button
               @click="
                 () => {
-                  searchOnline(selectedCard?.name);
+                  searchOnline(selectedCard?.id);
                   closeCardSelectModal();
                 }
               "

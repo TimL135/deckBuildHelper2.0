@@ -147,7 +147,7 @@ import ShowPropertiesVue from "./ShowProperties.vue";
         :class="card.type"
         style="border-bottom: 1px solid black"
       >
-        <div @dblclick="searchOnline(card.name)">
+        <div @dblclick="searchOnline(card.id)">
           {{ card.name }}({{ card.count }})
         </div>
         <div>

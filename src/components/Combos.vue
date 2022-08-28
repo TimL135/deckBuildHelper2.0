@@ -105,11 +105,7 @@
               :key="JSON.stringify(card)"
               class="mb-1 orange text-dark"
               :class="findCard(card)?.type"
-              @dblclick="
-                typeof card !== 'object'
-                  ? searchOnline(findCard(card)?.name)
-                  : null
-              "
+              @dblclick="typeof card !== 'object' ? searchOnline(card) : null"
             >
               {{ findCard(card)?.name || findCardGroup(card)?.name }}
             </div>
@@ -194,11 +190,7 @@
               :key="JSON.stringify(card)"
               class="mb-1 orange text-dark"
               :class="findCard(card)?.type"
-              @dblclick="
-                typeof card !== 'object'
-                  ? searchOnline(findCard(card)?.name)
-                  : null
-              "
+              @dblclick="typeof card !== 'object' ? searchOnline(card) : null"
             >
               {{ findCard(card)?.name || findCardGroup(card)?.name }}
             </div>

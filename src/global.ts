@@ -67,10 +67,11 @@ export function findCardGroup(id: string) {
 export function findCardGroupByName(name: string) {
   return deck.value.cardGroups.find((e) => e.name == name);
 }
-export function searchOnline(search) {
-  if (!search) return;
+export function searchOnline(searchID) {
+  let searchName = db.find((e) => e.id == searchID).name;
+  if (!searchName) return;
   window.open(
-    `https://cardcluster.de/card/${search
+    `https://cardcluster.de/card/${searchName
       .replaceAll(" ", "-")
       .replaceAll("---", "-")
       .replaceAll(",", "")

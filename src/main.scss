@@ -243,6 +243,8 @@ table {
 .deck {
     display: grid;
     grid-template-columns: repeat(6, 1fr);
+    row-gap: 0.25rem;
+
 }
 .selectModal{
     display: flex;

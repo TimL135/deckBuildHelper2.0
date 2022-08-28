@@ -114,7 +114,7 @@
           v-for="(card, index) of handCards"
           :key="card + index"
           style="border: 2px solid rgb(12, 12, 12)"
-          @dblclick="searchOnline(findCard(card)?.name)"
+          @dblclick="searchOnline(card)"
         >
           <div>
             <img
@@ -260,7 +260,7 @@
               :style="findCard(card) ? '' : 'background-color: red'"
               class="me-1"
               :class="navigator.onLine ? '' : findCard(card)?.type"
-              @dblclick="searchOnline(findCard(card)?.name)"
+              @dblclick="searchOnline(card)"
             >
               <div>
                 <img
@@ -285,15 +285,13 @@
               :style="findCard(card) ? '' : 'background-color: red'"
               class="me-1"
               :class="navigator.onLine ? '' : findCard(card)?.type"
-              @dblclick="searchOnline(findCard(card)?.name)"
+              @dblclick="searchOnline(card)"
             >
               <div>
                 <img
                   v-if="navigator.onLine"
                   style="height: 5rem"
-                  :src="`https://storage.googleapis.com/ygoprodeck.com/pics_small/${
-                    findCard(card)?.id
-                  }.jpg`"
+                  :src="`https://storage.googleapis.com/ygoprodeck.com/pics_small/${card}.jpg`"
                   alt=""
                 />
                 <div v-else>{{ findCard(card)?.name }}</div>

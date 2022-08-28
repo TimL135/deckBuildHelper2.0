@@ -106,7 +106,7 @@
               :key="card"
               class="mb-1"
               :class="findCard(card)?.type + ' text-dark'"
-              @dblclick="searchOnline(findCard(card)?.name)"
+              @dblclick="searchOnline(card)"
             >
               {{ findCard(card)?.name }}
             </div>
@@ -193,7 +193,7 @@
               :key="card"
               class="mb-1"
               :class="findCard(card)?.type + ' text-dark'"
-              @dblclick="searchOnline(findCard(card)?.name)"
+              @dblclick="searchOnline(card)"
             >
               {{ findCard(card)?.name }}
             </div>

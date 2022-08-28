@@ -8,7 +8,7 @@
       @click="$emit('selectSlot', slot)"
       @dblclick="
         slot.value.length == 1 && slot.value != slot.name
-          ? searchOnline(slot.value[0])
+          ? searchOnline(findCardByName(slot.value[0])?.id)
           : null
       "
     >
@@ -63,7 +63,7 @@
       @click="$emit('selectSlot', slot)"
       @dblclick="
         slot.value.length == 1 && slot.value != slot.name
-          ? searchOnline(slot.value[0])
+          ? searchOnline(findCardByName(slot.value[0])?.id)
           : null
       "
     >

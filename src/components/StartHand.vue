@@ -7,25 +7,11 @@
   />
 
   <div class="container" style="margin-top: 3vh">
-    <!-- <div v-for="cardNumber of 5" :key="cardNumber">
-            <Select
-                :placeholder="`${cardNumber}.Card`"
-                v-model="handCards[cardNumber - 1]"
-                :class="handCardsType[cardNumber - 1] || 'orange'"
-                :label-class="handCardsType[cardNumber - 1] || 'orange'"
-                @change="countCard()"
-                :options="deck.cards.map(a => a.name)"
-                @dblclick="searchOnline(handCards[cardNumber - 1])"
-                @selectItem="countCard()"
-                listClass="orange text-dark"
-                :listItemClass="item => findCardByName(item).type"
-            />
-        </div> -->
     <div class="startHand">
       <div
         v-for="(card, index) of handCards"
         :key="card + index"
-        @dblclick="searchOnline(card)"
+        @dblclick="searchOnline(findCardByName(card)?.id)"
       >
         <img
           v-if="findCardByName(card)?.id"
@@ -159,11 +145,7 @@
               :key="card"
               class="mb-1 orange text-dark"
               :class="findCard(card)?.type"
-              @dblclick="
-                typeof card !== 'object'
-                  ? searchOnline(findCard(card)?.name)
-                  : null
-              "
+              @dblclick="typeof card !== 'object' ? searchOnline(card) : null"
             >
               {{ findCard(card)?.name || findCardGroup(card)?.name }}
             </div>

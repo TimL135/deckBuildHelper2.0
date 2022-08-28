@@ -128,7 +128,7 @@
         :key="card + index"
         style="border: 2px solid rgb(12, 12, 12)"
         @click="selectCard(card, 'hand')"
-        @dblclick="searchOnline(findCard(card)?.name)"
+        @dblclick="searchOnline(card)"
       >
         <div v-if="!hide">
           <img
@@ -158,7 +158,7 @@
           :key="card"
           style="border: 2px solid rgb(12, 12, 12)"
           @click="selectCard(card, 'deck')"
-          @dblclick="searchOnline(findCard(card)?.name)"
+          @dblclick="searchOnline(card)"
         >
           <img
             v-if="navigator.onLine"
@@ -180,7 +180,7 @@
           :key="card"
           style="border: 2px solid rgb(12, 12, 12)"
           @click="selectCard(card, 'extradeck')"
-          @dblclick="searchOnline(findCard(card)?.name)"
+          @dblclick="searchOnline(card)"
         >
           <img
             v-if="navigator.onLine"
@@ -202,7 +202,7 @@
           :key="card"
           style="border: 2px solid rgb(12, 12, 12)"
           @click="selectCard(card, 'graveyard')"
-          @dblclick="searchOnline(findCard(card)?.name)"
+          @dblclick="searchOnline(card)"
         >
           <img
             v-if="navigator.onLine"
@@ -224,7 +224,7 @@
           :key="card"
           style="border: 2px solid rgb(12, 12, 12)"
           @click="selectCard(card, 'banish')"
-          @dblclick="searchOnline(findCard(card)?.name)"
+          @dblclick="searchOnline(card)"
         >
           <img
             v-if="navigator.onLine"
