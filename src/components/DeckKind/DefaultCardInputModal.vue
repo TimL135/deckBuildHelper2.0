@@ -4,7 +4,7 @@
       <div class="container">
         <div>
           <Select
-            @change="alternativeCheck"
+            @input="alternativeCheck"
             :onSelectItem="alternativeCheck"
             :placeholder="
               primitives.banListStatus ? primitives.banListStatus : 'name'
@@ -207,6 +207,11 @@
 import { defineComponent } from "vue";
 import * as Inputs from "../../components/SexyInputs/index";
 export default defineComponent({
+  setup() {
+    return {
+      console,
+    };
+  },
   components: { ...Inputs },
   props: {
     counts: {

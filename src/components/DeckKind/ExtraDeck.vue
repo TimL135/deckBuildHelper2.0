@@ -236,7 +236,7 @@
       <div class="container">
         <div>
           <Select
-            @change="alternativeCheck"
+            @input="alternativeCheck"
             :onSelectItem="alternativeCheck"
             :placeholder="banListStatus ? banListStatus : 'name'"
             v-model="nameInput"

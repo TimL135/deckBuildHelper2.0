@@ -165,7 +165,7 @@
       <div class="container">
         <div>
           <Select
-            @change="typeCheck"
+            @input="typeCheck"
             :onSelectItem="typeCheck"
             :placeholder="banListStatus ? banListStatus : 'name'"
             v-model="nameInput"

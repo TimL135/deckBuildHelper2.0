@@ -212,7 +212,7 @@
                 :class="comboCardsType[cardNumber - 1] || 'orange'"
                 :label-class="comboCardsType[cardNumber - 1] || 'orange'"
                 :label-border="true"
-                @change="changeType()"
+                @input="changeType()"
                 :options="deck.cards.concat(deck.cardGroups || [])"
                 :option-projection="(a) => a.name"
                 @selectItem="changeType()"

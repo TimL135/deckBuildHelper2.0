@@ -17,7 +17,6 @@ export function getDeck(): type.Deck {
       .concat(deck.alternativeCards)) {
       if (cardMaindeck.src && cardMaindeck.id != cardMaindeck.src) {
         const newId = cardMaindeck.src;
-        console.log(newId);
         for (const combo of deck.combos) {
           for (const card of combo.cards) {
             if (card == cardMaindeck.id)
@@ -137,7 +136,6 @@ if (!germandb) {
 }
 export const mainCardDB = [];
 export const extraCardDB = [];
-console.log(germandb);
 if (db.length > 1 && germandb.length > 1) {
   for (const card of db.concat(germandb)) {
     switch (card.type) {

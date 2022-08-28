@@ -358,7 +358,6 @@ export default defineComponent({
     },
     searchId(card) {
       this.searchedId = this.ownCards.find((e) => e.id == card.id).id || "";
-      console.log(this.searchedId);
     },
   },
 });
